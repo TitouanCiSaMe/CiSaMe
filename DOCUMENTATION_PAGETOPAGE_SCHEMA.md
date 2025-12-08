@@ -10,7 +10,7 @@ Ce document établit le lien entre le **dossier PAGEtopage** (nouveau module de 
 
 ## 🔗 Position de PAGEtopage dans le Pipeline Global
 
-### Pipeline Complet (Modules 1-5 + PAGEtopage)
+### Pipeline Complet (Modules 1-6)
 
 ```
 MODULE 1: Acquisition Manuscrits
@@ -21,12 +21,18 @@ MODULE 3: Acquisition Éditions
     ↓
 MODULE 4: Traitement eScriptorium (HTR/OCR)
     ↓
-MODULE 5: Nettoyage Post-eScriptorium ← Schéma existant
+MODULE 5: Nettoyage Post-eScriptorium
     ↓
-📦 PAGEtopage: Enrichissement Linguistique ← NOUVEAU
-    ↓
-FORMAT VERTICAL + CORPUS ANNOTÉ
+    ├─────> 📦 MODULE 6: PAGEtopage (Cas général)
+    │           Enrichissement Linguistique
+    │           ↓
+    │       FORMAT VERTICAL + CORPUS ANNOTÉ
+    │
+    └─────> ⚖️ MODULE SPÉCIAL: Décret de Gratien (Cas particulier)
+                Traitement spécifique, N'UTILISE PAS PAGEtopage
 ```
+
+**⚠️ IMPORTANT** : Le Module 6 (PAGEtopage) et le Module Décret de Gratien sont **deux branches indépendantes et parallèles**. Le Décret de Gratien utilise son propre pipeline de traitement spécifique et **n'utilise pas** PAGEtopage pour la lemmatisation.
 
 ---
 
@@ -365,9 +371,11 @@ flowchart TD
 
 ### Exemple Pratique
 
-1. **MODULES 1-3** : Acquisition du manuscrit MS123 (Décret de Gratien, XIIe siècle)
-   - Téléchargement IIIF depuis la British Library
-   - 300 pages, TIF 600 DPI
+**⚠️ NOTE** : Cet exemple utilise un manuscrit juridique générique. Le Décret de Gratien **n'utilise pas** PAGEtopage car il a son propre pipeline de traitement spécifique.
+
+1. **MODULES 1-3** : Acquisition du manuscrit MS123 (Corpus Juris Civilis, XIIIe siècle)
+   - Téléchargement IIIF depuis la Bibliothèque Vaticane
+   - 250 pages, TIF 600 DPI
 
 2. **MODULE 4** : Traitement eScriptorium
    - Segmentation automatique (modèle réutilisé)
@@ -375,12 +383,12 @@ flowchart TD
    - Validation manuelle
 
 3. **MODULE 5** : Nettoyage (`flowchart-module5.mmd`)
-   - Import des 300 XML PAGE
+   - Import des 250 XML PAGE
    - Détection : 2 régions Main par page (verso-recto)
    - Application regex communes (normalisation espaces)
    - Application regex spécifiques (abbréviations latines)
-   - Vérification : 12 erreurs détectées et corrigées
-   - **Sortie** : 300 fichiers XML PAGE finalisés
+   - Vérification : 10 erreurs détectées et corrigées
+   - **Sortie** : 250 fichiers XML PAGE finalisés
 
 4. **MODULE 6** : PAGEtopage (`PAGEtopage/`)
 
@@ -393,24 +401,24 @@ flowchart TD
    ```
 
    **Étape 1 - Extraction** :
-   - Lecture des 300 XML PAGE
+   - Lecture des 250 XML PAGE
    - Mode : `dual` (2 colonnes par page)
-   - Fusion des mots coupés : 1847 occurrences
-   - Création : `extracted.json` (2.3 Mo)
+   - Fusion des mots coupés : 1539 occurrences
+   - Création : `extracted.json` (1.9 Mo)
 
    **Étape 2 - Enrichissement** :
-   - Découpage : 8 742 phrases
-   - Tokenisation : 156 392 tokens
-   - Lemmatisation CLTK (Latin) : 154 203 lemmes identifiés
+   - Découpage : 7 285 phrases
+   - Tokenisation : 130 327 tokens
+   - Lemmatisation CLTK (Latin) : 128 503 lemmes identifiés
    - POS-tagging : 97.8% de confiance
-   - Création : `corpus.vertical.txt` (8.7 Mo)
+   - Création : `corpus.vertical.txt` (7.2 Mo)
 
    **Étape 3 - Export** :
    - Format choisi : `clean` (texte lisible)
-   - Génération de 300 fichiers `page_*.txt`
-   - Création `texte_complet.txt` (512 Ko)
+   - Génération de 250 fichiers `page_*.txt`
+   - Création `texte_complet.txt` (427 Ko)
    - Création `pages_index.json` avec métadonnées complètes
-   - Statistiques : 156k mots, 8.7k phrases, 300 pages
+   - Statistiques : 130k mots, 7.3k phrases, 250 pages
 
 5. **RÉSULTAT FINAL** : Corpus MS123 prêt pour :
    - Recherche plein-texte
@@ -418,6 +426,8 @@ flowchart TD
    - Études lexicales (lemmes, POS)
    - Comparaison avec autres manuscrits
    - Intégration dans une base de données
+
+**⚠️ NOTE** : Le Décret de Gratien suit un pipeline différent et n'utilise pas PAGEtopage.
 
 ---
 

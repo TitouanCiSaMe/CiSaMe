@@ -147,7 +147,7 @@ flowchart TD
     %% MODULE SPÉCIAL - Décret de Gratien
     %% ========================================
     subgraph DECRET [⚖️ MODULE SPÉCIAL - Décret de Gratien]
-        DG_INPUT1[📥 Corpus enrichi]
+        DG_INPUT1[📥 XML Pages]
         DG_INPUT2[📥 Friedberg + Münchener]
         DG_ALLEGATIONS[📊 Allégations CSV]
         DG_ENRICHISSEMENT[✨ Enrichissement<br/>ID + Structure]
@@ -172,12 +172,17 @@ flowchart TD
 
     M4_OUTPUT --> M5_INPUT
 
-    M5_OUTPUT --> M6_INPUT
+    %% Branches parallèles depuis Module 5
+    M5_OUTPUT -->|Cas général:<br/>Manuscrits/Éditions| M6_INPUT
+    M4_OUTPUT -.->|Cas spécial:<br/>Décret de Gratien| DG_INPUT1
+    M5_OUTPUT -.->|Cas spécial:<br/>Décret de Gratien| DG_INPUT2
 
-    M6_OUTPUT --> DG_INPUT1
-    M5_OUTPUT -.->|Alternative<br/>XML direct| DG_INPUT2
+    %% Sorties finales indépendantes
+    M6_OUTPUT --> END_GENERAL([📚 Corpus enrichi général])
+    DG_OUTPUT --> END_DECRET([⚖️ Décret de Gratien enrichi])
 
-    DG_OUTPUT --> END
+    END_GENERAL --> END
+    END_DECRET --> END
 
     END([🎯 DONNÉES FINALES])
 
@@ -187,14 +192,16 @@ flowchart TD
     note1[💡 Qualité cible Éditions:<br/>CER 0.1-2%]
     note2[💡 Qualité cible Manuscrits:<br/>CER 4-8%]
     note3[💡 Formats supportés:<br/>IIIF, PDF, TIF, JPG]
-    note4[💡 PAGEtopage 🆕:<br/>Lemmatisation Latin<br/>3 formats de sortie<br/>Pipeline automatisé]
-    note5[💡 Module 6 optionnel:<br/>Peut être contourné<br/>pour traitement direct]
+    note4[💡 PAGEtopage 🆕:<br/>Lemmatisation Latin<br/>3 formats de sortie<br/>Cas général]
+    note5[💡 Module 6 et Décret:<br/>Branches indépendantes<br/>Pas de connexion entre eux]
+    note6[💡 Décret de Gratien:<br/>Traitement spécifique<br/>N'utilise PAS PAGEtopage]
 
     M4_EDITIONS -.-> note1
     M4_MANUSCRITS -.-> note2
     M2_SEAFILE -.-> note3
     M6_ENRICH -.-> note4
     M6_INPUT -.-> note5
+    DG_INPUT1 -.-> note6
 
     %% ========================================
     %% LÉGENDE
@@ -213,9 +220,10 @@ flowchart TD
     %% ========================================
     subgraph STATS [📊 Pipeline Complet]
         STAT1[6 modules principaux]
-        STAT2[1 module spécial Décret]
+        STAT2[1 module spécial Décret indépendant]
         STAT3[Automatisation: ~85%]
-        STAT4[Formats: XML→JSON→Vertical→TXT]
+        STAT4[Module 6: XML→JSON→Vertical→TXT]
+        STAT5[Module Décret: traitement spécifique]
     end
 
     %% ========================================
@@ -245,8 +253,8 @@ flowchart TD
     class M1_DECISION,M2_DECISION,M3_DECISION,M4_DECISION,M5_DECISION,M6_DECISION decision
     class M2_SEAFILE,M5_SEAFILE cloud
     class M1_OUTPUT,M3_OUTPUT,M4_OUTPUT,M5_OUTPUT,M6_OUTPUT,DG_OUTPUT output
-    class START,END startEnd
-    class note1,note2,note3,note4,note5 note
+    class START,END,END_GENERAL,END_DECRET startEnd
+    class note1,note2,note3,note4,note5,note6 note
     class M6_INPUT,M6_EXTRACT,M6_ENRICH,M6_EXPORT,M6_CLEAN,M6_DIPLO,M6_ANNOT nouveau
 
     style LEGEND fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 3 3
