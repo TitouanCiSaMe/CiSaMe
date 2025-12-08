@@ -1,12 +1,14 @@
 flowchart TD
     %% ========================================
     %% MODULE 6 - ENRICHISSEMENT LINGUISTIQUE (PAGEtopage)
+    %% CAS GÉNÉRAL : Manuscrits et Éditions
+    %% N'UTILISE PAS pour le Décret de Gratien
     %% ========================================
 
-    START([📦 MODULE 6<br/>PAGEtopage - Enrichissement Linguistique])
+    START([📦 MODULE 6<br/>PAGEtopage - Enrichissement Linguistique<br/>Cas général uniquement])
 
     %% ENTRÉE
-    INPUT_MODULE5[📥 XML PAGE finalisés<br/>Sortie du Module 5]
+    INPUT_MODULE5[📥 XML PAGE finalisés<br/>Sortie du Module 5<br/>Manuscrits/Éditions génériques]
     START --> INPUT_MODULE5
 
     %% ========================================
@@ -113,12 +115,14 @@ flowchart TD
     note3[💡 Formats:<br/>Clean = lecture humaine<br/>Diplomatic = semi-annoté<br/>Annotated = analyse machine]
     note4[💡 Métadonnées:<br/>Préservées à chaque étape<br/>Traçabilité complète]
     note5[💡 Pipeline:<br/>Peut être exécuté complet<br/>ou étape par étape<br/>selon les besoins]
+    note6[⚠️ IMPORTANT:<br/>Module pour CAS GÉNÉRAL<br/>N'utilise PAS pour Décret<br/>Décret = pipeline spécifique]
 
     EXTRACT_START -.-> note1
     CLTK_PROCESS -.-> note2
     FORMAT_CHOICE -.-> note3
     INDEX_JSON -.-> note4
     START -.-> note5
+    INPUT_MODULE5 -.-> note6
 
     %% ========================================
     %% STATISTIQUES
@@ -165,6 +169,18 @@ flowchart TD
     end
 
     %% ========================================
+    %% CAS D'USAGE APPROPRIÉS
+    %% ========================================
+    subgraph USE_CASES [✅ Cas d'Usage de Ce Module]
+        UC1[✅ Manuscrits juridiques généraux]
+        UC2[✅ Éditions imprimées]
+        UC3[✅ Textes latins/français classiques]
+        UC4[✅ Corpus nécessitant lemmatisation]
+        UC5[❌ Décret de Gratien exclus]
+        UC6[❌ Utilise son propre pipeline]
+    end
+
+    %% ========================================
     %% FLUX DE DONNÉES
     %% ========================================
     subgraph DATA_FLOW [🔄 Formats de Données]
@@ -177,7 +193,7 @@ flowchart TD
     %% ========================================
     %% LIEN AVEC MODULE 5
     %% ========================================
-    MODULE5_OUTPUT[📤 MODULE 5<br/>Transcriptions XML finalisées<br/>après nettoyage regex]
+    MODULE5_OUTPUT[📤 MODULE 5<br/>Transcriptions XML finalisées<br/>Cas général: Manuscrits/Éditions<br/>Exclus: Décret de Gratien]
     MODULE5_OUTPUT --> INPUT_MODULE5
 
     %% ========================================
@@ -200,7 +216,7 @@ flowchart TD
     class EXPORT_START,FORMAT_CLEAN,FORMAT_DIPLO,FORMAT_ANNOT,PAGE_SPLIT export
     class JSON_INTERMEDIATE,CORPUS_VERTICAL intermediate
     class COMBINED_FILE,INDEX_JSON,STATS_JSON,IMAGE_MAPPING output
-    class note1,note2,note3,note4,note5 note
+    class note1,note2,note3,note4,note5,note6 note
     class MODULE5_OUTPUT,INPUT_MODULE5 module5
 
     style STEP1 fill:#e8f5e9,stroke:#1565c0,stroke-width:2px
@@ -210,4 +226,5 @@ flowchart TD
     style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
     style CLI fill:#fce4ec,stroke:#c2185b,stroke-width:2px,stroke-dasharray: 3 3
     style EXAMPLES fill:#fff3e0,stroke:#e65100,stroke-width:2px,stroke-dasharray: 3 3
+    style USE_CASES fill:#ffebee,stroke:#c62828,stroke-width:3px
     style DATA_FLOW fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px,stroke-dasharray: 3 3
