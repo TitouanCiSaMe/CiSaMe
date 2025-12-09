@@ -1,0 +1,64 @@
+flowchart TD
+    %% MODULE - NoSketch-Engine
+    MNS_START[Données Verticales Lemmatisées<br/>Nommées selon le titre de l'Édition<br/>Enregistrement dans un même dossier]
+    
+    %% Pré-requis : Instance Test
+    MNST_PREREQ[Instance Test NoSketch-Engine]
+    
+    MNS_FUSION[Fusion de tous les textes<br/>verticaux lemmatisés<br/>sous le nom Corpus.txt]
+    MNS_COPIE[Copier le Corpus.txt dans<br/>le projet NoSketch-Engine local]
+    MNS_VERIFICATION[Vérification de la viabilité<br/>du corpus sur une instance<br/>de test NoSketch-Engine]
+    
+    %% Branches de résultat
+    MNS_EXPORT[Export sur le serveur]
+    MNS_SHELL[Connection Shell au serveur]
+    MNS_SCP[Utilisation de commande scp<br/>pour exporter sur le serveur]
+    MNS_COMPILATION[Compilation]
+    MNS_RUN[Run]
+    MNS_ERREUR[Le corpus n'est pas viable]
+    
+    %% Point de sortie du module
+    MNS_OUTPUT{{SORTIE MODULE NOSKETCH-ENGINE}}
+    
+    %% Connexions
+    MNS_START -->|Algo Fusion_txt_NoSketch.py| MNS_FUSION
+    MNS_FUSION --> MNS_COPIE
+    MNS_COPIE --> MNS_VERIFICATION
+    
+    %% Pré-requis instance test
+    MNST_PREREQ -.->|Nécessaire pour| MNS_VERIFICATION
+    
+    %% Branches de vérification
+    MNS_VERIFICATION -->|Tout est bon| MNS_EXPORT
+    MNS_VERIFICATION --> MNS_ERREUR
+    
+    %% Séquence d'export sur serveur
+    MNS_EXPORT --> MNS_SHELL
+    MNS_SHELL --> MNS_SCP
+    MNS_SCP --> MNS_COMPILATION
+    MNS_COMPILATION --> MNS_RUN
+    
+    %% Boucle de retour
+    MNS_ERREUR -->|Retour pour correction<br/>des données| MNS_START
+    
+    %% Sortie
+    MNS_RUN --> MNS_OUTPUT
+    
+    %% Styles
+    classDef moduleStart fill:#e1bee7,stroke:#8e24aa,stroke-width:3px
+    classDef traitement fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    classDef verification fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    classDef export fill:#a5d6a7,stroke:#2e7d32,stroke-width:2px
+    classDef serveur fill:#81c784,stroke:#388e3c,stroke-width:3px
+    classDef error fill:#ffcdd2,stroke:#c62828,stroke-width:3px
+    classDef output fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
+    classDef prereq fill:#e3f2fd,stroke:#1565c0,stroke-width:3px,stroke-dasharray: 5 5
+    
+    class MNS_START moduleStart
+    class MNS_FUSION,MNS_COPIE traitement
+    class MNS_VERIFICATION verification
+    class MNS_EXPORT export
+    class MNS_SHELL,MNS_SCP,MNS_COMPILATION,MNS_RUN serveur
+    class MNS_ERREUR error
+    class MNS_OUTPUT output
+    class MNST_PREREQ prereq
