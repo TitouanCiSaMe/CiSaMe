@@ -58,38 +58,40 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Technologies** : Python 3.10+, CLTK, PyYAML, lxml
 - **⚠️ Note** : N'utilise **pas** ce module pour le Décret de Gratien (pipeline spécifique)
 
-### 🔸 Modules transversaux
-
-#### [`Module_Donnees_Textuelles/`](./Module_Donnees_Textuelles/)
-**Gestion de la diffusion des données**
-- **Statut** : ✅ Opérationnel
-- **Contenu** :
-  - `module_donnees_textuelles.mermaid` : Schéma de décision de diffusion
-  - `MODULE_DONNEES_TEXTUELLES_DOCUMENTATION.md` : Documentation complète
-- **Description** : Gestion de la diffusion finale des corpus (avec/sans images, libre/restreint)
-- **Destinations** :
-  - **Nakala** : Données libres (Algo Hécate + connecteur Nakala)
-  - **Seafile** : Données restreintes (cloud universitaire)
-
-#### [`Module_Metadonnees/`](./Module_Metadonnees/)
-**Extraction et gestion des métadonnées**
-- **Statut** : ✅ Opérationnel
-- **Contenu** :
-  - `module_fiches_metadonnees.mermaid` : Schéma d'extraction vers Heurist
-  - `MODULE_METADONNEES_DOCUMENTATION.md` : Documentation de la structure Heurist
-- **Description** : Extraction des métadonnées des fiches manuscrits vers la base Heurist (3 tables : Auteurs, Oeuvres, Éditions)
-- **Base de données** : Heurist (hdb_cisame_misha) - 5,768 records, 129 éditions
-
-#### [`Module_NoSketch_Engine/`](./Module_NoSketch_Engine/)
-**Pipeline NoSketch-Engine**
+#### [`Module_7_NoSketch_Engine/`](./Module_7_NoSketch_Engine/)
+**Pipeline NoSketch-Engine (Corpus interrogeables)**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `module_nosketch_engine.mermaid` : Schéma du pipeline principal
   - `module_nosketch_installation.mermaid` : Schéma d'installation de l'instance test
   - `MODULE_NOSKETCH_ENGINE_DOCUMENTATION.md` : Documentation complète du pipeline
-- **Description** : Création de corpus interrogeables (Fusion → Test → Export → Compilation)
+- **Description** : Création de corpus interrogeables à partir des fichiers verticaux (.vertical.txt) produits par MODULE 6
+- **Workflow** : Fusion → Test → Export → Compilation → Mise en service
 - **Outils** : Fusion_txt_NoSketch.py, SCP, compilation serveur
 - **Fonctionnalités** : Concordances, collocations, recherche par lemme/forme/POS
+
+#### [`Module_8_Diffusion_Donnees/`](./Module_8_Diffusion_Donnees/)
+**Diffusion finale des données textuelles**
+- **Statut** : ✅ Opérationnel
+- **Contenu** :
+  - `module_donnees_textuelles.mermaid` : Schéma de décision de diffusion
+  - `MODULE_DONNEES_TEXTUELLES_DOCUMENTATION.md` : Documentation complète
+- **Description** : Gestion de la diffusion finale des corpus enrichis (avec/sans images, libre/restreint)
+- **Destinations** :
+  - **Nakala** : Données libres (Algo Hécate + connecteur Nakala)
+  - **Seafile** : Données restreintes (cloud universitaire)
+
+### 🔸 Modules transversaux
+
+#### [`Module_Metadonnees/`](./Module_Metadonnees/)
+**Extraction et gestion des métadonnées (Transversal)**
+- **Statut** : ✅ Opérationnel
+- **Contenu** :
+  - `module_fiches_metadonnees.mermaid` : Schéma d'extraction vers Heurist
+  - `MODULE_METADONNEES_DOCUMENTATION.md` : Documentation de la structure Heurist
+- **Description** : Extraction des métadonnées des fiches manuscrits vers la base Heurist (3 tables : Auteurs, Oeuvres, Éditions). Alimente le config.yaml du MODULE 6.
+- **Base de données** : Heurist (hdb_cisame_misha) - 5,768 records, 129 éditions
+- **Rôle** : Fournit les métadonnées bibliographiques pour l'enrichissement (MODULE 6)
 
 ### 🔹 Pipelines spécifiques
 
@@ -112,28 +114,36 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
   - `ANALYSE_SCHEMAS_DOCUMENTATION.md` : Analyse détaillée de la base Heurist (1,152 lignes)
 - **Description** : Documentation globale, schémas récapitulatifs et analyses approfondies du projet
 
-## 🔗 Flux de données principal
+## 🔗 Pipeline complet intégré
 
 ```
-MODULE 1 (Images)
-    ↓
-MODULE 2 (OCR)
-    ↓
-MODULE 3 (Segmentation)
-    ↓
-MODULE 4 (Corrections)
-    ↓
-MODULE 5 (Export)
-    ↓
-MODULE 6 (PAGEtopage - Enrichissement)
-    ↓
-┌───────────────┴──────────────────┐
-│                                   │
-Module Données Textuelles    Module NoSketch-Engine
-(Nakala/Seafile)            (Corpus interrogeable)
+MODULE 1 : Téléchargement images
+         ↓
+MODULE 2 : OCR (extraction texte)
+         ↓
+MODULE 3 : Segmentation
+         ↓
+MODULE 4 : Corrections
+         ↓
+MODULE 5 : Export
+         ↓
+MODULE 6 : PAGEtopage (Enrichissement linguistique)
+         │  ← [Module Métadonnées : Heurist → config.yaml]
+         ↓
+    (3 formats produits : clean, diplomatic, annotated.vertical.txt)
+         ↓
+    ┌────┴──────┐
+    ↓           ↓
+MODULE 7     MODULE 8
+NoSketch     Diffusion
+Engine       Données
+(.vertical)  (Nakala/Seafile)
+    ↓           ↓
+Corpus       Archives
+interrogeable publiques/privées
 ```
 
-**En parallèle** : Module Métadonnées (Heurist) fournit les métadonnées bibliographiques
+**Pipeline parallèle** : Décret de Gratien (workflow spécifique, déjà sur NoSketch-Engine)
 
 ## 🛠️ Technologies principales
 
@@ -190,16 +200,16 @@ Module Données Textuelles    Module NoSketch-Engine
 
 | Module | Statut | Priorité |
 |--------|--------|----------|
-| Module 1 (Images) | ✅ Opérationnel | Complété |
-| Module 2 (OCR) | ✅ Opérationnel | Complété |
-| Module 3 (Segmentation) | ✅ Opérationnel | Complété |
-| Module 4 (Corrections) | ✅ Opérationnel | Complété |
-| Module 5 (Export) | ✅ Opérationnel | Complété |
-| Module 6 (PAGEtopage) | 🚧 Développement | Haute |
-| Module Données Textuelles | ✅ Opérationnel | Complété |
-| Module Métadonnées | ✅ Opérationnel | Complété |
-| Module NoSketch-Engine | ✅ Opérationnel | Complété |
-| Pipeline Décret Gratien | ✅ Opérationnel | Complété |
+| **MODULE 1** : Téléchargement images | ✅ Opérationnel | Complété |
+| **MODULE 2** : OCR | ✅ Opérationnel | Complété |
+| **MODULE 3** : Segmentation | ✅ Opérationnel | Complété |
+| **MODULE 4** : Corrections | ✅ Opérationnel | Complété |
+| **MODULE 5** : Export | ✅ Opérationnel | Complété |
+| **MODULE 6** : PAGEtopage (Enrichissement) | 🚧 Développement | Haute |
+| **MODULE 7** : NoSketch-Engine | ✅ Opérationnel | Complété |
+| **MODULE 8** : Diffusion Données | ✅ Opérationnel | Complété |
+| **Transversal** : Métadonnées (Heurist) | ✅ Opérationnel | Complété |
+| **Parallèle** : Décret de Gratien | ✅ Opérationnel | Complété |
 
 ## 📝 Maintenance
 
