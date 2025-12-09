@@ -30,13 +30,16 @@ Ce répertoire contient une suite complète de diagrammes Mermaid documentant le
 **Niveau de détail:** ⭐⭐ (Haut niveau)
 **Usage recommandé:** Vue d'ensemble technique, architecture générale
 
-**Description:** Vue d'ensemble montrant les 5 modules principaux + module Décret de Gratien avec leurs connexions :
+**Description:** Vue d'ensemble montrant les modules principaux avec leurs connexions :
 - MODULE 1 : Récupération de manuscrits
 - MODULE 2 : Méthodes de téléchargement
 - MODULE 3 : Récupération d'éditions
 - MODULE 4 : Traitement eScriptorium
 - MODULE 5 : Nettoyage et finalisation
+- MODULE 6 : Enrichissement linguistique (PAGEtopage) 🆕
 - MODULE SPÉCIAL : Décret de Gratien
+
+**Note:** Le MODULE 6 (PAGEtopage) est un ajout récent qui étend le pipeline avec des capacités d'annotation linguistique.
 
 **Idéal pour:**
 - Comprendre l'architecture globale
@@ -147,6 +150,40 @@ Ce répertoire contient une suite complète de diagrammes Mermaid documentant le
 - Développer des scripts de nettoyage
 - Comprendre les types de regex nécessaires
 - Gérer les différents layouts
+
+---
+
+#### 📌 [flowchart-module6-pagetopage.mmd](./flowchart-module6-pagetopage.mmd)
+**MODULE 6 - Enrichissement Linguistique (PAGEtopage)**
+**Niveau de détail:** ⭐⭐⭐⭐ (Très détaillé)
+
+**Contenu:**
+- Étape 1 : Extraction du texte depuis XML PAGE
+  - Gestion des colonnes (single/dual)
+  - Fusion des mots coupés
+  - Production JSON intermédiaire
+- Étape 2 : Enrichissement linguistique
+  - Découpage en phrases et tokenisation
+  - Lemmatisation CLTK (langues anciennes)
+  - POS-tagging automatique
+  - Production format vertical
+- Étape 3 : Export multi-formats
+  - Format clean (texte brut)
+  - Format diplomatic (annotations inline)
+  - Format annotated (tabulaire)
+  - Génération index et statistiques
+- Technologies : Python, CLTK, PyYAML, lxml
+- Commandes CLI disponibles (run, extract, enrich, export, init)
+
+**Idéal pour:**
+- Comprendre la transformation XML → Corpus annoté
+- Planifier l'enrichissement linguistique
+- Choisir les formats de sortie appropriés
+- Analyser la chaîne de traitement complète
+
+**Code source:** `../PAGEtopage/`
+**Documentation détaillée:** `../PAGEtopage/README.md`
+**Liaison schéma-docs:** `../DOCUMENTATION_PAGETOPAGE_SCHEMA.md`
 
 ---
 

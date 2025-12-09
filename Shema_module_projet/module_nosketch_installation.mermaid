@@ -1,0 +1,35 @@
+flowchart TD
+    %% MODULE - Installation instance Test NoSketch-Engine
+    MNST_START[Installation d'une instance Test]
+    
+    MNST_TUTO[Suivre le tuto d'installation<br/>présent sur le git<br/>e_NDP_TAL/nosketch]
+    MNST_CONFIG[Créer son propre fichier<br/>de configuration dans<br/>le dossier registry]
+    MNST_IMPORT[Importer son corpus dans un dossier<br/>nouvellement créé nommé vertical,<br/>lui-même dans un dossier nouvellement créé<br/>nommé selon ton corpus,<br/>dans le dossier corpora]
+    MNST_COMPILE[Lancer la compilation et<br/>l'exécution du fichier]
+    MNST_TEST[Tester]
+    
+    %% Point de sortie du module
+    MNST_OUTPUT[Instance Test NoSketch-Engine]
+    
+    %% Connexions
+    MNST_START --> MNST_TUTO
+    MNST_TUTO --> MNST_CONFIG
+    MNST_CONFIG --> MNST_IMPORT
+    MNST_IMPORT --> MNST_COMPILE
+    MNST_COMPILE --> MNST_TEST
+    MNST_TEST --> MNST_OUTPUT
+    
+    %% Styles
+    classDef moduleStart fill:#e3f2fd,stroke:#1565c0,stroke-width:3px
+    classDef installation fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    classDef configuration fill:#e1bee7,stroke:#8e24aa,stroke-width:2px
+    classDef import fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef execution fill:#a5d6a7,stroke:#2e7d32,stroke-width:2px
+    classDef output fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
+    
+    class MNST_START moduleStart
+    class MNST_TUTO installation
+    class MNST_CONFIG configuration
+    class MNST_IMPORT import
+    class MNST_COMPILE,MNST_TEST execution
+    class MNST_OUTPUT output
