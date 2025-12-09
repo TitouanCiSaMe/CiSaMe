@@ -26,8 +26,8 @@ flowchart TD
         JSON_INTERMEDIATE[💾 Fichier JSON intermédiaire<br/>extracted.json]
 
         EXTRACT_START --> COLUMN_DECISION
-        COLUMN_DECISION -->|single| SINGLE_COL
-        COLUMN_DECISION -->|dual| DUAL_COL
+        COLUMN_DECISION -->/single/ SINGLE_COL
+        COLUMN_DECISION -->/dual/ DUAL_COL
         SINGLE_COL --> HYPHEN_MERGE
         DUAL_COL --> HYPHEN_MERGE
         HYPHEN_MERGE --> JSON_INTERMEDIATE
@@ -47,7 +47,7 @@ flowchart TD
 
         CLTK_PROCESS[🧠 Traitement CLTK<br/>Lemmatisation + POS-tagging]
 
-        VERTICAL_FORMAT[📊 Format Vertical<br/>Mot | POS | Lemme]
+        VERTICAL_FORMAT[📊 Format Vertical<br/>Mot / POS / Lemme]
 
         CORPUS_VERTICAL[💾 corpus.vertical.txt<br/>Fichier annoté complet]
 
@@ -83,9 +83,9 @@ flowchart TD
         IMAGE_MAPPING[🖼️ Correspondance images<br/>images_mapping.txt]
 
         EXPORT_START --> FORMAT_CHOICE
-        FORMAT_CHOICE -->|clean| FORMAT_CLEAN
-        FORMAT_CHOICE -->|diplomatic| FORMAT_DIPLO
-        FORMAT_CHOICE -->|annotated| FORMAT_ANNOT
+        FORMAT_CHOICE -->/clean/ FORMAT_CLEAN
+        FORMAT_CHOICE -->/diplomatic/ FORMAT_DIPLO
+        FORMAT_CHOICE -->/annotated/ FORMAT_ANNOT
 
         FORMAT_CLEAN --> PAGE_SPLIT
         FORMAT_DIPLO --> PAGE_SPLIT
