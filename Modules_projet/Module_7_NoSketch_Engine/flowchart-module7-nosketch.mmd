@@ -19,7 +19,7 @@ flowchart TD
         INSTALL_TITLE[Prérequis:<br/>Instance Test locale]
         INSTALL_TUTO[📚 Suivre le tuto<br/>e_NDP_TAL/nosketch<br/>sur le git du projet]
         INSTALL_CONFIG[⚙️ Créer fichier<br/>de configuration<br/>dans dossier registry]
-        INSTALL_STRUCTURE[📁 Créer structure:<br/>corpora/[nom_corpus]/vertical/]
+        INSTALL_STRUCTURE["📁 Créer structure:<br/>corpora/[nom_corpus]/vertical/"]
         INSTALL_RESULT[✅ Instance Test<br/>fonctionnelle]
 
         INSTALL_TITLE --> INSTALL_TUTO
@@ -36,7 +36,7 @@ flowchart TD
     subgraph CORPUS_FLOW [📦 Préparation du Corpus]
         CORPUS_FUSION[🔗 Fusion des fichiers<br/>verticaux lemmatisés<br/>via Fusion_txt_NoSketch.py]
         CORPUS_OUTPUT[📄 Corpus.txt<br/>unifié]
-        CORPUS_COPIE[📋 Copier Corpus.txt<br/>dans le projet local<br/>corpora/[nom_corpus]/vertical/]
+        CORPUS_COPIE["📋 Copier Corpus.txt<br/>dans le projet local<br/>corpora/[nom_corpus]/vertical/"]
         CORPUS_COMPILE[⚙️ Compilation<br/>du corpus]
 
         CORPUS_FUSION --> CORPUS_OUTPUT
