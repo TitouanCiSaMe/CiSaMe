@@ -1,0 +1,70 @@
+flowchart TD
+    %% MODULE - Données textuelles
+    MDT_START[Données textuelles]
+    
+    %% Branches principales
+    MDT_AVEC[Avec images]
+    MDT_AVEC_NOTE["Contient :<br/>- Conversion.log<br/>- images_mapping.txt<br/>- pages_index.json<br/>- chaque pages<br/>- texte_complet.txt<br/>- images de chaque page"]
+    
+    MDT_SANS[Sans images]
+    MDT_SANS_NOTE["Contient :<br/>- Conversion.log<br/>- images_mapping.txt<br/>- pages_index.json<br/>- chaque pages<br/>- texte_complet.txt"]
+    
+    %% Branches Avec images
+    MDT_AVEC_LIBRE[Libre de droit]
+    MDT_AVEC_PAS_LIBRE[Pas Libre de Droit]
+    MDT_AVEC_NAKALA[Export sur Nakala]
+    MDT_AVEC_SEAFILE[Reste sur le Seafile]
+    
+    %% Branches Sans images
+    MDT_SANS_LIBRE[Libre de droit]
+    MDT_SANS_PAS_LIBRE[Pas Libre de Droit]
+    MDT_SANS_NAKALA[Export sur Nakala]
+    MDT_SANS_SEAFILE[Reste sur le Seafile]
+    
+    %% Points de sortie
+    MDT_OUTPUT{{SORTIE MODULE DONNÉES TEXTUELLES}}
+    
+    %% Connexions principales
+    MDT_START --> MDT_AVEC
+    MDT_START --> MDT_SANS
+    
+    %% Notes
+    MDT_AVEC -.-> MDT_AVEC_NOTE
+    MDT_SANS -.-> MDT_SANS_NOTE
+    
+    %% Flux Avec images
+    MDT_AVEC --> MDT_AVEC_LIBRE
+    MDT_AVEC --> MDT_AVEC_PAS_LIBRE
+    MDT_AVEC_LIBRE -->|Algo Hécate +<br/>connecteur Nakala| MDT_AVEC_NAKALA
+    MDT_AVEC_PAS_LIBRE --> MDT_AVEC_SEAFILE
+    
+    %% Flux Sans images
+    MDT_SANS --> MDT_SANS_LIBRE
+    MDT_SANS --> MDT_SANS_PAS_LIBRE
+    MDT_SANS_LIBRE -->|Algo Hécate +<br/>connecteur Nakala| MDT_SANS_NAKALA
+    MDT_SANS_PAS_LIBRE --> MDT_SANS_SEAFILE
+    
+    %% Vers sortie
+    MDT_AVEC_NAKALA --> MDT_OUTPUT
+    MDT_AVEC_SEAFILE --> MDT_OUTPUT
+    MDT_SANS_NAKALA --> MDT_OUTPUT
+    MDT_SANS_SEAFILE --> MDT_OUTPUT
+    
+    %% Styles
+    classDef moduleStart fill:#e1f5ff,stroke:#0288d1,stroke-width:3px
+    classDef branche fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    classDef note fill:#fffde7,stroke:#f57f17,stroke-width:1px,stroke-dasharray: 3 3
+    classDef libre fill:#a5d6a7,stroke:#2e7d32,stroke-width:2px
+    classDef pasLibre fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    classDef nakala fill:#81c784,stroke:#388e3c,stroke-width:3px
+    classDef seafile fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    classDef output fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
+    
+    class MDT_START moduleStart
+    class MDT_AVEC,MDT_SANS branche
+    class MDT_AVEC_NOTE,MDT_SANS_NOTE note
+    class MDT_AVEC_LIBRE,MDT_SANS_LIBRE libre
+    class MDT_AVEC_PAS_LIBRE,MDT_SANS_PAS_LIBRE pasLibre
+    class MDT_AVEC_NAKALA,MDT_SANS_NAKALA nakala
+    class MDT_AVEC_SEAFILE,MDT_SANS_SEAFILE seafile
+    class MDT_OUTPUT output
