@@ -115,11 +115,11 @@ flowchart TD
         end
 
         subgraph REGEX_SPECIFIQUES [Regex Spécifiques au Texte]
-            R3[Caractères spéciaux:<br/>[!?''`\–—…\[\]{}«»/\\&*@#§¶†‡°^~¨]<br/>Suppression sélective]
-            R4[Chiffres: \\d+<br/>Détection numérotation]
-            R5[Folios: T f[°'] [A-Z\\d{1,2}][a-z]{2}<br/>Références manuscrit]
-            R6[Folios alt: T f[°'] [A-Z0-9][a-z]{2}<br/>Variante références]
-            R7[Suppressions: \\|[^\\]]*\\]<br/>Contenu entre | et ]]
+            R3["Caractères spéciaux:<br/>[!?''`–—…\[\]{}«»/\\&*@#§¶†‡°^~¨]<br/>Suppression sélective"]
+            R4["Chiffres: \\d+<br/>Détection numérotation"]
+            R5["Folios: T f[°'] [A-Z\\d{1,2}][a-z]{2}<br/>Références manuscrit"]
+            R6["Folios alt: T f[°'] [A-Z0-9][a-z]{2}<br/>Variante références"]
+            R7["Suppressions: \\|[^\\]]*\\]<br/>Contenu entre | et ]"]
         end
     end
 
