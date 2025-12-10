@@ -22,6 +22,7 @@ flowchart TD
         AL_ALGO[⚙️ Algorithme<br/>d'extraction]
         AL_CSV_BRUT[📄 CSV Brut:<br/>Numéro allégation<br/>+ suffixe]
         AL_AJOUT_ID[🔢 Ajout d'ID unique<br/>pour chaque allégation]
+        AL_AJOUT_MANUEL[✍️ Ajout manuel<br/>d'allégations manquantes<br/>non détectées automatiquement]
         AL_CORRECTION[✍️ Correction et<br/>Enrichissement<br/>des allégations]
         AL_VALIDATION[✅ Validation<br/>des données]
         AL_FINAL[📊 Allégations.csv<br/>Version finale]
@@ -29,7 +30,8 @@ flowchart TD
         AL_SOURCE --> AL_ALGO
         AL_ALGO --> AL_CSV_BRUT
         AL_CSV_BRUT --> AL_AJOUT_ID
-        AL_AJOUT_ID --> AL_CORRECTION
+        AL_AJOUT_ID --> AL_AJOUT_MANUEL
+        AL_AJOUT_MANUEL --> AL_CORRECTION
         AL_CORRECTION --> AL_VALIDATION
         AL_VALIDATION --> AL_FINAL
     end
@@ -89,37 +91,7 @@ flowchart TD
 
     CONVERGENCE --> OUTPUT
 
-    %% ========================================
-    %% DÉTAIL STRUCTURE DÉCRET
-    %% ========================================
-    subgraph STRUCTURE_DETAIL [🗂️ Structure du Décret de Gratien]
-        STRUCT_TITLE[📋 Organisation hiérarchique]
 
-        STRUCT_P1[Partie I:<br/>Distinctions 1-101<br/>Sources du droit canon]
-        STRUCT_P2[Partie II:<br/>Causae 1-36<br/>Cas juridiques<br/>avec Quaestiones]
-        STRUCT_P3[Partie III:<br/>De Consecratione<br/>Distinctions 1-5<br/>Liturgie et sacrements]
-
-        STRUCT_TITLE --> STRUCT_P1
-        STRUCT_TITLE --> STRUCT_P2
-        STRUCT_TITLE --> STRUCT_P3
-    end
-
-    %% ========================================
-    %% DÉTAIL ALLÉGATIONS
-    %% ========================================
-    subgraph ALLEGATIONS_DETAIL [📊 Types d'Allégations]
-        ALLEG_TITLE[📋 Catégories]
-
-        ALLEG_CANON[Canons conciliaires:<br/>Décisions des conciles]
-        ALLEG_DECRET[Décrétales pontificales:<br/>Lettres des papes]
-        ALLEG_PERES[Pères de l'Église:<br/>Citations patristiques]
-        ALLEG_BIBLE[Textes bibliques:<br/>Références scripturaires]
-
-        ALLEG_TITLE --> ALLEG_CANON
-        ALLEG_TITLE --> ALLEG_DECRET
-        ALLEG_TITLE --> ALLEG_PERES
-        ALLEG_TITLE --> ALLEG_BIBLE
-    end
 
     %% ========================================
     %% ANNOTATIONS
@@ -128,7 +100,7 @@ flowchart TD
     note2[💡 Friedberg:<br/>Édition critique standard<br/>1879-1881<br/>Corpus Iuris Canonici]
     note3[💡 Münchener:<br/>Version numérisée<br/>Accès web gratuit<br/>Texte extractible]
     note4[💡 Algorithme extraction:<br/>Parsing intelligent<br/>Reconnaissance structure<br/>Python + Regex]
-    note5[💡 ID unique:<br/>Traçabilité complète<br/>Lien allégation ↔ canon<br/>Format: DG_PXXX_DXXX_CXXX]
+    note5[💡 ID unique:<br/>Traçabilité complète<br/>Lien allégation ↔ canon<br/>Format: Grat_XXXX]
 
     AL_SOURCE -.-> note1
     FR_SOURCE1 -.-> note2
@@ -144,7 +116,9 @@ flowchart TD
         S2[~3800 allégations recensées]
         S3[~150 distinctions au total]
         S4[~36 causae avec ~150 quaestiones]
-        S5[Taille finale: ~2-3 GB]
+        S5[+ Cause 33 Quaestio 3:<br/>7 distinctions spéciales]
+        S6[4149 fichiers .txt générés]
+        S7[Taille texte: 5 Mo]
     end
 
     %% ========================================
@@ -175,18 +149,15 @@ flowchart TD
 
     class START,OUTPUT startEnd
     class INPUT1,INPUT2 input
-    class AL_SOURCE,AL_CSV_BRUT,AL_AJOUT_ID,AL_CORRECTION,AL_FINAL allegations
+    class AL_SOURCE,AL_CSV_BRUT,AL_AJOUT_ID,AL_AJOUT_MANUEL,AL_CORRECTION,AL_FINAL allegations
     class FR_SOURCE1,FR_SOURCE2,FR_MERGE,FR_EXTRACTION,FR_REPARTITION,FR_STRUCTURE,FR_AJOUT_ID,FR_ENRICHISSEMENT,FR_FINAL friedberg
     class AL_ALGO,FR_MERGE algorithme
     class AL_VALIDATION,FR_VALIDATION validation
     class AL_FINAL,FR_FINAL final
     class CONVERGENCE convergence
     class note1,note2,note3,note4,note5 note
-    class STRUCT_TITLE,ALLEG_TITLE title
 
     style ALLEGATIONS_FLOW fill:#fff8e1,stroke:#f57f17,stroke-width:2px
     style FRIEDBERG_FLOW fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
-    style STRUCTURE_DETAIL fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,stroke-dasharray: 5 5
-    style ALLEGATIONS_DETAIL fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,stroke-dasharray: 5 5
     style STATS fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 3 3
     style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
