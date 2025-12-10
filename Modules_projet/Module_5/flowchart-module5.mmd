@@ -29,7 +29,7 @@ flowchart TD
     subgraph SIMPLE_FLOW [Simple Page - 1 région Main]
         SIMPLE_TITLE[Une seule région Main<br/>par page]
         SIMPLE_OXYGEN[🔧 Ouvrir avec Oxygène<br/>Onglet rechercher]
-        SIMPLE_XPATH[🎯 XPath: 1 région<br/>//TextRegion[contains&#40;@custom, &apos;type:MainZone;&apos;&#41;]//TextLine//Unicode/text]
+        SIMPLE_XPATH["🎯 XPath: 1 région<br/>//TextRegion[contains(@custom, 'type:MainZone')]<br/>//TextLine//Unicode/text"]
         SIMPLE_REGEX[⚙️ Application Regex<br/>Corrections automatiques]
         SIMPLE_RESULT[✅ Page nettoyée]
 
@@ -45,9 +45,9 @@ flowchart TD
     subgraph DEUX_FLOW [Deux Pages - 2 régions Main]
         DEUX_TITLE[Deux régions Main<br/>par page<br/>Recto-Verso ou colonnes]
         DEUX_OXYGEN[🔧 Ouvrir avec Oxygène<br/>Onglet rechercher]
-        DEUX_XPATH1[🎯 XPath colonne 1<br/>//TextRegion[contains&#40;@custom, &apos;type:MainZone:column#1;&apos;&#41;]//TextLine//Unicode/text]
+        DEUX_XPATH1["🎯 XPath colonne 1<br/>//TextRegion[contains(@custom, 'type:MainZone:column#1')]<br/>//TextLine//Unicode/text"]
         DEUX_REGEX1[⚙️ Application Regex<br/>sur colonne 1]
-        DEUX_XPATH2[🎯 XPath colonne 2<br/>//TextRegion[contains&#40;@custom, &apos;type:MainZone:column#2;&apos;&#41;]//TextLine//Unicode/text]
+        DEUX_XPATH2["🎯 XPath colonne 2<br/>//TextRegion[contains(@custom, 'type:MainZone:column#2')]<br/>//TextLine//Unicode/text"]
         DEUX_REGEX2[⚙️ Application Regex<br/>sur colonne 2]
         DEUX_RESULT[✅ Page nettoyée]
 
