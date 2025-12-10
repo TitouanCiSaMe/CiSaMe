@@ -8,7 +8,7 @@ Ce dossier contient le schéma global et la documentation du projet CiSaMe.
 **Schéma complet intégré de tout le projet**
 
 Le schéma le plus à jour et complet, montrant :
-- ✅ **Modules 1 à 8** : Pipeline principal complet et intégré
+- ✅ **Modules 1 à 9** : Pipeline principal complet et intégré
 - 🟣 **Module Métadonnées** : Transversal (Heurist → config.yaml → MODULE 6)
 - 🔴 **Décret de Gratien** : Pipeline parallèle spécifique
 - 🔵 **Décisions** : Arbres de décision (avec/sans images, libre/restreint)
@@ -20,6 +20,7 @@ MODULE 1 (Images) → MODULE 2 (OCR) → MODULE 3 (Segmentation)
 → MODULE 4 (Corrections) → MODULE 5 (Nettoyage Oxygène)
 → MODULE 6 (PAGEtopage + Métadonnées)
 → MODULE 7 (NoSketch-Engine) + MODULE 8 (Diffusion Données)
+→ MODULE 9 (Visualisation & Analyse)
 ```
 
 **À utiliser pour :**
@@ -106,6 +107,20 @@ Corrections manuelles et validation :
   - **Seafile** : Données restreintes (cloud universitaire)
 - Sortie : Archives scientifiques accessibles
 
+### MODULE 9 - Visualisation et Générateur de Requêtes
+**Canon-Law-Toolkit** : Plateforme web d'analyse
+- **Query Generator** : Générateur de requêtes CQL
+  - 4 types de recherche (Proximité, Variations, Sémantique, Combiné)
+  - 96 variantes orthographiques médiévales (ae/e, v/u, j/i, ti/ci)
+  - Export direct vers NoSketch-Engine
+- **Concordance Analyzer** : Analyse de concordances
+  - 9 vues d'analyse spécialisées
+  - Enrichissement métadonnées Edi-XX
+  - Comparaison de 2 corpus (5 dimensions)
+  - Export : CSV, JSON, PNG
+- Technologies : React 18.2, Vite 5.0, Recharts, D3.js
+- Repository : [canon-law-toolkit](https://gitlab.com/cisame/canon-law-toolkit)
+
 ### Module Métadonnées (Transversal)
 **Heurist** : Base de données bibliographiques
 - 3 tables : Auteurs, Oeuvres, Éditions
@@ -155,10 +170,10 @@ mmdc -i flowchart-pipeline-complet-integre.mmd -o pipeline.svg
 | Manuscrits dans le corpus | 317 |
 | Éditions de manuscrits | ~150 |
 | Records Heurist | 5,768 |
-| Modules principaux | 8 |
+| Modules principaux | 9 |
 | Modules transversaux | 1 (Métadonnées) |
 | Pipelines parallèles | 1 (Décret de Gratien) |
-| Modules opérationnels | 7 (1-5, 7-8) |
+| Modules opérationnels | 8 (1-5, 7-9) |
 | Modules en développement | 1 (MODULE 6) |
 
 ---
@@ -168,6 +183,7 @@ mmdc -i flowchart-pipeline-complet-integre.mmd -o pipeline.svg
 **Date** : 10 décembre 2024
 
 **Modifications récentes :**
+- ✅ Module 9 : Ajout Visualisation et Générateur de Requêtes (canon-law-toolkit)
 - ✅ Module 5 : Refonte complète avec Oxygène XML Editor
 - ✅ Module 6 : Migration CLTK → TreeTagger, 2 formats au lieu de 3
 - ✅ Module 7 : Reformatage complet NoSketch Engine
