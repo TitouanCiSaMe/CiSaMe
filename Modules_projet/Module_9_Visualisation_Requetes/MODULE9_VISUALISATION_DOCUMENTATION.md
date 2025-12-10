@@ -1,403 +1,468 @@
-# MODULE 9 - Visualisation et Générateur de Requêtes
+# MODULE 9 - Canon-Law-Toolkit
 
 ## 📋 Vue d'ensemble
 
-Le MODULE 9 est un outil complet d'analyse et de visualisation pour le corpus NoSketch-Engine. Il combine deux fonctionnalités principales :
-1. **Générateur de requêtes CQL** : Création assistée de requêtes complexes
-2. **Visualisation et analyse** : Exploration visuelle des résultats avec comparaison possible
+Le MODULE 9 est une plateforme d'outils web pour l'analyse du droit canon médiéval, développée par CiSaMe (Circulation des Savoirs médiévaux). Elle se compose de deux modules principaux :
 
-## 🎯 Objectifs
+1. **Query Generator** : Générateur de requêtes CQL pour NoSketch Engine
+2. **Concordance Analyzer** : Analyse approfondie de concordances avec enrichissement métadonnées
 
-- Faciliter la création de requêtes CQL complexes
-- Visualiser les résultats de manière interactive
-- Comparer deux exports pour analyses contrastives
-- Exporter les analyses dans plusieurs formats
+**Repository** : [TitouanCiSaMe/canon-law-toolkit](https://gitlab.com/cisame/canon-law-toolkit)
 
 ---
 
-## 1️⃣ Générateur de Requêtes CQL
+## 🔍 Module 1 : Query Generator
 
-### 1.1 Types de requêtes disponibles
+### Fonctionnalités
 
-#### 📍 1.1.1 Proximité
-**Recherche de mots à proximité l'un de l'autre**
+Le Query Generator permet de créer des requêtes CQL (Corpus Query Language) complexes pour NoSketch Engine via une interface intuitive.
 
-- Distance configurable entre les termes
+#### 4 Types de recherche
+
+**1. Proximité**
+- Recherche de deux mots à distance configurable
+- Distance : 1-20 tokens
 - Ordre strict ou flexible
 - Exemple : "lex" à 5 mots de "canonicus"
 
-**Cas d'usage :**
-- Étudier les collocations juridiques
-- Analyser les expressions figées
-- Identifier les contextes d'usage
+**2. Variations orthographiques médiévales**
 
-#### 🔄 1.1.2 Variations
-**Recherche de formes alternatives d'un même concept**
+Génère automatiquement toutes les variantes orthographiques médiévales :
+- **ae/e** : caelum → celum, aecclesia → ecclesia
+- **v/u** : servus → seruus, vivere → uiuere
+- **j/i** : justitia → iustitia, juris → iuris
+- **ti/ci** : gratia → gracia, justitia → justicia
 
-- Variations orthographiques
-- Formes fléchies (déclinaisons, conjugaisons)
-- Lemmes et leurs dérivés
+**Jusqu'à 96 variantes possibles** par combinaison de ces règles
 
-**Cas d'usage :**
-- Compte des occurrences totales d'un concept
-- Analyse diachronique des graphies
-- Étude morphologique
-
-#### 📍🔄 1.1.3 Proximité + Variations
-**Combinaison des deux approches**
-
-- Recherche de variations de termes à proximité
-- Exemple : variations de "lex" près de variations de "canon"
-
-**Cas d'usage :**
-- Analyses sémantiques fines
-- Étude des champs lexicaux
-- Identification de familles de termes
-
-#### 🧠 1.1.4 Contexte Sémantique
-**Recherche basée sur le sens et les relations sémantiques**
-
-- Co-occurrences sémantiques
+**3. Sémantique**
+- Recherche conceptuelle avancée
+- Relations sémantiques
 - Contextes thématiques
-- Relations conceptuelles
 
-**Cas d'usage :**
-- Analyse thématique
-- Cartographie conceptuelle
-- Études de réseaux sémantiques
+**4. Proximité + Variations**
+- Combinaison des approches proximité et variations
+- Recherche de variations de termes à proximité
+- Puissance maximale pour l'analyse lexicale médiévale
 
-### 1.2 Génération CQL (1.1.1.1)
+### Configuration
 
-Le module génère automatiquement la requête en **Corpus Query Language** (CQL), le langage standard de NoSketch-Engine.
-
-**Exemple de requête générée :**
-```cql
-[lemma="lex"] []{0,5} [lemma="canonicus"]
-```
-
-### 1.3 Options d'export
-
-#### 📋 1.1.1.1.1 Copier-coller
-- Copie de la requête CQL générée
-- Utilisation manuelle dans NoSketch-Engine
-- Possibilité de modification avant exécution
-
-#### 🚀 1.1.1.1.2 Export direct vers NoSketch-Engine
-- Connexion API avec NoSketch-Engine
-- Exécution automatique de la requête
-- Récupération directe des résultats
-- Gain de temps et réduction d'erreurs
-
----
-
-## 2️⃣ Visualisation - 1 Export NoSketch
-
-### 2.1 Import (1.2.1)
-
-Import d'un export NoSketch-Engine au **format normé** :
-- Format CSV standardisé
-- Colonnes requises : Mot, Fréquence, Contexte gauche, Contexte droit, Métadonnées
-- Encodage UTF-8
-
-### 2.2 Filtres configurables (1.2.1.1)
-
-Application de filtres personnalisés :
-- **Fréquence** : Seuil minimum/maximum d'occurrences
-- **POS (Part-of-Speech)** : Sélection par catégorie grammaticale
-- **Lemme** : Filtrage par lemme spécifique
-- **Période** : Restriction temporelle (si métadonnées temporelles)
-- **Source** : Filtrage par manuscrit ou édition
-
-### 2.3 Six Panels de visualisation (1.2.1.1.1)
-
-#### 📊 Panel 1 : Distribution des fréquences
-- Histogramme des fréquences
-- Analyse de Zipf
-- Termes les plus/moins fréquents
-
-#### 📊 Panel 2 : Concordances KWIC
-- Affichage "KeyWord In Context"
-- Contexte gauche et droit
-- Navigation interactive
-- Export contextes
-
-#### 📊 Panel 3 : Collocations
-- Termes co-occurrents
-- Score de significativité (MI, T-score, Log-likelihood)
-- Réseau de collocations
-- Force des associations
-
-#### 📊 Panel 4 : Timeline temporel
-- Évolution temporelle des occurrences
-- Courbes de fréquence
-- Périodisation
-- Identification de pics
-
-#### 📊 Panel 5 : Répartition par source
-- Distribution par manuscrit/édition
-- Heatmap de présence
-- Sources principales/secondaires
-- Statistiques par source
-
-#### 📊 Panel 6 : Réseau sémantique
-- Graphe des relations
-- Proximité sémantique
-- Clusters thématiques
-- Visualisation force-directed
-
-### 2.4 Export des panels (1.2.1.1.1.1)
-
-Chaque panel exportable en :
-- **CSV** : Données brutes pour analyse statistique
-- **JSON** : Données structurées pour réutilisation
-- **PNG** : Image haute résolution pour publication
-
----
-
-## 3️⃣ Visualisation - Comparaison 2 Exports
-
-### 3.1 Import double (1.2.2)
-
-Import de deux exports NoSketch-Engine normés pour analyse comparative :
-- Export A : Corpus de référence
-- Export B : Corpus à comparer
-
-**Cas d'usage :**
-- Comparer deux périodes
-- Comparer deux auteurs
-- Comparer deux genres textuels
-- Évolution diachronique
-
-### 3.2 Filtres indépendants (1.2.2.1)
-
-Filtres applicables séparément à chaque export :
-- Même filtres que pour 1 export
-- Configuration indépendante
-- Harmonisation possible
-
-### 3.3 Panels pour Export 1 (1.2.2.1.1)
-
-Les 6 panels standards appliqués au premier export :
-- Distribution fréquences Export 1
-- Concordances Export 1
-- Collocations Export 1
-- Timeline Export 1
-- Répartition par source Export 1
-- Réseau sémantique Export 1
-
-### 3.4 Panel de Comparaison (1.2.2.1.2)
-
-**Panel spécial d'analyse différentielle** :
-
-#### 🔀 Analyses comparatives
-
-**Écarts de fréquences**
-- Différences absolues et relatives
-- Termes surreprésentés / sous-représentés
-- Significativité statistique (Chi², Log-likelihood)
-
-**Collocations distinctives**
-- Collocations spécifiques à chaque corpus
-- Collocations partagées
-- Différences d'intensité
-
-**Évolution temporelle**
-- Courbes comparatives
-- Identification de divergences
-- Périodes de rupture
-
-**Statistiques comparatives**
-- Taille des corpus
-- Richesse lexicale
-- Diversité
-- Tableau de synthèse
-
-**Visualisations**
-- Graphiques superposés
-- Heatmaps différentielles
-- Nuages de mots comparatifs
-- Scatter plots
-
-### 3.5 Export complet
-
-Export de **tous les panels** (6 + 1 de comparaison) :
-- CSV : Toutes les données
-- JSON : Structure complète
-- PNG : Toutes les visualisations
-
----
-
-## 🛠️ Technologies utilisées
-
-### Backend
-- **Python 3.10+** : Traitement des données
-- **Pandas** : Manipulation et analyse
-- **NumPy** : Calculs statistiques
-- **SciPy** : Tests statistiques
-
-### Visualisation
-- **Matplotlib** : Graphiques statiques
-- **Plotly** : Visualisations interactives
-- **NetworkX** : Graphes de réseaux
-- **Seaborn** : Visualisations statistiques
-
-### Connexion NoSketch-Engine
-- **Requests** : API HTTP
-- **Beautiful Soup** : Parsing HTML
-- Format CQL natif
+Interface de configuration intuitive :
+- **Distance entre mots** : Slider 1-20 tokens
+- **Types de variations** : Checkboxes pour activer/désactiver chaque type
+- **Options de lemmatisation** : Recherche sur lemmes ou formes
+- **Validation en temps réel** : Prévisualisation de la requête CQL
+- **Messages d'aide contextuels** : Guide l'utilisateur
 
 ### Export
-- **Pandas** : Export CSV
-- **JSON** : Export structuré
-- **PIL/Pillow** : Export PNG haute résolution
+
+**Copier-coller**
+- Copie de la requête CQL générée
+- Utilisation manuelle dans NoSketch Engine
+- Possibilité de modification avant exécution
+
+**Lancer directement**
+- Export direct vers NoSketch Engine
+- Exécution automatique de la requête
+- Récupération des résultats
+
+### Exemples de requêtes CQL générées
+
+**Proximité simple**
+```cql
+[lemma="ecclesia"] []{0,3} [lemma="potestas"]
+```
+
+**Variations ae/e**
+```cql
+[word="(c|C)(a|ae)lum"]
+```
+
+**Variations complètes (ae/e + v/u + j/i + ti/ci)**
+```cql
+[word="(g|G)ra(t|c)(i|j)(a|ae)"]
+```
+Génère : gratia, gracia, gratja, gracja, graetia, graecia, graetja, graecja (et variantes majuscules)
+
+**Proximité + Variations**
+```cql
+[word="(l|L)e(x|ks)"] []{0,5} [word="(c|C)(a|ae)non(i|j)(c|k)(us|vs)"]
+```
 
 ---
 
-## 📊 Format des données
+## 📊 Module 2 : Concordance Analyzer
 
-### Export normé NoSketch-Engine (CSV)
+### Gestion des données
 
-```csv
-Word,Lemma,POS,Frequency,Left_Context,Right_Context,Source,Date
-lex,lex,NOUN,142,"in causa",". Sed etiam","Decretum_Gratiani",1140
-canonicus,canonicus,ADJ,89,"iure",".",Liber_Extra,1234
+#### Upload de fichiers
+
+**Fichiers requis :**
+
+1. **Métadonnées CSV** (avec identifiants Edi-XX)
+   - Identifiants des collections canoniques médiévales
+   - Informations bibliographiques complètes
+   - Pré-chargement automatique au démarrage
+
+2. **Export NoSketch Engine** (CSV avec concordances)
+   - ⚠️ **Important** : Lors de l'export depuis NoSketch Engine, cocher :
+     - "ID de l'édition"
+     - "Numéro de pages"
+   - Format CSV avec contextes gauche/droit
+
+#### Persistance automatique
+
+- **Sauvegarde automatique** : Les données sont sauvegardées dans sessionStorage
+- **Restauration automatique** : Au rechargement de la page, vos données sont restaurées
+- **Messages de statut** : Indicateurs persistants du statut de vos données
+- **Pré-chargement intelligent** : Métadonnées par défaut chargées automatiquement
+
+### Enrichissement automatique
+
+Le module enrichit automatiquement les concordances avec les métadonnées :
+
+- **Matching références Edi-XX** : Association automatique avec les métadonnées
+- **Parsing intelligent** : Détection de structure complexe (pipe-separated multiple works)
+- **Fallback robuste** : Conservation des données même sans match parfait
+- **Taux de correspondance** : Calcul et affichage du taux d'enrichissement
+
+### 9 Vues d'analyse spécialisées
+
+#### 1. Vue d'ensemble
+- **Statistiques globales** : Nombre de concordances, taux d'enrichissement
+- **Distribution générale** : Aperçu des données
+- **Tableau récapitulatif** : Métriques clés
+
+#### 2. Domaines juridiques
+- **Répartition par domaine** : Droit canon, droit civil, procédure, etc.
+- **Bar charts** : Visualisation des proportions
+- **Statistiques détaillées** : Nombre d'occurrences par domaine
+
+#### 3. Auteurs
+- **Analyse par auteur** : Gratien, Raymond de Peñafort, etc.
+- **Fréquences d'utilisation** : Classement des auteurs les plus cités
+- **Graphiques** : Distribution visuelle
+
+#### 4. Périodes
+- **Analyse temporelle** : Distribution chronologique
+- **Granularités variables** :
+  - Par années
+  - Par décennies
+  - Par quarts de siècle
+  - Par demi-siècles
+- **Temporal charts** : Évolution dans le temps
+
+#### 5. Lieux
+- **Répartition géographique** : Lieux de production/rédaction
+- **Bar charts** : Distribution spatiale
+- **Statistiques par lieu**
+
+#### 6. Timeline interactive
+- **Timeline Gantt** : Visualisation des plages temporelles des œuvres
+- **Navigation interactive** : Zoom, pan
+- **Visualisation D3.js** : Haute qualité graphique
+
+#### 7. Analyse terminologique
+- **Termes KWIC** : Mots-clés en contexte
+- **Fréquences** : Termes les plus fréquents
+- **Collocations** : Associations de termes
+
+#### 8. Nuage de mots
+- **Word cloud** : Visualisation des termes KWIC les plus fréquents
+- **Taille proportionnelle** : À la fréquence d'occurrence
+- **Interactif** : Clic pour filtrer
+
+#### 9. Graphiques
+- **Bar charts** : Distributions catégorielles
+- **Temporal charts** : Évolutions temporelles
+- **Timeline Gantt** : Plages chronologiques
+
+### Filtres avancés
+
+**Filtres disponibles :**
+- **Recherche textuelle** : Full-text dans les concordances
+- **Auteur** : Sélection par auteur spécifique
+- **Domaine juridique** : Filtrage par type de droit
+- **Période** : Restriction temporelle
+- **Lieu** : Filtrage géographique
+
+**Fonctionnalités :**
+- **Combinaisons multiples** : Plusieurs filtres simultanés
+- **Mise à jour en temps réel** : Visualisations instantanées
+- **Persistance** : Filtres conservés pendant la session
+
+### Pagination
+
+Gestion efficace de gros volumes de données :
+- Navigation par pages
+- Nombre d'éléments configurable
+- Performance optimisée
+
+### Comparaison de 2 corpus
+
+#### Upload
+
+Upload de **2 fichiers de concordances** :
+- **Corpus A** : Corpus de référence
+- **Corpus B** : Corpus à comparer
+- **Métadonnées CSV** : Partagées ou distinctes
+
+#### Analyses comparatives
+
+**5 dimensions de comparaison :**
+
+1. **Volumes**
+   - Tailles respectives des corpus
+   - Nombre de concordances
+   - Statistiques comparées
+
+2. **Auteurs**
+   - Répartitions comparées
+   - Auteurs présents/absents
+   - Différences de fréquence
+
+3. **Domaines juridiques**
+   - Comparaison des domaines
+   - Évolutions thématiques
+   - Spécificités de chaque corpus
+
+4. **Temporalité**
+   - Évolutions chronologiques
+   - Périodes couvertes
+   - Différences temporelles
+
+5. **Terminologie**
+   - Termes KWIC comparés
+   - Vocabulaire distinctif
+   - Termes partagés vs spécifiques
+
+#### Visualisations comparatives
+
+- **Charts parallèles** : Visualisations côte à côte
+- **Graphiques superposés** : Comparaison directe
+- **Tables de différences** : Écarts chiffrés
+
+#### Filtres indépendants
+
+Chaque corpus peut être filtré indépendamment :
+- Filtres spécifiques au Corpus A
+- Filtres spécifiques au Corpus B
+- Comparaison avec filtres appliqués
+
+### Export multi-formats
+
+**3 formats disponibles :**
+
+1. **CSV** (Concordances filtrées)
+   - Données brutes
+   - Avec enrichissements métadonnées
+   - Importable dans Excel, R, Python
+
+2. **JSON** (Analytics complètes)
+   - Données structurées
+   - Toutes les métriques
+   - Réutilisable programmatiquement
+
+3. **PNG** (Graphiques)
+   - Haute résolution
+   - Pour publications
+   - Tous les graphiques exportables
+
+---
+
+## 🛠️ Stack technique
+
+### Frontend
+
+- **React 18.2** : Framework UI moderne
+- **Vite 5.0** : Build tool ultra-rapide
+- **React Router DOM v6** : Navigation SPA
+- **CSS Modules** : Styling modulaire et scopé
+- **Inline styles** : Styling dynamique
+
+### Visualisations
+
+- **Recharts** : Bibliothèque de charts React
+  - Bar charts
+  - Line charts
+  - Temporal charts
+- **D3.js** : Visualisations avancées
+  - Timeline Gantt
+  - Graphes personnalisés
+
+### Internationalisation
+
+- **react-i18next** : i18n complète
+- **Traductions** : Français / Anglais
+- **Toutes les chaînes UI traduites**
+
+### Tests
+
+- **Vitest** : Test runner moderne
+- **React Testing Library** : Tests orientés utilisateur
+- **93/93 tests** pour Query Generator UI ✅
+- **64/91 tests** pour Query Generator Views ✅
+
+### Build & Déploiement
+
+- **Vite** : Optimisations production
+- **Lazy loading** : Chargement différé des composants
+- **Memoization** : Optimisation des recalculs (useMemo)
+- **Debouncing** : Optimisation des filtres temps réel
+
+---
+
+## 📁 Structure du projet
+
 ```
-
-**Colonnes requises :**
-- `Word` : Forme du mot
-- `Lemma` : Lemme
-- `POS` : Part-of-Speech (catégorie grammaticale)
-- `Frequency` : Fréquence d'occurrence
-- `Left_Context` : Contexte gauche (3-5 mots)
-- `Right_Context` : Contexte droit (3-5 mots)
-- `Source` : Manuscrit ou édition source
-- `Date` : Date ou période (optionnel)
+canon-law-toolkit/
+├── src/
+│   ├── modules/
+│   │   ├── query-generator/           # MODULE 1
+│   │   │   ├── components/
+│   │   │   │   ├── ui/               # 4 composants UI (CSS Modules)
+│   │   │   │   └── views/            # 4 vues principales
+│   │   │   ├── utils/                # Générateurs de requêtes
+│   │   │   ├── docs/                 # Documentation complète
+│   │   │   └── __tests__/            # Tests unitaires
+│   │   │
+│   │   └── concordance-analyzer/     # MODULE 2
+│   │       ├── components/           # Composants UI
+│   │       ├── hooks/                # Logic réutilisable
+│   │       ├── utils/                # Parsers & exports
+│   │       └── config/               # Configuration
+│   │
+│   └── shared/
+│       ├── i18n/                     # Traductions FR/EN
+│       ├── theme/                    # Thème visuel
+│       └── components/               # Layout global
+│
+├── vitest.config.js                  # Configuration tests
+├── vite.config.js                    # Configuration build
+└── README.md                         # Documentation principale
+```
 
 ---
 
 ## 🎯 Cas d'usage
 
-### Recherche thématique
-1. Générer requête "Proximité + Variations" pour "peccatum" et "poena"
-2. Export direct vers NoSketch-Engine
-3. Import résultat dans visualisation
-4. Panel 3 (Collocations) : Identifier les termes associés
-5. Panel 6 (Réseau) : Cartographier le champ sémantique
+### Recherche lexicale médiévale
 
-### Analyse diachronique
-1. Créer 2 exports NoSketch : Corpus XIIe siècle vs Corpus XIIIe siècle
-2. Import double dans visualisation
-3. Panel Comparaison : Identifier évolutions lexicales
-4. Panel 4 comparatif : Courbes d'évolution
-5. Export PNG pour publication
+**Objectif** : Étudier les variantes orthographiques de "gratia" dans le Décret de Gratien
 
-### Étude d'auteur
-1. Export NoSketch pour Gratien
-2. Visualisation 1 export
-3. Panel 2 (KWIC) : Analyse contextes
-4. Panel 5 : Répartition dans les sources
-5. Export CSV pour analyse quantitative
+1. **Query Generator** : Type "Variations"
+2. Entrer : "gratia"
+3. Activer : ae/e, j/i, ti/ci
+4. **Généré** : `[word="(g|G)ra(t|c)(i|j)(a|ae)"]`
+5. Copier dans NoSketch Engine
+6. Exporter les résultats
+7. **Concordance Analyzer** : Upload + analyse terminologique
 
----
+### Comparaison diachronique
 
-## 📈 Workflow typique
+**Objectif** : Comparer l'usage du vocabulaire entre XIIe et XIIIe siècles
 
-```
-┌─────────────────────────────────────────┐
-│ 1. Génération requête CQL               │
-│    Type : Proximité + Variations        │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│ 2. Export direct vers NoSketch-Engine   │
-│    Exécution automatique                 │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│ 3. Import résultat normé                │
-│    Format CSV standardisé                │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│ 4. Application filtres                  │
-│    Fréquence > 10, POS = NOUN           │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│ 5. Exploration 6 panels                 │
-│    Analyse visuelle interactive          │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│ 6. Export CSV + JSON + PNG              │
-│    Pour publication et archivage         │
-└─────────────────────────────────────────┘
-```
+1. **NoSketch Engine** : 2 exports (période XIIe / période XIIIe)
+2. **Concordance Analyzer** : Mode comparaison
+3. Upload des 2 corpus
+4. **Analyse** : Temporalité + Terminologie
+5. Identifier les évolutions lexicales
+6. Export PNG pour publication
+
+### Analyse d'auteur
+
+**Objectif** : Étudier la réception de Gratien par Raymond de Peñafort
+
+1. **Query Generator** : Proximité + Variations
+   - Terme 1 : "Gratianus" (avec variations)
+   - Terme 2 : "decretum" (avec variations)
+   - Distance : 10 tokens
+2. Export résultats NoSketch
+3. **Concordance Analyzer** : Upload
+4. Filtrer : Auteur = "Raymond de Peñafort"
+5. **Analyses** : Vue d'ensemble, Domaines, Timeline
+6. Export JSON pour analyse quantitative
 
 ---
 
-## 🔍 Exemples de requêtes CQL
+## 🚀 Déploiement
 
-### Proximité simple
-```cql
-[lemma="ecclesia"] []{0,3} [lemma="potestas"]
+### Options recommandées
+
+**Vercel** (⭐ Recommandé)
+- Déploiement automatique depuis Git
+- HTTPS automatique
+- CDN global ultra-rapide
+- Preview deployments pour chaque PR
+
+**Netlify**
+- Interface intuitive
+- Drag & drop du dossier `dist/`
+- Redirects automatiques pour React Router
+
+**Cloudflare Pages**
+- Bandwidth illimité
+- CDN Cloudflare
+- Builds illimités
+
+### Configuration
+
+Pour Vercel, créer `vercel.json` :
+```json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
 ```
-Recherche "ecclesia" à maximum 3 mots de "potestas"
 
-### Variations orthographiques
-```cql
-[word="ecclesia|aecclesia|eclesia"]
+Pour Netlify, créer `public/_redirects` :
 ```
-Recherche toutes les variantes orthographiques
-
-### Contexte sémantique
-```cql
-[lemma="lex|canon|decretum"] []{0,5} [lemma="interpretatio|glossa|expositio"]
-```
-Recherche termes juridiques près de termes d'interprétation
-
-### Requête complexe
-```cql
-[lemma="papa|pontifex"] [pos="VERB"] []{0,2} [lemma="decretum"]
-```
-Recherche Pape + Verbe + Décret
-
----
-
-## 📁 Structure des fichiers
-
-```
-Module_9_Visualisation_Requetes/
-├── flowchart-module9-visualisation.mmd
-├── MODULE9_VISUALISATION_DOCUMENTATION.md
-└── (futur) src/
-    ├── query_generator.py
-    ├── nosketch_connector.py
-    ├── visualization.py
-    ├── comparison.py
-    └── export_utils.py
+/*    /index.html   200
 ```
 
 ---
 
-## 🔗 Liens avec autres modules
+## 🔗 Liens avec autres modules CiSaMe
 
-- **MODULE 7 (NoSketch-Engine)** : Source des données
-- **MODULE 6 (PAGEtopage)** : Format corpus_vertical.txt utilisé par NoSketch
-- **MODULE 8 (Diffusion)** : Métadonnées Nakala intégrables
+- **MODULE 7 (NoSketch-Engine)** : Source des données pour Concordance Analyzer
+- **MODULE 6 (PAGEtopage)** : Produit le format corpus_vertical.txt utilisé par NoSketch
+- **Module Métadonnées (Heurist)** : Source des métadonnées Edi-XX
+
+---
+
+## 📚 Documentation complète
+
+**Repository** : [gitlab.com/cisame/canon-law-toolkit](https://gitlab.com/cisame/canon-law-toolkit)
+
+**Documentation modules :**
+- [Query Generator README](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/src/modules/query-generator/README.md)
+- [Components Documentation](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/src/modules/query-generator/docs/COMPONENTS.md)
+- [User Guide](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/src/modules/query-generator/docs/USER_GUIDE.md)
+- [QUICKSTART.md](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/QUICKSTART.md)
+- [ARCHITECTURE.md](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/ARCHITECTURE.md)
 
 ---
 
 ## 📧 Contact
 
-**Projet** : CiSaMe - Université de Strasbourg
-**Module** : 9 - Visualisation et Générateur de Requêtes
-**Repository** : TitouanCiSaMe/canon-law-toolkit
+**Projet** : CiSaMe - Circulation des Savoirs médiévaux
+**Université** : Strasbourg
+**Développeur** : Titouan
+**GitLab** : [gitlab.com/cisame](https://gitlab.com/cisame)
+
+---
+
+## 📊 Statistiques
+
+| Métrique | Valeur |
+|----------|--------|
+| Version | 1.4.0 |
+| Status | Production-ready ✅ |
+| Modules | 2 (Query Generator + Concordance Analyzer) |
+| Types de requêtes CQL | 4 |
+| Vues d'analyse | 9 |
+| Formats export | 3 (CSV, JSON, PNG) |
+| Langues | 2 (FR/EN) |
+| Tests | 157/184 ✅ (85%) |
 
 ---
 
