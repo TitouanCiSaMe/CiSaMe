@@ -45,7 +45,7 @@ flowchart TD
 
         TOKENIZATION[🔤 Tokenisation<br/>Séparation en mots]
 
-        CLTK_PROCESS[🧠 Traitement CLTK<br/>Lemmatisation + POS-tagging]
+        TREETAGGER_PROCESS[🧠 Traitement TreeTagger<br/>Lemmatisation + POS-tagging]
 
         VERTICAL_FORMAT[📊 Format Vertical<br/>Mot / POS / Lemme]
 
@@ -53,8 +53,8 @@ flowchart TD
 
         ENRICH_START --> SENTENCE_SPLIT
         SENTENCE_SPLIT --> TOKENIZATION
-        TOKENIZATION --> CLTK_PROCESS
-        CLTK_PROCESS --> VERTICAL_FORMAT
+        TOKENIZATION --> TREETAGGER_PROCESS
+        TREETAGGER_PROCESS --> VERTICAL_FORMAT
         VERTICAL_FORMAT --> CORPUS_VERTICAL
     end
 
@@ -102,6 +102,7 @@ flowchart TD
     %% SORTIE FINALE
     OUTPUT([📤 SORTIE MODULE 6<br/>Corpus enrichi + Fichiers exploitables])
 
+    CORPUS_VERTICAL --> OUTPUT
     COMBINED_FILE --> OUTPUT
     INDEX_JSON --> OUTPUT
     STATS_JSON --> OUTPUT
@@ -111,29 +112,25 @@ flowchart TD
     %% ANNOTATIONS
     %% ========================================
     note1[💡 Configuration:<br/>config.yaml définit<br/>tous les paramètres<br/>du traitement]
-    note2[💡 CLTK:<br/>Première exécution lente<br/>Téléchargement modèles<br/>Puis rapide]
+    note2[💡 TreeTagger:<br/>Première exécution lente<br/>Installation modèles requis<br/>Puis rapide]
     note3[💡 Formats:<br/>Clean = lecture humaine<br/>Diplomatic = semi-annoté<br/>Annotated = analyse machine]
-    note4[💡 Métadonnées:<br/>Préservées à chaque étape<br/>Traçabilité complète]
-    note5[💡 Pipeline:<br/>Peut être exécuté complet<br/>ou étape par étape<br/>selon les besoins]
-    note6[⚠️ IMPORTANT:<br/>Module pour CAS GÉNÉRAL<br/>N'utilise PAS pour Décret<br/>Décret = pipeline spécifique]
+    note4[💡 Pipeline:<br/>Peut être exécuté complet<br/>ou étape par étape<br/>selon les besoins]
+    note5[⚠️ IMPORTANT:<br/>Module pour CAS GÉNÉRAL<br/>N'utilise PAS pour Décret<br/>Décret = pipeline spécifique]
 
     EXTRACT_START -.-> note1
-    CLTK_PROCESS -.-> note2
+    TREETAGGER_PROCESS -.-> note2
     FORMAT_CHOICE -.-> note3
-    INDEX_JSON -.-> note4
-    START -.-> note5
-    INPUT_MODULE5 -.-> note6
+    START -.-> note4
+    INPUT_MODULE5 -.-> note5
 
     %% ========================================
     %% STATISTIQUES
     %% ========================================
     subgraph STATS [📊 Caractéristiques Techniques]
         S1[Langues supportées: Latin, Français]
-        S2[Lemmatiseur: CLTK pour langues anciennes]
+        S2[Lemmatiseur: TreeTagger pour langues anciennes]
         S3[Formats sortie: 3 formats configurables]
-        S4[Métadonnées: Préservées dans tous formats]
-        S5[Performance: 100-1000 pages/minute]
-        S6[Dépendances: Python 3.10+, CLTK, PyYAML]
+        S4[Dépendances: Python 3.10+, TreeTagger, PyYAML]
     end
 
     %% ========================================
@@ -141,7 +138,7 @@ flowchart TD
     %% ========================================
     subgraph TOOLS [🛠️ Technologies Utilisées]
         T1[Python 3.10+: Langage principal]
-        T2[CLTK: Classical Language Toolkit]
+        T2[TreeTagger: Lemmatisation et POS-tagging]
         T3[PyYAML: Configuration]
         T4[lxml: Manipulation XML]
         T5[JSON: Formats intermédiaires]
@@ -157,27 +154,6 @@ flowchart TD
         CMD3[enrich: Étape 2 seule]
         CMD4[export: Étape 3 seule]
         CMD5[init: Génère config.yaml]
-    end
-
-    %% ========================================
-    %% EXEMPLES D'USAGE
-    %% ========================================
-    subgraph EXAMPLES [📚 Exemples de Configuration]
-        EX1[Single column + Clean:<br/>Manuscrits simples, lecture]
-        EX2[Dual column + Diplomatic:<br/>Éditions, annotations visibles]
-        EX3[Single column + Annotated:<br/>Analyse linguistique approfondie]
-    end
-
-    %% ========================================
-    %% CAS D'USAGE APPROPRIÉS
-    %% ========================================
-    subgraph USE_CASES [✅ Cas d'Usage de Ce Module]
-        UC1[✅ Manuscrits juridiques généraux]
-        UC2[✅ Éditions imprimées]
-        UC3[✅ Textes latins/français classiques]
-        UC4[✅ Corpus nécessitant lemmatisation]
-        UC5[❌ Décret de Gratien exclus]
-        UC6[❌ Utilise son propre pipeline]
     end
 
     %% ========================================
@@ -212,11 +188,11 @@ flowchart TD
     class START,OUTPUT startEnd
     class COLUMN_DECISION,FORMAT_CHOICE decision
     class EXTRACT_START,SINGLE_COL,DUAL_COL,HYPHEN_MERGE extract
-    class ENRICH_START,SENTENCE_SPLIT,TOKENIZATION,CLTK_PROCESS,VERTICAL_FORMAT enrich
+    class ENRICH_START,SENTENCE_SPLIT,TOKENIZATION,TREETAGGER_PROCESS,VERTICAL_FORMAT enrich
     class EXPORT_START,FORMAT_CLEAN,FORMAT_DIPLO,FORMAT_ANNOT,PAGE_SPLIT export
     class JSON_INTERMEDIATE,CORPUS_VERTICAL intermediate
     class COMBINED_FILE,INDEX_JSON,STATS_JSON,IMAGE_MAPPING output
-    class note1,note2,note3,note4,note5,note6 note
+    class note1,note2,note3,note4,note5 note
     class MODULE5_OUTPUT,INPUT_MODULE5 module5
 
     style STEP1 fill:#e8f5e9,stroke:#1565c0,stroke-width:2px
@@ -225,6 +201,4 @@ flowchart TD
     style STATS fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 3 3
     style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
     style CLI fill:#fce4ec,stroke:#c2185b,stroke-width:2px,stroke-dasharray: 3 3
-    style EXAMPLES fill:#fff3e0,stroke:#e65100,stroke-width:2px,stroke-dasharray: 3 3
-    style USE_CASES fill:#ffebee,stroke:#c62828,stroke-width:3px
     style DATA_FLOW fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px,stroke-dasharray: 3 3

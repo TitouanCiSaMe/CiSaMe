@@ -66,13 +66,11 @@ flowchart TD
     %% ========================================
     %% ANNOTATIONS
     %% ========================================
-    note1[💡 Coût Achat:<br/>Variable selon source<br/>50-500€ par manuscrit]
-    note2[💡 Scraping:<br/>Gratuit mais complexe<br/>Légalité à vérifier]
-    note3[💡 Qualité requise:<br/>Minimum 300 DPI<br/>Format TIF recommandé]
+    note1[💡 Scraping:<br/>Gratuit mais complexe<br/>Légalité à vérifier]
+    note2[💡 Qualité requise:<br/>Minimum 300 DPI<br/>Format TIF recommandé]
 
-    ACHAT_RESULT -.-> note1
-    SCRAPING_COMPLEXE -.-> note2
-    CONVERGENCE -.-> note3
+    SCRAPING_COMPLEXE -.-> note1
+    CONVERGENCE -.-> note2
 
     %% ========================================
     %% LIENS VERS AUTRES MODULES
@@ -97,7 +95,7 @@ flowchart TD
     class ACHAT_OUI,ACHAT_NON,ACHAT_NUMERISATION,ACHAT_RESULT achat
     class SCRAPING_IIIF,SCRAPING_PDF,SCRAPING_COMPLEXE scraping
     class CONVERGENCE convergence
-    class note1,note2,note3 note
+    class note1,note2 note
     class link1 link
 
     style ACHAT_FLOW fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
