@@ -1,0 +1,212 @@
+flowchart TD
+    %% ========================================
+    %% MODULE 9 - VISUALISATION ET GÉNÉRATEUR DE REQUÊTES
+    %% ========================================
+
+    START([📊 MODULE 9<br/>Visualisation & Générateur de Requêtes<br/>Analyse du Corpus NoSketch-Engine])
+
+    %% ========================================
+    %% DÉCISION PRINCIPALE
+    %% ========================================
+    DECISION{Quelle<br/>fonctionnalité ?}
+
+    START --> DECISION
+
+    %% ========================================
+    %% BRANCHE 1 : GÉNÉRATEUR DE REQUÊTES
+    %% ========================================
+    subgraph GENERATOR_FLOW [🔍 Générateur de Requêtes CQL]
+        GEN_START[Générateur de requêtes]
+
+        subgraph QUERY_TYPES [Types de Requêtes]
+            TYPE_PROXIMITE[📍 1.1.1 Proximité<br/>Recherche mots proches]
+            TYPE_VARIATIONS[🔄 1.1.2 Variations<br/>Formes alternatives]
+            TYPE_PROX_VAR["📍🔄 1.1.3 Proximité + Variations<br/>Combinaison des deux"]
+            TYPE_SEMANTIC[🧠 1.1.4 Contexte Sémantique<br/>Relations sémantiques]
+        end
+
+        GEN_CQL["⚙️ 1.1.1.1 Génération CQL<br/>Corpus Query Language"]
+
+        subgraph EXPORT_OPTIONS [Options d'Export]
+            EXPORT_COPY[📋 1.1.1.1.1 Copier-coller<br/>Requête CQL]
+            EXPORT_DIRECT[🚀 1.1.1.1.2 Export direct<br/>vers NoSketch-Engine<br/>Exécution automatique]
+        end
+
+        GEN_START --> TYPE_PROXIMITE
+        GEN_START --> TYPE_VARIATIONS
+        GEN_START --> TYPE_PROX_VAR
+        GEN_START --> TYPE_SEMANTIC
+
+        TYPE_PROXIMITE --> GEN_CQL
+        TYPE_VARIATIONS --> GEN_CQL
+        TYPE_PROX_VAR --> GEN_CQL
+        TYPE_SEMANTIC --> GEN_CQL
+
+        GEN_CQL --> EXPORT_COPY
+        GEN_CQL --> EXPORT_DIRECT
+    end
+
+    DECISION -->|Générer requête| GEN_START
+
+    %% ========================================
+    %% BRANCHE 2 : VISUALISATION - 1 IMPORT
+    %% ========================================
+    subgraph VIZ_SINGLE_FLOW [📈 Visualisation - 1 Export NoSketch]
+        SINGLE_IMPORT["📥 1.2.1 Import export NS<br/>Format normé NoSketch-Engine"]
+
+        SINGLE_FILTERS["🎚️ 1.2.1.1 Filtres configurables<br/>Sélection à la carte:<br/>• Fréquence<br/>• POS (Part-of-Speech)<br/>• Lemme<br/>• Période<br/>• Source"]
+
+        subgraph SINGLE_PANELS [6 Panels de Visualisation]
+            PANEL1[📊 Panel 1<br/>Distribution fréquences]
+            PANEL2[📊 Panel 2<br/>Concordances KWIC]
+            PANEL3[📊 Panel 3<br/>Collocations]
+            PANEL4[📊 Panel 4<br/>Timeline temporel]
+            PANEL5[📊 Panel 5<br/>Répartition par source]
+            PANEL6[📊 Panel 6<br/>Réseau sémantique]
+        end
+
+        SINGLE_EXPORT["💾 1.2.1.1.1.1 Export panels<br/>Formats: CSV, JSON, PNG"]
+
+        SINGLE_IMPORT --> SINGLE_FILTERS
+        SINGLE_FILTERS --> PANEL1
+        SINGLE_FILTERS --> PANEL2
+        SINGLE_FILTERS --> PANEL3
+        SINGLE_FILTERS --> PANEL4
+        SINGLE_FILTERS --> PANEL5
+        SINGLE_FILTERS --> PANEL6
+
+        PANEL1 --> SINGLE_EXPORT
+        PANEL2 --> SINGLE_EXPORT
+        PANEL3 --> SINGLE_EXPORT
+        PANEL4 --> SINGLE_EXPORT
+        PANEL5 --> SINGLE_EXPORT
+        PANEL6 --> SINGLE_EXPORT
+    end
+
+    DECISION -->|Visualiser 1 export| SINGLE_IMPORT
+
+    %% ========================================
+    %% BRANCHE 3 : VISUALISATION - 2 IMPORTS (COMPARAISON)
+    %% ========================================
+    subgraph VIZ_DOUBLE_FLOW [📊 Visualisation - Comparaison 2 Exports]
+        DOUBLE_IMPORT["📥📥 1.2.2 Import 2 exports NS<br/>Formats normés NoSketch-Engine"]
+
+        DOUBLE_FILTERS["🎚️ 1.2.2.1 Filtres configurables<br/>Sélection à la carte pour chaque export"]
+
+        subgraph DOUBLE_PANELS_1 [6 Panels - Export 1]
+            D_PANEL1_1[📊 Panel 1.1<br/>Distribution export 1]
+            D_PANEL2_1[📊 Panel 2.1<br/>Concordances export 1]
+            D_PANEL3_1[📊 Panel 3.1<br/>Collocations export 1]
+            D_PANEL4_1[📊 Panel 4.1<br/>Timeline export 1]
+            D_PANEL5_1[📊 Panel 5.1<br/>Répartition export 1]
+            D_PANEL6_1[📊 Panel 6.1<br/>Réseau export 1]
+        end
+
+        subgraph COMPARISON_PANEL [Panel de Comparaison]
+            COMPARE[🔀 1.2.2.1.2 Panel Comparaison<br/>Analyse différentielle:<br/>• Écarts fréquences<br/>• Collocations distinctives<br/>• Évolution temporelle<br/>• Statistiques comparatives]
+        end
+
+        DOUBLE_EXPORT["💾 Export tous panels<br/>Formats: CSV, JSON, PNG"]
+
+        DOUBLE_IMPORT --> DOUBLE_FILTERS
+        DOUBLE_FILTERS --> D_PANEL1_1
+        DOUBLE_FILTERS --> D_PANEL2_1
+        DOUBLE_FILTERS --> D_PANEL3_1
+        DOUBLE_FILTERS --> D_PANEL4_1
+        DOUBLE_FILTERS --> D_PANEL5_1
+        DOUBLE_FILTERS --> D_PANEL6_1
+        DOUBLE_FILTERS --> COMPARE
+
+        D_PANEL1_1 --> DOUBLE_EXPORT
+        D_PANEL2_1 --> DOUBLE_EXPORT
+        D_PANEL3_1 --> DOUBLE_EXPORT
+        D_PANEL4_1 --> DOUBLE_EXPORT
+        D_PANEL5_1 --> DOUBLE_EXPORT
+        D_PANEL6_1 --> DOUBLE_EXPORT
+        COMPARE --> DOUBLE_EXPORT
+    end
+
+    DECISION -->|Comparer 2 exports| DOUBLE_IMPORT
+
+    %% ========================================
+    %% SORTIE
+    %% ========================================
+    OUTPUT([📤 SORTIE MODULE 9<br/>Requêtes CQL + Visualisations<br/>Analyses exportées])
+
+    EXPORT_COPY --> OUTPUT
+    EXPORT_DIRECT --> OUTPUT
+    SINGLE_EXPORT --> OUTPUT
+    DOUBLE_EXPORT --> OUTPUT
+
+    %% ========================================
+    %% ANNOTATIONS
+    %% ========================================
+    note1["💡 CQL:<br/>Corpus Query Language<br/>Langage standard NoSketch<br/>Requêtes complexes possibles"]
+    note2["💡 Export normé NS:<br/>Format CSV standardisé<br/>Colonnes: Mot, Fréquence,<br/>Contexte gauche/droit, Métadonnées"]
+    note3["💡 Panels modulables:<br/>Interface interactive<br/>Zoom, filtrage dynamique<br/>Personnalisation affichage"]
+    note4["💡 Comparaison:<br/>Analyse contrastive<br/>Identification différences<br/>Tests statistiques"]
+    note5["💡 Export multi-formats:<br/>CSV: données brutes<br/>JSON: données structurées<br/>PNG: visualisations graphiques"]
+
+    TYPE_PROXIMITE -.-> note1
+    SINGLE_IMPORT -.-> note2
+    PANEL1 -.-> note3
+    COMPARE -.-> note4
+    SINGLE_EXPORT -.-> note5
+
+    %% ========================================
+    %% STATISTIQUES
+    %% ========================================
+    subgraph STATS [📊 Statistiques Indicatives]
+        S1[4 types de requêtes CQL]
+        S2[6 panels de visualisation]
+        S3[1 panel de comparaison]
+        S4[3 formats export: CSV, JSON, PNG]
+        S5[Filtres: Fréquence, POS, Lemme, etc.]
+    end
+
+    %% ========================================
+    %% OUTILS
+    %% ========================================
+    subgraph TOOLS [🛠️ Technologies]
+        T1[NoSketch-Engine: Source données]
+        T2[CQL: Langage requêtes]
+        T3[Python: Backend analyse]
+        T4[Matplotlib/Plotly: Visualisations]
+        T5[Pandas: Manipulation données]
+    end
+
+    %% ========================================
+    %% STYLES
+    %% ========================================
+    classDef startEnd fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff
+    classDef decision fill:#ffeb3b,stroke:#f57f17,stroke-width:3px
+    classDef generator fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef query fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    classDef export fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    classDef vizSingle fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef vizDouble fill:#ffecb3,stroke:#ff6f00,stroke-width:2px
+    classDef panel fill:#b2dfdb,stroke:#00796b,stroke-width:2px
+    classDef comparison fill:#ffccbc,stroke:#d84315,stroke-width:2px
+    classDef note fill:#fff9c4,stroke:#f57f17,stroke-width:1px,stroke-dasharray: 5 5
+
+    class START,OUTPUT startEnd
+    class DECISION decision
+    class GEN_START,GEN_CQL generator
+    class TYPE_PROXIMITE,TYPE_VARIATIONS,TYPE_PROX_VAR,TYPE_SEMANTIC query
+    class EXPORT_COPY,EXPORT_DIRECT,SINGLE_EXPORT,DOUBLE_EXPORT export
+    class SINGLE_IMPORT,SINGLE_FILTERS vizSingle
+    class DOUBLE_IMPORT,DOUBLE_FILTERS vizDouble
+    class PANEL1,PANEL2,PANEL3,PANEL4,PANEL5,PANEL6,D_PANEL1_1,D_PANEL2_1,D_PANEL3_1,D_PANEL4_1,D_PANEL5_1,D_PANEL6_1 panel
+    class COMPARE comparison
+    class note1,note2,note3,note4,note5 note
+
+    style GENERATOR_FLOW fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style QUERY_TYPES fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style EXPORT_OPTIONS fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style VIZ_SINGLE_FLOW fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    style SINGLE_PANELS fill:#b2dfdb,stroke:#00796b,stroke-width:2px
+    style VIZ_DOUBLE_FLOW fill:#ffe0b2,stroke:#ff6f00,stroke-width:2px
+    style DOUBLE_PANELS_1 fill:#b2dfdb,stroke:#00796b,stroke-width:2px
+    style COMPARISON_PANEL fill:#ffccbc,stroke:#d84315,stroke-width:2px
+    style STATS fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 3 3
+    style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
