@@ -127,6 +127,27 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 - **Seafile** : Données restreintes (accès contrôlé)
 - Contenu des packages (images, textes, métadonnées)
 
+### MODULE 9 - Visualisation et Générateur de Requêtes
+**Fichier:** `Modules_projet/Module_9_Visualisation_Requetes/flowchart-module9-visualisation.mmd`
+**Détail:** ⭐⭐⭐⭐⭐
+**Statut:** ✅ Production
+
+**Contenu:**
+- **Query Generator** : Générateur de requêtes CQL pour NoSketch Engine
+  - 4 types de recherche : Proximité, Variations orthographiques médiévales, Sémantique, Proximité+Variations
+  - 96 variantes orthographiques possibles (ae/e, v/u, j/i, ti/ci)
+  - Configuration interactive et prévisualisation temps réel
+  - Export : copier-coller ou lancement direct sur NoSketch
+- **Concordance Analyzer** : Analyse approfondie de concordances
+  - 9 vues d'analyse spécialisées
+  - Enrichissement automatique métadonnées Edi-XX
+  - Comparaison de 2 corpus (5 dimensions)
+  - Persistance automatique sessionStorage
+- **Technologies** : React 18.2, Vite 5.0, Recharts, D3.js, react-i18next
+- **Export** : CSV, JSON, PNG
+- **Tests** : 157/184 ✅ (85%)
+- **Repository** : [canon-law-toolkit](https://gitlab.com/cisame/canon-law-toolkit)
+
 ### MODULE MÉTADONNÉES (Transversal)
 **Fichier:** `Modules_projet/Module_Metadonnees/flowchart-metadonnees.mmd`
 **Détail:** ⭐⭐⭐⭐
@@ -168,6 +189,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 - **Traitement** : Modules 4, 5
 - **Enrichissement** : Module 6, Métadonnées
 - **Diffusion** : Modules 7, 8
+- **Visualisation/Analyse** : Module 9
 - **Spécifique** : Décret de Gratien
 
 ### Par Technologie
@@ -175,6 +197,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 - **TreeTagger** : Module 6
 - **NoSketch-Engine** : Module 7
 - **Nakala/Seafile** : Module 8
+- **React/Vite/Recharts/D3.js** : Module 9
 - **Heurist** : Métadonnées
 
 ---
@@ -184,6 +207,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 **Date:** 10 décembre 2024
 
 **Changements récents:**
+- ✅ Ajout Module 9 : Visualisation et Générateur de Requêtes (canon-law-toolkit)
 - ✅ Refonte Module 5 : Oxygène XML Editor
 - ✅ Migration Module 6 : CLTK → TreeTagger
 - ✅ Reformatage Modules 7, 8, Métadonnées

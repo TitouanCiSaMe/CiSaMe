@@ -72,7 +72,7 @@ CiSaMe/
 │   ├── Analyses techniques
 │   ├── Guides utilisateur
 │   └── Données de référence
-├── Modules_projet/         # Schémas et doc des 8 modules
+├── Modules_projet/         # Schémas et doc des 9 modules
 │   ├── Module_1/           # Téléchargement Images
 │   ├── Module_2/           # OCR & Reconnaissance
 │   ├── Module_3/           # Segmentation
@@ -81,12 +81,13 @@ CiSaMe/
 │   ├── Module_6_PAGEtopage/    # Enrichissement TreeTagger
 │   ├── Module_7_NoSketch_Engine/   # Concordancier
 │   ├── Module_8_Diffusion_Donnees/ # Diffusion Nakala/Seafile
+│   ├── Module_9_Visualisation_Requetes/ # Visualisation & Générateur CQL
 │   ├── Module_Metadonnees/     # Base Heurist
 │   ├── Decret_Gratien/         # Pipeline parallèle
 │   └── Vue_Ensemble/           # Schéma global
 ├── PAGEtopage/             # Code MODULE 6
 ├── latin_analyzer/         # Code MODULE 5B (futur)
-├── canon-law-toolkit/      # Outils droit canonique
+├── canon-law-toolkit/      # Code MODULE 9 (canon-law-toolkit)
 └── download_images.py      # Script MODULE 1
 ```
 
