@@ -1,0 +1,5 @@
+ssh debian@fip-185-155-93-80.iaas.unistra.fr Pour se connecter au NoSketch de l'Uni
+
+commande pour envoyer sur NoSketch Engine : scp /home/titouan/Documents/Github/NoSketch/NoSketch-Engine-Docker/corpora/cisame/vertical/fusion_finale.txt debian@fip-185-155-93-80.iaas.unistra.fr:/home/debian/NoSketch-Engine-Docker/corpora/cisame/vertical
+
+Ce sont les même commandes pour dialoguer avec NoSketch que pour le HPC.

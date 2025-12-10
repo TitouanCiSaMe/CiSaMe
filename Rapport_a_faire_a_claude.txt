@@ -1,0 +1,161 @@
+    
+BIEN SUR TOUS LES CHANGEMENTS SONT À VOIR AU DÉBUT, AVANT DE TOUCHER À QUOI QUE CE SOIT, IL FAUT UNE CERTAINE LOGIQUE, SI TU CHANGES DES CHOSES DANS LE MODULE 1 QUI SONT MENTIONNÉS DANS LE 2, IL FAUT AUSSI QUE TU CHANGES CES CHOSES LÀ ET AINSI DE SUITE.
+    
+    
+    CiSaMe/Modules_projet/Decret_Gratien/flowchart-decret-gratien.mmd
+    
+Pour le schéma du Décret de Gratien :
+Structure du Décret de Gratien -> Pas besoin de ça :
+
+Sources du droit canon
+Cas juridiques avec Quaestiones
+Liturgie et sacrements
+
++ Dans la Cause 33 de la quaestio 3 de la seconde partie du Décret, celle-ci se décompose en 7 distinctions qui ont elle-mêmes des canons. 
+
+Tu peux enlever la partie Types d'allégations
+
+Pour les statistiques, le dossier texte fait 5 Mo
+Il y a 4149 fichiers dans le fichiers, à diviser entre les Distinctions, Causes, question,ect...
+
+Pour ce qui est de ID Unique :....
+Format:
+Grat_XXXX
+
+Entre Allégations.csv Version finales et Données enrichies Décret de Gratien complet : Ajout à la main de certaines allégations.
+
+    CiSaMe/Modules_projet/Module_1/flowchart-module1.mmd
+
+Supprimer le Coût Achat :...
+
+
+    CiSaMe/Modules_projet/Module_2/flowchart-module2.mmd
+
+Très bien, penser à faire une petite explication de ce schéma
+
+    Modules_projet/Module_3/flowchart-module3.mmd
+    
+Répartition Indicative 
+
+Libre de droit : environ 30%
+Restreint : environ 68%
+Secret : environ 2%
+
+Tu changes 
+💡 Secret/Restreint:
+Usage recherche uniquement
+Pas de diffusion publique
+
+Il faudrait que dans 🖥️ Détail Entraînement, Tu mettes qu'un tuto est disponible et qu'il explique tout ça. 
+
+Peut-être ajouter à la suite des transcriptions des manuscrits un autre schéma style 3/4, ou alors continuer celui-là, avec le module latin_analyzer (tout est dans le dossier qui aura été push sur la branche main)
+
+    Modules_projet/Module_5/flowchart-module5.mmd
+
+Outils utilisés : Seulement Oxygène et des Régex
+Statistiques indicatives pour les pages et les erreurs aucunes idées, Temps de nettoyage par oeuvres, environ 20 minutes, car certaines pages n'ont pas de lignes détectés dans la zone MainZone à cause de bugs ou d'une mauvaise segmentation de la zone (souvent du à la page de fin de chapitres, donc des pages non régulières).
+
+Types de Régex, Espaces et correction ponctuation : oui 
+Normalisation sauts de ligne, Cohérence des retours, Suppression caractères parasites, Artefacts OCR/HTR : non
+Regex Spécifiques : AUcune qui sont dedans ne sont bonnes, plutôt ça par exemple : Regex : [!?""''`\–—…()\[\]{}«»/\\&*@#§¶†‡°^~¨] Pour que tout ces caractères soient reconnus et pouvoir les supprimer, on peut en ajouter ou en supprimer selon le texte
+\d+ Pour trouver tous les Chiffres
+T f[°'] ([A-Z]|\d{1,2})[a-z]{2} Pour trouver tous les rapports aux folios
+T f[°'] [A-Z0-9][a-z]{2} PAREIL
+\|([^\]]*)\) Supprimer ce qu'il y a entre | et ] 
+
+Aussi par rapport à Oxygène, TRÈS IMPORTANT : - Ouvrir avec Oxygènes
+- Onglet rechercher
+- regex dans texte à rechercher
+- cocher Expression régulière
+- Cocher chemin indiqué
+- limiter à ce XPath si 1 page : //TextRegion[contains(@custom, 'type:MainZone;')]//TextLine//Unicode/text()
+- limiter à ces XPath si 2 pages : //TextRegion[contains(@custom, 'type:MainZone:column#1;')]//TextLine//Unicode/text() toutes les régexs et chercher remplacer, puis, //TextRegion[contains(@custom, 'type:MainZone:column#2;')]//TextLine//Unicode/text() et on refait la même chose que pour la précédente.
+- limiter à ces XPath si 4 pages : //TextRegion[contains(@custom, 'type:MainZone:column#1;')]//TextLine//Unicode/text(), "", //TextRegion[contains(@custom, 'type:MainZone:column#2;')]//TextLine//Unicode/text(), "", //TextRegion[contains(@custom, 'type:MainZone:column#3;')]//TextLine//Unicode/text(), "", //TextRegion[contains(@custom, 'type:MainZone:column#4;')]//TextLine//Unicode/text(), toutes les régexs et chercher remplacer
+
+☁️ Stockage sur Seafile
+avec ID dans le titre
+Format: NOMÉDITION_ID.xml
+
+Pas obligés les émoticones pages, ça brouille la lisibilté
+Tous les encarts avec : 💡 à Supprimer, car pas pertinent ou faux, sauf celui ci à garder : 💡 Vérification:
+Contrôle pagination
+Détection erreurs OCR
+Cohérence globale
+
+   Modules_projet/Module_6_PAGEtopage/flowchart-module6-pagetopage.mmd
+   
+Entrée: XML PAGE
+Format eScriptorium
+
+  Tu peux enlever l'encart "Cas d'Usage de Ce Module", "📚 Exemples de Configuration", 
+  
+Pour :   🛠️ Technologies Utilisées
+
+TreeTagger et pas CLTK, même chose pour 📊 Caractéristiques Techniques -> Lemmatiseur: TreeTagger pour langues anciennes
+
+Supprime Métadonnées: Préservées dans tous formats
+
+Performance: 100-1000 pages/minute
+
+Dans Étape 2 :🧠 Traitement TreeTagger
+Lemmatisation + POS-tagging
+
+à modifier avec TreeTagger : 💡 CLTK:
+Première exécution lente
+Téléchargement modèles
+Puis rapide
+
+dans 📤 ÉTAPE 3 : Export
+où est le format d'export "corpus_vertical.txt" ?
+
+Modules_projet/Module_7_NoSketch_Engine/
+Modules_projet/Module_8_Diffusion_Donnees/
+Modules_projet/Module_Metadonnees/
+
+Revoir les schémas pour qu'ils aient le même format que les précédents, sans abuser des encarts de contextes au début
+
+Modules_projet/Vue_Ensemble/flowchart-pipeline-complet-integre.mmd
+
+On peut garder celui-ci comme ça (dans le style) 
+
+📚 317 Manuscrits juridiques médiévaux et environ 150 Éditions de manuscrits
+
+MODULE 2
+📝 OCR & Reconnaissance
+───
+Outils : Escriptorium, Kraken
+Entrée : Images manuscrits
+Sortie : XML PAGE
+
+"MODULE 6
+🔬 PAGEtopage
+Enrichissement Linguistique
+───
+🚧 En développement
+───
+STEP 1 : Extract XML → JSON
+STEP 2 : Enrich CLTK
+• Découpage phrases
+• Tokenisation
+• Lemmatisation
+• POS-tagging
+STEP 3 : Export 3 formats
+───
+Python 3.10+, CLTK, PyYAML" remplacer CLTK par TreeTagger
+
+"2️⃣ texte_diplomatic.txt
+original transcription" Tu peux supprimer, je vais jamais m'en servir
+
+"MODULE 8
+📤 Diffusion Données Textuelles
+───
+Décision : Avec/Sans images
+× Libre/Restreint
+───
+Outils :
+• Algo Hécate
+• Connecteur Nakala
+• Cloud Seafile"
+
+Supprimer Algo Hécate, je veux juste voir Connecteur Nakala à la place s'il faut. 
+
