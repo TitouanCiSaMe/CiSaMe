@@ -50,11 +50,11 @@ flowchart TD
     CONFIG -->|Métadonnées<br/>bibliographiques| M6
 
     %% Module 6
-    M6[MODULE 6<br/>🔬 PAGEtopage<br/>Enrichissement Linguistique<br/>───<br/>🚧 En développement<br/>───<br/>STEP 1 : Extract XML → JSON<br/>STEP 2 : Enrich TreeTagger<br/>• Découpage phrases<br/>• Tokenisation<br/>• Lemmatisation<br/>• POS-tagging<br/>STEP 3 : Export 2 formats<br/>───<br/>Python 3.10+, TreeTagger, PyYAML]:::moduleDev
+    M6[MODULE 6<br/>🔬 PAGEtopage<br/>Enrichissement Linguistique<br/>───<br/>🚧 En développement<br/>───<br/>STEP 1 : Extract XML → JSON<br/>STEP 2 : Enrich TreeTagger<br/>• Découpage phrases<br/>• Tokenisation<br/>• Lemmatisation<br/>• POS-tagging<br/>STEP 3 : Export 4 formats<br/>STEP 4 : Re-enrich optionnel<br/>• Correction manuelle<br/>• Régénération vertical<br/>───<br/>Python 3.10+, TreeTagger auto-installé]:::moduleDev
 
     M6 --> FORMATS
 
-    FORMATS[2 FORMATS PRODUITS<br/>───<br/>1️⃣ texte_clean.txt<br/>normalized, lemmatized<br/>───<br/>2️⃣ corpus_vertical.txt<br/>forme / POS / lemme]:::output
+    FORMATS[4 FORMATS PRODUITS<br/>───<br/>1️⃣ scholarly recommandé<br/>en-tête + métadonnées<br/>───<br/>2️⃣ clean texte brut<br/>───<br/>3️⃣ diplomatic annoté<br/>───<br/>4️⃣ annotated tabulaire<br/>───<br/>+ corpus_vertical.txt<br/>forme / POS / lemme]:::output
 
     FORMATS -->|corpus_vertical.txt| M7
     FORMATS -->|Tous formats<br/>+ métadonnées| M8

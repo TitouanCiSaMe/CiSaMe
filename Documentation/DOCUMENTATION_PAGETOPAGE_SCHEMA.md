@@ -56,8 +56,9 @@ MODULE 5: Nettoyage Post-eScriptorium
 |------------------|-------------|--------------|
 | 🔹 **ENTRÉE** | **XML PAGE finalisés (sortie Module 5)** | - |
 | 🔹 Extraction (Step 1) | Extraction texte, fusion mots coupés | `PAGEtopage/step1_extract/` |
-| 🔹 Enrichissement (Step 2) | Lemmatisation, POS-tagging (CLTK) | `PAGEtopage/step2_enrich/` |
-| 🔹 Export (Step 3) | Format vertical, fichiers texte | `PAGEtopage/step3_export/` |
+| 🔹 Enrichissement (Step 2) | Lemmatisation, POS-tagging (TreeTagger) | `PAGEtopage/step2_enrich/` |
+| 🔹 Export (Step 3) | Format vertical, 4 formats texte | `PAGEtopage/step3_export/` |
+| 🔹 Ré-enrichissement (Step 4) | Optionnel: correction + régénération | `PAGEtopage/step4_reenrich/` |
 | ✅ **SORTIE** | **Corpus annoté + Fichiers texte exploitables** | - |
 
 ---
@@ -129,7 +130,7 @@ flowchart TD
 
         TOKENIZATION[🔤 Tokenisation<br/>Séparation en mots]
 
-        CLTK_PROCESS[🧠 Traitement CLTK<br/>Lemmatisation + POS-tagging]
+        TREETAGGER_PROCESS[🧠 Traitement TreeTagger<br/>Lemmatisation + POS-tagging<br/>Installation automatique]
 
         VERTICAL_FORMAT[📊 Format Vertical<br/>Mot | POS | Lemme]
 
@@ -137,8 +138,8 @@ flowchart TD
 
         ENRICH_START --> SENTENCE_SPLIT
         SENTENCE_SPLIT --> TOKENIZATION
-        TOKENIZATION --> CLTK_PROCESS
-        CLTK_PROCESS --> VERTICAL_FORMAT
+        TOKENIZATION --> TREETAGGER_PROCESS
+        TREETAGGER_PROCESS --> VERTICAL_FORMAT
         VERTICAL_FORMAT --> CORPUS_VERTICAL
     end
 
@@ -152,6 +153,7 @@ flowchart TD
 
         FORMAT_CHOICE{Format de sortie ?}
 
+        FORMAT_SCHOLARLY[🎓 Scholarly<br/>Format académique<br/>Recommandé]
         FORMAT_CLEAN[✨ Clean<br/>Texte brut lisible]
         FORMAT_DIPLO[📝 Diplomatic<br/>Avec annotations inline]
         FORMAT_ANNOT[📊 Annotated<br/>Format tabulaire]
@@ -167,10 +169,12 @@ flowchart TD
         IMAGE_MAPPING[🖼️ Correspondance images<br/>images_mapping.txt]
 
         EXPORT_START --> FORMAT_CHOICE
+        FORMAT_CHOICE -->|scholarly| FORMAT_SCHOLARLY
         FORMAT_CHOICE -->|clean| FORMAT_CLEAN
         FORMAT_CHOICE -->|diplomatic| FORMAT_DIPLO
         FORMAT_CHOICE -->|annotated| FORMAT_ANNOT
 
+        FORMAT_SCHOLARLY --> PAGE_SPLIT
         FORMAT_CLEAN --> PAGE_SPLIT
         FORMAT_DIPLO --> PAGE_SPLIT
         FORMAT_ANNOT --> PAGE_SPLIT
@@ -195,12 +199,12 @@ flowchart TD
     %% ANNOTATIONS
     %% ========================================
     note1[💡 Configuration:<br/>config.yaml définit<br/>tous les paramètres<br/>du traitement]
-    note2[💡 CLTK:<br/>Première exécution lente<br/>Téléchargement modèles<br/>Puis rapide]
-    note3[💡 Formats:<br/>Clean = lecture humaine<br/>Diplomatic = semi-annoté<br/>Annotated = analyse machine]
+    note2[💡 TreeTagger:<br/>Installation automatique<br/>~20 MB téléchargés<br/>Première fois seulement]
+    note3[💡 Formats:<br/>Scholarly = académique recommandé<br/>Clean = lecture humaine<br/>Diplomatic = semi-annoté<br/>Annotated = analyse machine]
     note4[💡 Métadonnées:<br/>Préservées à chaque étape<br/>Traçabilité complète]
 
     EXTRACT_START -.-> note1
-    CLTK_PROCESS -.-> note2
+    TREETAGGER_PROCESS -.-> note2
     FORMAT_CHOICE -.-> note3
     INDEX_JSON -.-> note4
 
@@ -209,10 +213,10 @@ flowchart TD
     %% ========================================
     subgraph STATS [📊 Caractéristiques Techniques]
         S1[Langues supportées: Latin, Français]
-        S2[Lemmatiseur: CLTK pour langues anciennes]
-        S3[Formats sortie: 3 formats configurables]
+        S2[Lemmatiseur: TreeTagger installation automatique]
+        S3[Formats sortie: 4 formats configurables]
         S4[Métadonnées: Préservées dans tous formats]
-        S5[Performance: 100-1000 pages/minute]
+        S5[Performance: ~1 minute pour 350 pages]
     end
 
     %% ========================================
@@ -220,10 +224,11 @@ flowchart TD
     %% ========================================
     subgraph TOOLS [🛠️ Technologies Utilisées]
         T1[Python 3.10+]
-        T2[CLTK: Classical Language Toolkit]
-        T3[PyYAML: Configuration]
-        T4[lxml: Manipulation XML]
-        T5[JSON: Formats intermédiaires]
+        T2[TreeTagger: Lemmatisation automatique]
+        T3[treetaggerwrapper: Interface Python]
+        T4[PyYAML: Configuration]
+        T5[lxml: Manipulation XML]
+        T6[JSON: Formats intermédiaires]
     end
 
     %% ========================================
@@ -241,8 +246,8 @@ flowchart TD
     class START,OUTPUT startEnd
     class COLUMN_DECISION,FORMAT_CHOICE decision
     class EXTRACT_START,SINGLE_COL,DUAL_COL,HYPHEN_MERGE extract
-    class ENRICH_START,SENTENCE_SPLIT,TOKENIZATION,CLTK_PROCESS,VERTICAL_FORMAT enrich
-    class EXPORT_START,FORMAT_CLEAN,FORMAT_DIPLO,FORMAT_ANNOT,PAGE_SPLIT export
+    class ENRICH_START,SENTENCE_SPLIT,TOKENIZATION,TREETAGGER_PROCESS,VERTICAL_FORMAT enrich
+    class EXPORT_START,FORMAT_SCHOLARLY,FORMAT_CLEAN,FORMAT_DIPLO,FORMAT_ANNOT,PAGE_SPLIT export
     class JSON_INTERMEDIATE,CORPUS_VERTICAL intermediate
     class COMBINED_FILE,INDEX_JSON,STATS_JSON,IMAGE_MAPPING output
     class note1,note2,note3,note4 note
@@ -272,25 +277,26 @@ flowchart TD
 | Documentation (README.md) | Schéma Module 6 | Fichier Code |
 |---------------------------|-----------------|--------------|
 | Section "Étape 2 : Enrichissement" (ligne 186-198) | Sous-graphe STEP2 | `step2_enrich/` |
-| Option `lemmatizer: cltk` (ligne 111) | `CLTK_PROCESS` | `config.py` |
-| Option `language: lat` (ligne 112) | `CLTK_PROCESS` | `config.py` |
-| Section "Format vertical" (ligne 251-289) | `VERTICAL_FORMAT` | - |
-| Sortie `corpus.vertical.txt` (ligne 189) | `CORPUS_VERTICAL` | - |
+| Option `lemmatizer: treetagger` (ligne 123) | `TREETAGGER_PROCESS` | `config.py` |
+| Option `language: lat` (ligne 124) | `TREETAGGER_PROCESS` | `config.py` |
+| Section "Format vertical" (ligne 305-343) | `VERTICAL_FORMAT` | - |
+| Sortie `corpus.vertical.txt` (ligne 201) | `CORPUS_VERTICAL` | - |
 
 ### Étape 3 : Export
 
 | Documentation (README.md) | Schéma Module 6 | Fichier Code |
 |---------------------------|-----------------|--------------|
-| Section "Étape 3 : Export" (ligne 200-210) | Sous-graphe STEP3 | `step3_export/` |
-| Section "Formats de sortie" (ligne 213-248) | `FORMAT_CHOICE` | `config.py` |
-| Format "clean" (ligne 215-221) | `FORMAT_CLEAN` | `step3_export/formatter.py` |
-| Format "diplomatic" (ligne 223-229) | `FORMAT_DIPLO` | `step3_export/formatter.py` |
-| Format "annotated" (ligne 231-241) | `FORMAT_ANNOT` | `step3_export/formatter.py` |
-| Fichier `pages/page_*.txt` (ligne 161-163) | `PAGE_SPLIT` | - |
-| Fichier `texte_complet.txt` (ligne 165) | `COMBINED_FILE` | - |
-| Fichier `pages_index.json` (ligne 164) | `INDEX_JSON` | - |
-| Fichier `corpus_stats.json` (ligne 166) | `STATS_JSON` | - |
-| Fichier `images_mapping.txt` (ligne 167) | `IMAGE_MAPPING` | - |
+| Section "Étape 3 : Export" (ligne 213-223) | Sous-graphe STEP3 | `step3_export/` |
+| Section "Formats de sortie" (ligne 241-302) | `FORMAT_CHOICE` | `config.py` |
+| Format "scholarly" (ligne 244-265) | `FORMAT_SCHOLARLY` | `step3_export/formatters.py` |
+| Format "clean" (ligne 269-275) | `FORMAT_CLEAN` | `step3_export/formatters.py` |
+| Format "diplomatic" (ligne 279-284) | `FORMAT_DIPLO` | `step3_export/formatters.py` |
+| Format "annotated" (ligne 288-295) | `FORMAT_ANNOT` | `step3_export/formatters.py` |
+| Fichier `pages/page_*.txt` (ligne 174-175) | `PAGE_SPLIT` | - |
+| Fichier `texte_complet.txt` (ligne 177) | `COMBINED_FILE` | - |
+| Fichier `pages_index.json` (ligne 176) | `INDEX_JSON` | - |
+| Fichier `corpus_stats.json` (ligne 178) | `STATS_JSON` | - |
+| Fichier `images_mapping.txt` (ligne 179) | `IMAGE_MAPPING` | - |
 
 ---
 
@@ -339,7 +345,8 @@ flowchart TD
 │       ↓                                                     │
 │  [Tokenisation]                                             │
 │       ↓                                                     │
-│  [Lemmatisation CLTK + POS-tagging]                        │
+│  [Lemmatisation TreeTagger + POS-tagging]                  │
+│  (Installation automatique ~20 Mo)                          │
 │       ↓                                                     │
 │  → corpus.vertical.txt                                      │
 │                                                             │
@@ -347,7 +354,7 @@ flowchart TD
 │  ─────────────────                                          │
 │  [Lecture corpus vertical]                                  │
 │       ↓                                                     │
-│  [Choix format: clean/diplomatic/annotated]                │
+│  [Choix format: scholarly/clean/diplomatic/annotated]      │
 │       ↓                                                     │
 │  [Génération fichiers par page]                            │
 │       ↓                                                     │
@@ -357,6 +364,14 @@ flowchart TD
 │     • pages_index.json (métadonnées)                       │
 │     • corpus_stats.json (statistiques)                     │
 │     • images_mapping.txt (correspondances)                 │
+│                                                             │
+│  ÉTAPE 4 : Ré-enrichissement (Optionnel)                   │
+│  ──────────────────────────────────────                    │
+│  [Correction manuelle des fichiers texte]                  │
+│       ↓                                                     │
+│  [Re-tokenisation + Re-lemmatisation TreeTagger]           │
+│       ↓                                                     │
+│  → corpus_corrige.vertical.txt                              │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
                          ↓
@@ -409,13 +424,14 @@ flowchart TD
    **Étape 2 - Enrichissement** :
    - Découpage : 7 285 phrases
    - Tokenisation : 130 327 tokens
-   - Lemmatisation CLTK (Latin) : 128 503 lemmes identifiés
+   - Lemmatisation TreeTagger (Latin) : 128 503 lemmes identifiés
    - POS-tagging : 97.8% de confiance
+   - Temps de traitement : ~1 minute
    - Création : `corpus.vertical.txt` (7.2 Mo)
 
    **Étape 3 - Export** :
-   - Format choisi : `clean` (texte lisible)
-   - Génération de 250 fichiers `page_*.txt`
+   - Format choisi : `scholarly` (format académique recommandé)
+   - Génération de 250 fichiers `page_*.txt` avec en-têtes complets
    - Création `texte_complet.txt` (427 Ko)
    - Création `pages_index.json` avec métadonnées complètes
    - Statistiques : 130k mots, 7.3k phrases, 250 pages
@@ -442,14 +458,15 @@ extraction:
   # ou dual                    # → DUAL_COL
   merge_hyphenated: true       # → HYPHEN_MERGE
 
-# Contrôle CLTK_PROCESS dans Étape 2
+# Contrôle TREETAGGER_PROCESS dans Étape 2
 enrichment:
-  lemmatizer: cltk             # → CLTK_PROCESS
-  language: lat                # → CLTK_PROCESS (Latin)
+  lemmatizer: treetagger       # → TREETAGGER_PROCESS
+  language: lat                # → TREETAGGER_PROCESS (Latin)
 
 # Contrôle FORMAT_CHOICE dans Étape 3
 export:
-  format: clean                # → FORMAT_CLEAN
+  format: scholarly            # → FORMAT_SCHOLARLY (recommandé)
+  # ou clean                   # → FORMAT_CLEAN
   # ou diplomatic              # → FORMAT_DIPLO
   # ou annotated               # → FORMAT_ANNOT
   generate_index: true         # → INDEX_JSON
@@ -620,15 +637,19 @@ Ajouter une nouvelle section après le MODULE 5 :
   - Production JSON intermédiaire
 - Étape 2 : Enrichissement linguistique
   - Découpage en phrases et tokenisation
-  - Lemmatisation CLTK (langues anciennes)
+  - Lemmatisation TreeTagger (installation automatique)
   - POS-tagging automatique
   - Production format vertical
 - Étape 3 : Export multi-formats
+  - Format scholarly (académique recommandé)
   - Format clean (texte brut)
   - Format diplomatic (annotations inline)
   - Format annotated (tabulaire)
   - Génération index et statistiques
-- Technologies : Python, CLTK, PyYAML, lxml
+- Étape 4 : Ré-enrichissement (optionnel)
+  - Correction manuelle des fichiers texte
+  - Régénération du corpus vertical
+- Technologies : Python, TreeTagger, treetaggerwrapper, PyYAML, lxml
 
 **Idéal pour:**
 - Comprendre la transformation XML → Corpus annoté
@@ -646,10 +667,11 @@ Ajouter une nouvelle section après le MODULE 5 :
 | Terme | Définition | Référence Schéma |
 |-------|------------|------------------|
 | **Format Vertical** | Format d'annotation linguistique avec un mot par ligne, incluant lemme et POS | `VERTICAL_FORMAT` |
-| **Lemmatisation** | Réduction d'un mot à sa forme canonique (dicit → dico) | `CLTK_PROCESS` |
-| **POS-tagging** | Part-of-Speech tagging, étiquetage grammatical (nom, verbe...) | `CLTK_PROCESS` |
-| **CLTK** | Classical Language Toolkit, bibliothèque Python pour langues anciennes | `CLTK_PROCESS` |
+| **Lemmatisation** | Réduction d'un mot à sa forme canonique (dicit → dico) | `TREETAGGER_PROCESS` |
+| **POS-tagging** | Part-of-Speech tagging, étiquetage grammatical (nom, verbe...) | `TREETAGGER_PROCESS` |
+| **TreeTagger** | Outil de lemmatisation rapide pour le latin, installation automatique | `TREETAGGER_PROCESS` |
 | **Tokenisation** | Découpage du texte en unités (mots, ponctuation) | `TOKENIZATION` |
+| **Format Scholarly** | Format académique avec en-tête complet et métadonnées (recommandé) | `FORMAT_SCHOLARLY` |
 | **Format Clean** | Texte brut sans annotations, lisible par humains | `FORMAT_CLEAN` |
 | **Format Diplomatic** | Texte avec annotations entre parenthèses | `FORMAT_DIPLO` |
 | **Format Annotated** | Format tabulaire avec colonnes (mot/POS/lemme) | `FORMAT_ANNOT` |
@@ -679,7 +701,8 @@ Ajouter une nouvelle section après le MODULE 5 :
 
 ### Outils Externes
 
-- **CLTK** : https://cltk.org/
+- **TreeTagger** : https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
+- **treetaggerwrapper** : https://pypi.org/project/treetaggerwrapper/
 - **PageXML** : https://github.com/PRImA-Research-Lab/PAGE-XML
 - **PyYAML** : https://pyyaml.org/
 - **lxml** : https://lxml.de/

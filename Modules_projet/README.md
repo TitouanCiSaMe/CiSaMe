@@ -53,9 +53,10 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Statut** : 🚧 En développement
 - **Contenu** :
   - `flowchart-module6-pagetopage.mmd` : Schéma du pipeline PAGEtopage
-  - `MODULE6_PAGETOPAGE_DOCUMENTATION.md` : Documentation détaillée (Extract → Enrich → Export)
-- **Description** : Pipeline d'enrichissement linguistique en 3 étapes utilisant CLTK pour lemmatisation et POS-tagging (Latin/Français)
-- **Technologies** : Python 3.10+, CLTK, PyYAML, lxml
+  - `MODULE6_PAGETOPAGE_DOCUMENTATION.md` : Documentation détaillée (Extract → Enrich → Export → Re-enrich)
+- **Description** : Pipeline d'enrichissement linguistique en 4 étapes (3 + correction optionnelle) utilisant TreeTagger (installation automatique) pour lemmatisation et POS-tagging (Latin/Français)
+- **Technologies** : Python 3.10+, TreeTagger, treetaggerwrapper, PyYAML
+- **Formats de sortie** : 4 formats (scholarly, clean, diplomatic, annotated)
 - **⚠️ Note** : N'utilise **pas** ce module pour le Décret de Gratien (pipeline spécifique)
 
 #### [`Module_7_NoSketch_Engine/`](./Module_7_NoSketch_Engine/)
