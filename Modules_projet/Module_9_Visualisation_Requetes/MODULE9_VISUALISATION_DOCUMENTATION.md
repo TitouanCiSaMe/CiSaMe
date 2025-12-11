@@ -1,4 +1,4 @@
-# MODULE 9 - Canon-Law-Toolkit
+# MODULE 9 - Outil_d'analyse_CiSaMe
 
 ## 📋 Vue d'ensemble
 
@@ -95,7 +95,49 @@ Génère : gratia, gracia, gratja, gracja, graetia, graecia, graetja, graecja (e
 
 ### Gestion des données
 
+#### Préparation des exports depuis NoSketch Engine
+
+Avant d'utiliser le Concordance Analyzer, vous devez préparer vos exports depuis NoSketch Engine. Voici le workflow complet :
+
+**Étape 1 : Recherche sur NoSketch Engine**
+- Lancez votre requête CQL sur NoSketch Engine
+- Utilisez le Query Generator (MODULE 9) pour créer des requêtes optimisées
+- La requête peut provenir du Query Generator ou être créée manuellement
+
+**Étape 2 : Analyse des résultats**
+- Examinez les concordances KWIC affichées
+- Évaluez la pertinence des résultats
+- Identifiez les résultats à conserver pour l'analyse
+
+**Étape 3 : Sélection des résultats**
+- **Résultats voulus** : Cochez les concordances pertinentes pour votre analyse
+- **Résultats à analyser** : Sélectionnez les occurrences nécessitant un examen approfondi
+- Possibilité de sélectionner tous les résultats ou une partie seulement
+
+**Étape 4 : Enrichissement avec métadonnées**
+- ☑️ **Cocher ID Édition (Edi-XX)** : Identifiants des collections canoniques médiévales
+- ☑️ **Cocher numéros de pages** : Références précises de localisation dans les manuscrits
+- Ces métadonnées permettront l'enrichissement automatique dans le Concordance Analyzer
+
+**Étape 5 : Export CSV enrichi**
+- **Maximum de contexte KWIC** :
+  - Sélectionnez le plus grand nombre de **tokens AVANT** le KWIC (mot-clé en contexte)
+  - Sélectionnez le plus grand nombre de **tokens APRÈS** le KWIC
+  - Contexte étendu = meilleure analyse sémantique
+- **Format d'export** : CSV (format normé NoSketch Engine)
+- **Contenu de l'export** :
+  - Concordances sélectionnées
+  - Contexte gauche étendu
+  - KWIC (mot-clé)
+  - Contexte droit étendu
+  - Métadonnées (ID Édition + n° pages)
+- **Export NoSketch normé** : Le fichier CSV généré est prêt pour l'upload dans le Concordance Analyzer
+
+> **💡 Conseil** : Plus le contexte KWIC est étendu, plus l'analyse terminologique et sémantique sera riche. Privilégiez toujours le maximum de tokens disponibles.
+
 #### Upload de fichiers
+
+Une fois vos exports préparés (voir section précédente), vous pouvez les uploader dans le Concordance Analyzer.
 
 **Fichiers requis :**
 
@@ -105,10 +147,9 @@ Génère : gratia, gracia, gratja, gracja, graetia, graecia, graetja, graecja (e
    - Pré-chargement automatique au démarrage
 
 2. **Export NoSketch Engine** (CSV avec concordances)
-   - ⚠️ **Important** : Lors de l'export depuis NoSketch Engine, cocher :
-     - "ID de l'édition"
-     - "Numéro de pages"
-   - Format CSV avec contextes gauche/droit
+   - Fichier CSV généré selon le workflow de préparation
+   - Format normé NoSketch Engine
+   - Doit contenir : ID Édition (Edi-XX) + numéros de pages + contexte KWIC étendu
 
 #### Persistance automatique
 
