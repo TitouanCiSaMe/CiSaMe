@@ -2,15 +2,17 @@
 Interface en ligne de commande pour PAGEtopage
 
 Fournit les commandes:
-    - extract : XML PAGE → JSON
-    - enrich  : JSON → Format Vertical
-    - export  : Format Vertical → Texte
-    - run     : Pipeline complet
+    - extract   : XML PAGE → JSON
+    - enrich    : JSON → Format Vertical
+    - export    : Format Vertical → Texte
+    - re-enrich : Texte corrigé → Format Vertical
+    - run       : Pipeline complet
 
 Usage:
     python -m PAGEtopage extract --input ./xml/ --output ./extracted/
     python -m PAGEtopage enrich --input ./extracted/ --output ./vertical/
     python -m PAGEtopage export --input ./vertical/ --output ./pages/
+    python -m PAGEtopage re-enrich --input ./pages_corrigees/ --output ./corpus_corrige.vertical.txt
     python -m PAGEtopage run --input ./xml/ --output ./output/ --config config.yaml
 """
 
@@ -24,6 +26,7 @@ from .config import Config
 from .step1_extract import XMLPageExtractor
 from .step2_enrich import EnrichmentProcessor
 from .step3_export import TextExporter
+from .step4_reenrich import ReEnricher
 
 # Configuration du logging
 logging.basicConfig(
@@ -129,14 +132,18 @@ Exemples:
     )
     enrich_parser.add_argument(
         "--lemmatizer",
-        choices=["cltk", "simple"],
-        default="cltk",
-        help="Lemmatiseur à utiliser"
+        choices=["treetagger", "cltk", "simple"],
+        default="treetagger",
+        help="Lemmatiseur: treetagger (~1min), cltk (~1h, lent!), simple (sans lemme)"
     )
     enrich_parser.add_argument(
         "--language",
         default="lat",
         help="Code langue (lat pour latin)"
+    )
+    enrich_parser.add_argument(
+        "--treetagger-path",
+        help="Chemin vers TreeTagger (auto-détecté si non spécifié)"
     )
 
     # === Commande EXPORT ===
@@ -160,8 +167,8 @@ Exemples:
     )
     export_parser.add_argument(
         "--format", "-f",
-        choices=["clean", "diplomatic", "annotated"],
-        default="clean",
+        choices=["clean", "diplomatic", "annotated", "scholarly"],
+        default="scholarly",
         help="Format de sortie"
     )
     export_parser.add_argument(
@@ -173,6 +180,37 @@ Exemples:
         "--no-combined",
         action="store_true",
         help="Ne pas générer le texte complet"
+    )
+
+    # === Commande RE-ENRICH ===
+    reenrich_parser = subparsers.add_parser(
+        "re-enrich",
+        help="Ré-enrichit des fichiers texte corrigés"
+    )
+    reenrich_parser.add_argument(
+        "--input", "-i",
+        required=True,
+        help="Dossier de pages corrigées ou fichier texte_complet.txt"
+    )
+    reenrich_parser.add_argument(
+        "--output", "-o",
+        required=True,
+        help="Fichier vertical de sortie"
+    )
+    reenrich_parser.add_argument(
+        "--config", "-c",
+        help="Fichier de configuration YAML"
+    )
+    reenrich_parser.add_argument(
+        "--pattern",
+        default="*.txt",
+        help="Pattern de fichiers à traiter (si dossier)"
+    )
+    reenrich_parser.add_argument(
+        "--lemmatizer",
+        choices=["treetagger", "cltk", "simple"],
+        default="treetagger",
+        help="Lemmatiseur à utiliser"
     )
 
     # === Commande RUN (pipeline complet) ===
@@ -265,6 +303,8 @@ def cmd_enrich(args) -> int:
     # Applique les options CLI
     config.enrichment.lemmatizer = args.lemmatizer
     config.enrichment.language = args.language
+    if hasattr(args, 'treetagger_path') and args.treetagger_path:
+        config.enrichment.treetagger_path = args.treetagger_path
 
     # Crée le processeur
     processor = EnrichmentProcessor(config)
@@ -315,6 +355,19 @@ def cmd_export(args) -> int:
     return 0
 
 
+def sanitize_filename(name: str) -> str:
+    """Nettoie un nom pour l'utiliser comme nom de fichier/dossier"""
+    import re
+    # Remplace les caractères interdits
+    name = re.sub(r'[<>:"/\\|?*]', '_', name)
+    # Remplace les apostrophes doubles par des simples
+    name = name.replace("''", "'")
+    # Limite la longueur
+    if len(name) > 100:
+        name = name[:100]
+    return name.strip()
+
+
 def cmd_run(args) -> int:
     """Exécute le pipeline complet"""
     logger.info("=== PIPELINE COMPLET ===")
@@ -329,8 +382,17 @@ def cmd_run(args) -> int:
             logger.error(f"Erreur de configuration: {error}")
         return 1
 
-    output_folder = Path(args.output)
+    # Utilise le titre du corpus pour nommer le dossier et les fichiers
+    corpus_title = config.corpus.title or "corpus"
+    corpus_name = sanitize_filename(corpus_title)
+
+    # Crée le dossier de sortie avec le nom du corpus
+    base_output = Path(args.output)
+    output_folder = base_output / corpus_name
     output_folder.mkdir(parents=True, exist_ok=True)
+
+    logger.info(f"Corpus: {corpus_title}")
+    logger.info(f"Dossier de sortie: {output_folder}")
 
     # === ÉTAPE 1 ===
     logger.info("--- Étape 1: Extraction XML ---")
@@ -351,11 +413,11 @@ def cmd_run(args) -> int:
     annotated_pages = processor.process_pages(extracted_pages)
 
     if args.keep_intermediate:
-        intermediate_vertical = output_folder / "intermediate" / "corpus.vertical.txt"
+        intermediate_vertical = output_folder / "intermediate" / f"{corpus_name}.vertical.txt"
         processor.save_vertical(annotated_pages, intermediate_vertical)
 
-    # Sauvegarde le vertical final
-    vertical_path = output_folder / "corpus.vertical.txt"
+    # Sauvegarde le vertical final avec le nom du corpus
+    vertical_path = output_folder / f"{corpus_name}.vertical.txt"
     processor.save_vertical(annotated_pages, vertical_path)
 
     # === ÉTAPE 3 ===
@@ -372,6 +434,42 @@ def cmd_run(args) -> int:
     logger.info(f"  Pages texte: {pages_folder}")
     logger.info("=" * 50)
 
+    return 0
+
+
+def cmd_reenrich(args) -> int:
+    """Exécute la commande re-enrich"""
+    logger.info("=== RÉ-ENRICHISSEMENT ===")
+
+    # Charge ou crée la config
+    if args.config:
+        config = Config.from_yaml(args.config)
+    else:
+        config = Config()
+
+    # Applique les options CLI
+    if hasattr(args, 'lemmatizer') and args.lemmatizer:
+        config.enrichment.lemmatizer = args.lemmatizer
+
+    # Crée le ré-enrichisseur
+    reenricher = ReEnricher(config)
+
+    # Ré-enrichit
+    output_path = Path(args.output)
+    if output_path.suffix == "":
+        output_path = output_path / "corpus_corrige.vertical.txt"
+
+    pages = reenricher.reenrich_and_save(
+        args.input,
+        output_path,
+        pattern=args.pattern
+    )
+
+    if not pages:
+        logger.error("Aucune page ré-enrichie")
+        return 1
+
+    logger.info(f"✓ {len(pages)} pages ré-enrichies → {output_path}")
     return 0
 
 
@@ -420,6 +518,8 @@ def main() -> int:
         return cmd_enrich(args)
     elif args.command == "export":
         return cmd_export(args)
+    elif args.command == "re-enrich":
+        return cmd_reenrich(args)
     elif args.command == "run":
         return cmd_run(args)
     elif args.command == "init":

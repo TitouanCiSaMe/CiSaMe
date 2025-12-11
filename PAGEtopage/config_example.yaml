@@ -7,10 +7,10 @@
 # Ces informations seront incluses dans chaque balise <doc>
 corpus:
   edition_id: "Edi-7"
-  title: "Magistri Honorii Summa ''De iure canonico tractaturus''"
+  title: "Magistri Honorii Summa 'De iure canonico tractaturus'"
   language: "Latin"
   author: "Honorius"
-  source: "Summa ''De iure canonico tractaturus''"
+  source: "Summa 'De iure canonico tractaturus'"
   type: "Droit canonique"
   date: "1188"
   lieu: "France"
@@ -31,9 +31,14 @@ extraction:
   default_running_title: "No running title"
 
 # Configuration de l'enrichissement (Étape 2)
+# IMPORTANT: Choix du lemmatiseur
+#   - treetagger : RECOMMANDÉ (~1 min pour 350 pages)
+#   - cltk       : Précis mais TRÈS LENT (~1h+ pour 350 pages)
+#   - simple     : Pas de lemmatisation (instantané)
 enrichment:
-  lemmatizer: cltk               # "cltk" ou "simple"
-  language: lat                  # Code langue CLTK (lat = latin)
+  lemmatizer: treetagger         # "treetagger" (recommandé), "cltk", ou "simple"
+  language: lat                  # Code langue (lat = latin)
+  Optionnel: "/home/titouan/tree-tagger-linux-3.2/" # treetagger_path: /opt/treetagger  # Optionnel: chemin TreeTagger (auto-détecté)
   sentence_delimiters:           # Caractères de fin de phrase
     - "."
     - "?"
@@ -41,7 +46,7 @@ enrichment:
 
 # Configuration de l'export (Étape 3)
 export:
-  format: clean                  # "clean", "diplomatic", "annotated"
+  format: scholarly                  # "clean", "diplomatic", "annotated"
   generate_index: true           # Générer pages_index.json
   generate_combined: true        # Générer texte_complet.txt
   page_filename_pattern: "page_{number:04d}_{folio}.txt"

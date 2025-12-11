@@ -69,10 +69,10 @@ class ExtractionConfig:
 @dataclass
 class EnrichmentConfig:
     """Configuration de l'étape 2 : Enrichissement"""
-    lemmatizer: str = "cltk"  # "cltk", "stanza", ou "treetagger"
-    language: str = "lat"  # Code langue pour CLTK
+    lemmatizer: str = "treetagger"  # "treetagger" (recommandé), "cltk" (lent), ou "simple"
+    language: str = "lat"  # Code langue
     sentence_delimiters: List[str] = field(default_factory=lambda: [".", "?", "!"])
-    treetagger_path: Optional[str] = None  # Si lemmatizer == "treetagger"
+    treetagger_path: Optional[str] = None  # Chemin TreeTagger (auto-détecté si non spécifié)
 
 
 @dataclass
@@ -238,15 +238,14 @@ class Config:
             errors.append(f"column_mode invalide: {self.extraction.column_mode} (attendu: single ou dual)")
 
         # Validation enrichment
-        if self.enrichment.lemmatizer not in ("cltk", "stanza", "treetagger"):
-            errors.append(f"lemmatizer invalide: {self.enrichment.lemmatizer} (attendu: cltk, stanza, ou treetagger)")
+        if self.enrichment.lemmatizer not in ("treetagger", "cltk", "simple"):
+            errors.append(f"lemmatizer invalide: {self.enrichment.lemmatizer} (attendu: treetagger, cltk, ou simple)")
 
-        if self.enrichment.lemmatizer == "treetagger" and not self.enrichment.treetagger_path:
-            errors.append("treetagger_path requis si lemmatizer == 'treetagger'")
+        # Note: treetagger_path est optionnel (auto-détecté si non spécifié)
 
         # Validation export
-        if self.export.format not in ("clean", "diplomatic", "annotated"):
-            errors.append(f"format invalide: {self.export.format} (attendu: clean, diplomatic, ou annotated)")
+        if self.export.format not in ("clean", "diplomatic", "annotated", "scholarly"):
+            errors.append(f"format invalide: {self.export.format} (attendu: clean, diplomatic, annotated, ou scholarly)")
 
         # Validation pagination
         if self.pagination.starting_page_number < 0:
