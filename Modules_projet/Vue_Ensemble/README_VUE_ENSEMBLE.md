@@ -82,14 +82,18 @@ Corrections manuelles et validation :
 - Format : NOMÉDITION_ID.xml
 
 ### MODULE 6 (🚧 Développement)
-**PAGEtopage** : Enrichissement linguistique
+**PAGEtopage** : Enrichissement linguistique (4 étapes)
 - Extract : XML → JSON
-- Enrich : **TreeTagger** (lemmatisation, POS-tagging)
-- Export : **2 formats**
-  - texte_clean.txt (normalisé, lemmatisé)
+- Enrich : **TreeTagger** (lemmatisation, POS-tagging, installation automatique)
+- Export : **4 formats**
+  - scholarly (format académique avec en-tête complet, recommandé)
+  - clean (texte brut lisible)
+  - diplomatic (avec annotations inline)
+  - annotated (format tabulaire)
   - corpus_vertical.txt (format vertical : Mot | POS | Lemme)
+- Re-enrich : Optionnel, correction manuelle + régénération corpus vertical
 - Alimenté par : Module Métadonnées (Heurist)
-- Technologies : Python 3.10+, TreeTagger, PyYAML
+- Technologies : Python 3.10+, TreeTagger, treetaggerwrapper, PyYAML
 
 ### MODULE 7 - NoSketch-Engine
 **Concordancier** : Corpus interrogeable
@@ -185,7 +189,7 @@ mmdc -i flowchart-pipeline-complet-integre.mmd -o pipeline.svg
 **Modifications récentes :**
 - ✅ Module 9 : Ajout Visualisation et Générateur de Requêtes (canon-law-toolkit)
 - ✅ Module 5 : Refonte complète avec Oxygène XML Editor
-- ✅ Module 6 : Migration CLTK → TreeTagger, 2 formats au lieu de 3
+- ✅ Module 6 : Migration CLTK → TreeTagger, 4 formats (scholarly/clean/diplomatic/annotated) + étape 4 ré-enrichissement optionnelle
 - ✅ Module 7 : Reformatage complet NoSketch Engine
 - ✅ Module 8 : Remplacement Algo Hécate → Connecteur Nakala uniquement
 - ✅ Module Métadonnées : Reformatage complet (~150 éditions)

@@ -96,13 +96,17 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 **Statut:** 🚧 En développement
 
 **Contenu:**
-- Extract : XML PAGE → JSON
-- Enrich : **TreeTagger** (lemmatisation, POS-tagging)
-- Export : 2 formats
-  - texte_clean.txt (normalisé, lemmatisé)
+- Étape 1 - Extract : XML PAGE → JSON
+- Étape 2 - Enrich : **TreeTagger** (lemmatisation, POS-tagging, installation automatique)
+- Étape 3 - Export : 4 formats
+  - scholarly (format académique recommandé avec en-tête complet)
+  - clean (texte brut lisible)
+  - diplomatic (annotations inline)
+  - annotated (format tabulaire)
   - corpus_vertical.txt (Mot | POS | Lemme)
+- Étape 4 - Re-enrich (optionnel) : Correction manuelle + régénération vertical
 - Alimenté par config.yaml (métadonnées Heurist)
-- Technologies : Python 3.10+, TreeTagger, PyYAML
+- Technologies : Python 3.10+, TreeTagger, treetaggerwrapper, PyYAML
 
 ### MODULE 7 - NoSketch-Engine
 **Fichier:** `Modules_projet/Module_7_NoSketch_Engine/flowchart-module7-nosketch.mmd`

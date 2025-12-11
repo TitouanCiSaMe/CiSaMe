@@ -17,7 +17,7 @@ MODULE 6 est un pipeline Python d'enrichissement linguistique pour les textes la
 
 ---
 
-## 🔄 Pipeline en 3 étapes
+## 🔄 Pipeline en 4 étapes (3 + correction optionnelle)
 
 ### **ÉTAPE 1 : EXTRACTION**
 
@@ -48,8 +48,9 @@ MODULE 6 est un pipeline Python d'enrichissement linguistique pour les textes la
 1. Chargement du JSON extrait
 2. **Découpage en phrases** : Détection des limites de phrases
 3. **Tokenisation** : Séparation en mots individuels
-4. **Traitement CLTK** : Lemmatisation + POS-tagging
-   - CLTK = Classical Language Toolkit (spécialisé langues anciennes)
+4. **Traitement TreeTagger** : Lemmatisation + POS-tagging
+   - TreeTagger = Outil rapide et fiable pour le latin
+   - **Installation automatique** lors de la première utilisation (~20 Mo)
    - Supporte Latin et Français
 5. Génération du format **vertical** : 1 mot par ligne avec annotations
 
@@ -57,19 +58,19 @@ MODULE 6 est un pipeline Python d'enrichissement linguistique pour les textes la
 ```
 Mot      POS    Lemme
 ---      ---    -----
-In       ADP    in
-nomine   NOUN   nomen
-Patris   NOUN   pater
+In       PRP    in
+nomine   NOM    nomen
+Patris   NOM    pater
 ```
 
 **Technologies** :
-- CLTK : Lemmatisation latin/français
+- TreeTagger : Lemmatisation latin/français (auto-installé)
 - Algorithmes de segmentation de phrases
 - Tokenisation adaptée au latin médiéval
 
 **Sortie** : `corpus.vertical.txt`
 
-⚠️ **Note** : Première exécution lente (téléchargement des modèles CLTK), puis rapide.
+⚠️ **Note** : TreeTagger s'installe automatiquement lors de la première utilisation (~1 minute pour 350 pages ensuite).
 
 ---
 
@@ -77,19 +78,25 @@ Patris   NOUN   pater
 
 **Objectif** : Générer les fichiers exploitables dans différents formats
 
-**3 formats disponibles** :
+**4 formats disponibles** :
 
-1. **Clean** : Texte brut lisible
+1. **Scholarly** (recommandé) : Format académique avec en-tête complet
+   - En-tête détaillé avec toutes les métadonnées
+   - Texte en lignes continues
+   - Pour publications et ré-enrichissement
+   - Préserve parfaitement les métadonnées
+
+2. **Clean** : Texte brut lisible
    - Pour lecture humaine
    - Pas d'annotations visibles
    - Texte fluide
 
-2. **Diplomatic** : Avec annotations inline
+3. **Diplomatic** : Avec annotations inline
    - Annotations semi-visibles
    - Conserve structure originale
    - Pour édition critique
 
-3. **Annotated** : Format tabulaire complet
+4. **Annotated** : Format tabulaire complet
    - Toutes les annotations
    - Format machine-readable
    - Pour analyse linguistique
@@ -122,6 +129,46 @@ ville: "Paris"
 
 ---
 
+### **ÉTAPE 4 : RÉ-ENRICHISSEMENT (Optionnel)**
+
+**Objectif** : Corriger manuellement le texte et regénérer le corpus vertical
+
+⚠️ **Note** : Cette étape est **optionnelle** et ne s'utilise que si vous devez corriger des coquilles ou erreurs OCR dans le texte final.
+
+**Cas d'usage** :
+- Corriger des erreurs OCR/HTR
+- Fixer des fautes de transcription
+- Améliorer la qualité du texte final
+- Régénérer le corpus vertical avec les corrections
+
+**Processus** :
+1. **Correction manuelle** : Édition des fichiers texte (format scholarly)
+   - Ouvrir les fichiers dans un éditeur de texte
+   - Corriger les coquilles, erreurs OCR, etc.
+   - Sauvegarder les fichiers corrigés
+2. **Parse format scholarly** : Extraction du texte et des métadonnées
+   - Lecture des en-têtes détaillés
+   - Préservation de toutes les métadonnées
+3. **Re-tokenisation** : Nouveau découpage en mots
+4. **Re-lemmatisation** : TreeTagger sur le texte corrigé
+   - Régénération des lemmes et POS tags
+5. Génération du nouveau corpus vertical avec corrections
+
+**Technologies** :
+- Parser scholarly : Extraction texte + métadonnées
+- TreeTagger : Re-lemmatisation automatique
+- Préservation intégrale des métadonnées
+
+**Sortie** : `corpus_corrige.vertical.txt`
+
+**Avantages** :
+- Permet de corriger facilement dans des fichiers texte lisibles
+- Régénère automatiquement les annotations linguistiques
+- Préserve toutes les métadonnées du corpus
+- Pas besoin de revenir aux XML sources
+
+---
+
 ## 💻 Utilisation
 
 ### Installation
@@ -131,7 +178,10 @@ ville: "Paris"
 Python 3.10 ou supérieur
 
 # Dépendances
-pip install cltk pyyaml lxml
+pip install pyyaml treetaggerwrapper
+
+# TreeTagger s'installe automatiquement
+# Pas de configuration manuelle nécessaire
 ```
 
 ### Configuration
@@ -151,17 +201,20 @@ pip install cltk pyyaml lxml
 ### Commandes CLI
 
 ```bash
-# Pipeline complet (3 étapes)
-python -m PAGEtopage run --config config.yaml
+# Pipeline complet (3 étapes obligatoires)
+python -m PAGEtopage run --input ./xml_pages/ --output ./output/ --config config.yaml
 
 # Étape 1 seule (extraction)
-python -m PAGEtopage extract --config config.yaml
+python -m PAGEtopage extract --input ./xml_pages/ --output ./extracted.json
 
 # Étape 2 seule (enrichissement)
-python -m PAGEtopage enrich --config config.yaml
+python -m PAGEtopage enrich --input ./extracted.json --output ./corpus.vertical.txt
 
 # Étape 3 seule (export)
-python -m PAGEtopage export --config config.yaml
+python -m PAGEtopage export --input ./corpus.vertical.txt --output ./pages/ --format scholarly
+
+# Étape 4 (optionnelle) : ré-enrichissement après correction
+python -m PAGEtopage re-enrich --input ./pages_corrigees/ --output ./corpus_corrige.vertical.txt --config config.yaml
 ```
 
 ---
@@ -225,16 +278,18 @@ Les fichiers verticaux générés par PAGEtopage sont ensuite :
 
 ## 📊 Performances et statistiques
 
-**Vitesse de traitement** : 100-1000 pages/minute (selon complexité)
+**Vitesse de traitement** : ~1 minute pour 350 pages (après installation de TreeTagger)
 
-**Taux d'automatisation** : ~95%
+**Taux d'automatisation** : ~100%
 - Extraction : 100% automatique
-- Enrichissement : 100% automatique (après config)
+- Enrichissement : 100% automatique (TreeTagger auto-installé)
 - Export : 100% automatique
+- Ré-enrichissement : 100% automatique (après corrections manuelles)
 
 **Qualité de lemmatisation** :
-- Latin : Excellente (CLTK optimisé)
+- Latin : Excellente (TreeTagger optimisé)
 - Français : Très bonne
+- Installation automatique : Aucune configuration manuelle
 
 ---
 
@@ -243,7 +298,8 @@ Les fichiers verticaux générés par PAGEtopage sont ensuite :
 **Langage** : Python 3.10+
 
 **Bibliothèques principales** :
-- **CLTK** : Classical Language Toolkit (lemmatisation latin)
+- **TreeTagger** : Lemmatisation latin (installation automatique)
+- **treetaggerwrapper** : Interface Python pour TreeTagger
 - **PyYAML** : Configuration
 - **lxml** : Manipulation XML
 - **JSON** : Formats intermédiaires
@@ -274,13 +330,18 @@ PAGEtopage/
 ├── step2_enrich/            # ÉTAPE 2
 │   ├── processor.py         # Orchestration enrichissement
 │   ├── tokenizer.py         # Tokenisation
-│   └── lemmatizer.py        # Lemmatisation CLTK
+│   ├── lemmatizer.py        # Lemmatisation TreeTagger
+│   └── treetagger_installer.py  # Installation auto TreeTagger
 │
 ├── step3_export/            # ÉTAPE 3
 │   ├── exporter.py          # Export principal
-│   ├── formatters.py        # 3 formats (clean/diplomatic/annotated)
-│   ├── index_generator.py  # Génération index + stats
-│   └── vertical_parser.py  # Lecture format vertical
+│   ├── formatters.py        # 4 formats (scholarly/clean/diplomatic/annotated)
+│   ├── scholarly_parser.py  # Parser format scholarly
+│   ├── index_generator.py   # Génération index + stats
+│   └── vertical_parser.py   # Lecture format vertical
+│
+├── step4_reenrich/          # ÉTAPE 4 (optionnelle)
+│   └── reenricher.py        # Ré-enrichissement après correction
 │
 └── tests/                   # Tests unitaires
     ├── test_step1_extract.py
@@ -350,7 +411,7 @@ output:
 
 ### Première exécution
 
-La première exécution de CLTK télécharge les modèles de langue (~500 MB pour le latin). Prévoir du temps et de l'espace disque.
+TreeTagger s'installe automatiquement lors de la première utilisation (~20 Mo). Les exécutions suivantes sont rapides (~1 minute pour 350 pages).
 
 ### Qualité des données d'entrée
 
@@ -381,13 +442,17 @@ Les métadonnées doivent être **copiées manuellement** depuis Heurist dans co
         ↓
 4. PAGEtopage ÉTAPE 1 → Extraction texte
         ↓
-5. PAGEtopage ÉTAPE 2 → Enrichissement CLTK
+5. PAGEtopage ÉTAPE 2 → Enrichissement TreeTagger
         ↓
-6. PAGEtopage ÉTAPE 3 → Export multi-formats
+6. PAGEtopage ÉTAPE 3 → Export multi-formats (scholarly recommandé)
         ↓
-7. Fusion_txt_NoSketch.py → Préparation NoSketch
+7. (Optionnel) Correction manuelle → Édition des fichiers texte
         ↓
-8. Import NoSketch-Engine → Consultation finale
+8. (Optionnel) PAGEtopage ÉTAPE 4 → Ré-enrichissement
+        ↓
+9. Fusion_txt_NoSketch.py → Préparation NoSketch
+        ↓
+10. Import NoSketch-Engine → Consultation finale
 ```
 
 ---
