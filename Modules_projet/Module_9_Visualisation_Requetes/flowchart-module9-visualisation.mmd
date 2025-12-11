@@ -55,9 +55,28 @@ flowchart TD
     %% BRANCHE 2 : CONCORDANCE ANALYZER - 1 CORPUS
     %% ========================================
     subgraph CONCORD_SINGLE [📊 Concordance Analyzer - Analyse Simple]
-        CS_UPLOAD["📥 Upload fichiers:<br/>• Métadonnées CSV (Edi-XX)<br/>• Export NoSketch Engine<br/>⚠️ Cocher: ID édition + n° pages"]
+        subgraph CS_PREPARE [🔄 Préparation Export NoSketch]
+            CS_SEARCH["🔍 Recherche sur NoSketch-Engine<br/>Lancement requête CQL"]
+
+            CS_RESULTS["📋 Résultats de recherche<br/>Concordances KWIC affichées"]
+
+            CS_SELECT["✅ Sélection des résultats<br/>Résultats voulus ou à analyser"]
+
+            CS_METADATA["📝 Enrichissement métadonnées:<br/>☑️ Cocher ID Édition (Edi-XX)<br/>☑️ Cocher n° de pages"]
+
+            CS_EXPORT_PREP["💾 Export CSV enrichi:<br/>• Maximum de contexte<br/>• Tokens AVANT le KWIC<br/>• Tokens APRÈS le KWIC<br/>• Export NoSketch normé"]
+
+            CS_SEARCH --> CS_RESULTS
+            CS_RESULTS --> CS_SELECT
+            CS_SELECT --> CS_METADATA
+            CS_METADATA --> CS_EXPORT_PREP
+        end
+
+        CS_UPLOAD["📥 Upload fichiers préparés:<br/>• Métadonnées CSV (Edi-XX)<br/>• Export NoSketch Engine normé<br/>avec contexte KWIC étendu"]
 
         CS_PERSIST["💾 Persistance automatique:<br/>Données sauvegardées<br/>Restauration au rechargement"]
+
+        CS_EXPORT_PREP --> CS_UPLOAD
 
         CS_ENRICH["🔗 Enrichissement automatique:<br/>• Matching références Edi-XX<br/>• Parsing structure complexe<br/>• Fallback robuste<br/>• Taux de correspondance"]
 
@@ -74,15 +93,34 @@ flowchart TD
         CS_FILTERS --> CS_EXPORT
     end
 
-    DECISION -->|Concordance Analyzer<br/>1 corpus| CS_UPLOAD
+    DECISION -->|Concordance Analyzer<br/>1 corpus| CS_SEARCH
 
     %% ========================================
     %% BRANCHE 3 : CONCORDANCE ANALYZER - COMPARAISON 2 CORPUS
     %% ========================================
     subgraph CONCORD_COMPARE [🔀 Concordance Analyzer - Comparaison]
-        CC_UPLOAD["📥📥 Upload 2 fichiers:<br/>• Corpus A (référence)<br/>• Corpus B (comparaison)<br/>+ Métadonnées CSV"]
+        subgraph CC_PREPARE [🔄 Préparation Exports 2 Corpus]
+            CC_SEARCH["🔍🔍 Recherches sur NoSketch-Engine<br/>Corpus A + Corpus B"]
+
+            CC_RESULTS["📋 Résultats de recherche<br/>Concordances des 2 corpus"]
+
+            CC_SELECT["✅ Sélection des résultats<br/>Pour chaque corpus"]
+
+            CC_METADATA["📝 Enrichissement métadonnées:<br/>☑️ Cocher ID Édition (Edi-XX)<br/>☑️ Cocher n° de pages<br/>Pour corpus A et B"]
+
+            CC_EXPORT_PREP["💾 Exports CSV enrichis:<br/>• Maximum de contexte KWIC<br/>• Tokens AVANT/APRÈS<br/>• Exports NoSketch normés"]
+
+            CC_SEARCH --> CC_RESULTS
+            CC_RESULTS --> CC_SELECT
+            CC_SELECT --> CC_METADATA
+            CC_METADATA --> CC_EXPORT_PREP
+        end
+
+        CC_UPLOAD["📥📥 Upload 2 fichiers préparés:<br/>• Corpus A (référence) + métadonnées<br/>• Corpus B (comparaison) + métadonnées<br/>Exports NoSketch normés avec contexte"]
 
         CC_ENRICH["🔗 Enrichissement des 2 corpus<br/>Matching automatique Edi-XX"]
+
+        CC_EXPORT_PREP --> CC_UPLOAD
 
         CC_COMPARE["⚖️ Analyse comparative:<br/>• Volumes (tailles corpus)<br/>• Auteurs (répartitions)<br/>• Domaines juridiques<br/>• Temporalité (évolutions)<br/>• Terminologie (KWIC)<br/>• Charts comparatifs parallèles"]
 
@@ -96,7 +134,7 @@ flowchart TD
         CC_FILTERS --> CC_EXPORT
     end
 
-    DECISION -->|Concordance Analyzer<br/>Comparaison 2 corpus| CC_UPLOAD
+    DECISION -->|Concordance Analyzer<br/>Comparaison 2 corpus| CC_SEARCH
 
     %% ========================================
     %% SORTIE
@@ -157,6 +195,7 @@ flowchart TD
     classDef config fill:#b2dfdb,stroke:#00796b,stroke-width:2px
     classDef concordSingle fill:#fff9c4,stroke:#f57f17,stroke-width:2px
     classDef concordCompare fill:#ffecb3,stroke:#ff6f00,stroke-width:2px
+    classDef prepare fill:#ffe0b2,stroke:#ef6c00,stroke-width:2px
     classDef process fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
     classDef export fill:#a5d6a7,stroke:#2e7d32,stroke-width:2px
     classDef note fill:#fff9c4,stroke:#f57f17,stroke-width:1px,stroke-dasharray: 5 5
@@ -168,6 +207,8 @@ flowchart TD
     class QG_CONFIG,CS_FILTERS,CC_FILTERS config
     class CS_UPLOAD,CS_PERSIST,CS_ENRICH,CS_ANALYZE concordSingle
     class CC_UPLOAD,CC_ENRICH,CC_COMPARE concordCompare
+    class CS_SEARCH,CS_RESULTS,CS_SELECT,CS_METADATA,CS_EXPORT_PREP prepare
+    class CC_SEARCH,CC_RESULTS,CC_SELECT,CC_METADATA,CC_EXPORT_PREP prepare
     class QG_COPY,QG_DIRECT,CS_EXPORT,CC_EXPORT export
     class note1,note2,note3,note4,note5 note
 
@@ -175,6 +216,8 @@ flowchart TD
     style QG_TYPES fill:#bbdefb,stroke:#1976d2,stroke-width:2px
     style QG_EXPORT fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
     style CONCORD_SINGLE fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    style CS_PREPARE fill:#ffe0b2,stroke:#ef6c00,stroke-width:2px,stroke-dasharray: 3 3
     style CONCORD_COMPARE fill:#ffe0b2,stroke:#ff6f00,stroke-width:2px
+    style CC_PREPARE fill:#ffccbc,stroke:#d84315,stroke-width:2px,stroke-dasharray: 3 3
     style STATS fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 3 3
     style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
