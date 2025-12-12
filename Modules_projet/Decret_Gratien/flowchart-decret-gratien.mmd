@@ -101,12 +101,14 @@ flowchart TD
     note3[💡 Münchener:<br/>Version numérisée<br/>Accès web gratuit<br/>Texte extractible]
     note4[💡 Algorithme extraction:<br/>Parsing intelligent<br/>Reconnaissance structure<br/>Python + Regex]
     note5[💡 ID unique:<br/>Traçabilité complète<br/>Lien allégation ↔ canon<br/>Format: Grat_XXXX]
+    note6[💡 Structure dossiers:<br/>Parties → Distinctions →<br/>Causae → Quaestiones<br/>Hiérarchie logique du Décret]
 
     AL_SOURCE -.-> note1
     FR_SOURCE1 -.-> note2
     FR_SOURCE2 -.-> note3
     AL_ALGO -.-> note4
     AL_AJOUT_ID -.-> note5
+    FR_STRUCTURE -.-> note6
 
     %% ========================================
     %% STATISTIQUES
@@ -155,7 +157,7 @@ flowchart TD
     class AL_VALIDATION,FR_VALIDATION validation
     class AL_FINAL,FR_FINAL final
     class CONVERGENCE convergence
-    class note1,note2,note3,note4,note5 note
+    class note1,note2,note3,note4,note5,note6 note
 
     style ALLEGATIONS_FLOW fill:#fff8e1,stroke:#f57f17,stroke-width:2px
     style FRIEDBERG_FLOW fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
