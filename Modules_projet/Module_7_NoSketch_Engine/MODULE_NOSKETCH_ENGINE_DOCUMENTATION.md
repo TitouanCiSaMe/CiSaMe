@@ -337,7 +337,7 @@ Ces statistiques sont accessibles via l'interface web NoSketch-Engine.
 5. Tester et réexporter
 
 ### Mise à jour de lemmatisation
-1. Retraiter les textes sources via MODULE 6 avec modèles CLTK mis à jour
+1. Retraiter les textes sources via MODULE 6 avec TreeTagger mis à jour
 2. Régénérer tous les fichiers `.vertical.txt`
 3. Refusionner le corpus complet
 4. Tester et réexporter
