@@ -184,7 +184,7 @@ mmdc -i flowchart-pipeline-complet-integre.mmd -o pipeline.svg
 
 ## 🔄 Dernière mise à jour
 
-**Date** : 10 décembre 2024
+**Date** : 12 décembre 2025
 
 **Modifications récentes :**
 - ✅ Module 9 : Ajout Visualisation et Générateur de Requêtes (canon-law-toolkit)
