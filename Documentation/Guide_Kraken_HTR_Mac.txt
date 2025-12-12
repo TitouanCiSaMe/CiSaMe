@@ -1,0 +1,871 @@
+================================================================================
+        GUIDE D'UTILISATION DE KRAKEN SUR MAC POUR LE FINE-TUNING HTR
+================================================================================
+
+Version : 1.0
+Date : 25/11/2024
+Kraken sur HPC : version 4.3.13
+
+================================================================================
+                            TABLE DES MATIÈRES
+================================================================================
+
+1. Introduction
+2. Organisation des répertoires sur le centre de calcul
+3. Création de l'arborescence
+4. Navigation entre les répertoires
+5. Préparation de la vérité de terrain sur Mac
+6. Transfert de données vers le centre de calcul (scp)
+7. Compilation de la vérité de terrain
+8. Scripts de fine-tuning
+9. Soumission et suivi des jobs
+10. Récupération des modèles
+11. Utilisation des modèles en local
+12. Workflow récapitulatif
+
+
+================================================================================
+                              1. INTRODUCTION
+================================================================================
+
+Kraken est un logiciel OCR optimisé pour les sources historiques et 
+manuscrites. Ce guide se concentre sur le fine-tuning de modèles existants
+pour améliorer la reconnaissance sur vos corpus spécifiques.
+
+Le fine-tuning permet :
+  - D'adapter un modèle général à votre type de document
+  - De gagner du temps par rapport à un entraînement from scratch
+  - D'améliorer la précision sur des écritures spécifiques
+
+Formats de sortie disponibles : ALTO, PageXML, abbyyXML, hOCR
+Documentation officielle : https://kraken.re/main/index.html
+
+
+================================================================================
+                  2. ORGANISATION DES RÉPERTOIRES SUR LE HPC
+================================================================================
+
+Structure recommandée sur le centre de calcul :
+
+~/
+├── Ground_Truth/
+│   ├── Projet_A/
+│   │   ├── page001.xml
+│   │   ├── page001.png
+│   │   ├── page002.xml
+│   │   └── page002.png
+│   ├── Projet_B/
+│   └── Projet_C/
+│
+├── GT_compile/
+│   ├── projet_A.arrow
+│   ├── projet_B.arrow
+│   └── projet_C.arrow
+│
+├── Model_de_base/
+│   ├── model_medieval_latin.mlmodel
+│   ├── model_french_17th.mlmodel
+│   └── segmentation_base.mlmodel
+│
+├── Scripts/
+│   ├── compile_GT.sh
+│   ├── finetune_transcription.sh
+│   └── finetune_segmentation.sh
+│
+└── Repertoire_model_finetune/
+    ├── model_gratian_v1/
+    │   ├── model_best.mlmodel
+    │   ├── slurm-123456.out
+    │   └── training_log.txt
+    ├── model_gratian_v2/
+    └── model_segmentation_canon_law/
+
+
+DESCRIPTION DES RÉPERTOIRES :
+
+Ground_Truth/
+  Contient tous vos ensembles de vérité de terrain organisés par projet.
+  Chaque sous-répertoire contient les fichiers XML et les images associées.
+
+GT_compile/
+  Stocke les versions compilées (.arrow) de vos vérités de terrain.
+  Ces fichiers sont nécessaires pour l'entraînement avec GPU.
+
+Model_de_base/
+  Regroupe tous les modèles pré-entraînés que vous utiliserez comme base
+  pour vos fine-tuning. Ces modèles peuvent provenir de Zenodo ou d'autres
+  projets.
+
+Scripts/
+  Contient tous vos scripts d'entraînement et de compilation.
+  Centralise les scripts pour faciliter leur maintenance.
+
+Repertoire_model_finetune/
+  Stocke les résultats de chaque entraînement dans des sous-répertoires
+  dédiés. Chaque modèle fine-tuné a son propre dossier avec logs et résultats.
+
+
+================================================================================
+                      3. CRÉATION DE L'ARBORESCENCE
+================================================================================
+
+Connexion au centre de calcul :
+
+  ssh votre_login@hpc-login.u-strasbg.fr
+
+ou
+
+  ssh votre_login@hpc-glogin.u-strasbg.fr
+
+
+Une fois connecté, créez l'arborescence complète :
+
+  mkdir -p Ground_Truth
+  mkdir -p GT_compile
+  mkdir -p Model_de_base
+  mkdir -p Scripts
+  mkdir -p Repertoire_model_finetune
+
+Vérification de la création :
+
+  ls -lh ~/
+
+
+Pour créer un nouveau projet (un nouveau dossier…) dans Ground_Truth : mais pas besoin normalement (Titouan l'a dit)
+
+  mkdir -p Ground_Truth/Nom_du_projet
+
+
+CRÉATION D'UN NOUVEAU MODÈLE FINE-TUNÉ :
+
+Chaque fois que vous lancez un nouvel entraînement, créez un sous-répertoire
+dans Repertoire_model_finetune avec un nom descriptif :
+
+  mkdir -p Repertoire_model_finetune/gratian_decree_v1
+  mkdir -p Repertoire_model_finetune/canonical_law_segmentation_v2
+
+Convention de nommage recommandée :
+  - Incluez le corpus : gratian, vulgate, etc.
+  - Incluez le type : transcription, segmentation
+  - Incluez la version : v1, v2, v3
+  
+Exemples :
+  gratian_transcription_v1
+  medieval_latin_seg_v2
+  decretum_fine_tune_v3
+
+
+================================================================================
+                    4. NAVIGATION ENTRE LES RÉPERTOIRES
+================================================================================
+
+COMMANDES DE BASE :
+
+Se déplacer vers un répertoire :
+  cd ~/Ground_Truth
+  cd ~/GT_compile
+  cd ~/Model_de_base
+  cd ~/Scripts
+  cd ~/Repertoire_model_finetune
+
+Revenir au répertoire personnel (home) :
+  cd ~
+  ou simplement
+  cd
+
+Voir où vous êtes actuellement :
+  pwd
+
+Lister le contenu d'un répertoire :
+  ls
+  ls -lh        # avec détails et tailles lisibles
+  ls -lht       # trié par date de modification
+
+Remonter d'un niveau :
+  cd ..
+
+Descendre dans un sous-répertoire :
+  cd Ground_Truth/Projet_A
+
+
+EXEMPLES DE NAVIGATION TYPIQUES :
+
+Aller dans un projet spécifique de Ground_Truth :
+  cd ~/Ground_Truth/Projet_Gratian
+
+Voir le contenu du répertoire de compilation :
+  cd ~/GT_compile
+  ls -lh
+
+Accéder aux modèles de base :
+  cd ~/Model_de_base
+  ls -lh *.mlmodel
+
+Vérifier les scripts disponibles :
+  cd ~/Scripts
+  ls -lh
+
+Accéder à un modèle fine-tuné spécifique :
+  cd ~/Repertoire_model_finetune/gratian_v1
+  ls -lh
+
+Retourner rapidement au home depuis n'importe où :
+  cd
+
+
+VÉRIFICATION DU CONTENU :
+
+Compter les fichiers XML dans un projet :
+  cd ~/Ground_Truth/Projet_A
+  ls *.xml | wc -l
+
+Compter les images :
+  ls *.png | wc -l
+
+Voir les fichiers compilés disponibles :
+  ls ~/GT_compile/*.arrow
+
+Voir tous les modèles de base :
+  ls ~/Model_de_base/*.mlmodel
+
+Lister tous les modèles fine-tunés :
+  ls -d ~/Repertoire_model_finetune/*/
+
+
+NETTOYAGE ET GESTION :
+
+Supprimer un fichier :
+  rm ~/GT_compile/ancien_dataset.arrow
+
+Supprimer un répertoire vide :
+  rmdir ~/Repertoire_model_finetune/test_echoue
+
+Supprimer un répertoire et son contenu :
+  rm -r ~/Repertoire_model_finetune/ancien_modele
+
+Vérifier l'espace disque utilisé :
+  diskquota
+  du -sh ~/Ground_Truth/*
+
+
+================================================================================
+              5. PRÉPARATION DE LA VÉRITÉ DE TERRAIN SUR MAC
+================================================================================
+
+ORGANISATION SUR MAC :
+
+Créez une structure claire sur votre Mac :
+
+  ~/HPC_Centre_de_calculs/
+  ├── Exports_eScriptorium:Verite_de_terrain/
+  │   ├── Projet_A/
+  │   ├── Projet_B/
+  │   └── Projet_C/
+  ├── Modeles/
+  │   ├── Modeles_de_base_a_entrainer/
+  │   └── Modele_fine_tune/
+  └── Scripts/
+
+FORMAT DES FICHIERS :
+
+Vos données doivent être au format :
+  - PageXML ou ALTO XML pour les transcriptions
+  - PNG ou JPG pour les images
+  - Correspondance 1:1 entre XML et images
+
+Exemple :
+  page001.xml <-> page001.png
+  page002.xml <-> page002.png
+
+
+VÉRIFICATION AVANT TRANSFERT :
+
+Comptez vos fichiers (Terminal sur Mac) :
+
+  cd ~/HPC_Centre_de_calculs/Exports_eScriptorium:Verite_de_terrain/Projet_A
+  ls *.xml | wc -l
+  ls *.png | wc -l
+
+Les deux nombres doivent être identiques !
+
+Vérifiez la taille totale :
+
+  du -sh ~/HPC_Centre_de_calculs/Exports_eScriptorium:Verite_de_terrain/Projet_A
+
+Vérifiez qu'il n'y a pas de fichiers cachés Mac :
+
+  find . -name "*.DS_Store" -delete
+
+
+================================================================================
+            6. TRANSFERT DE DONNÉES VERS LE CENTRE DE CALCUL (SCP)
+================================================================================
+
+CONNEXION SSH (test) :
+
+  ssh votre_login@hpc-login.u-strasbg.fr
+
+Tapez votre mot de passe. Si la connexion fonctionne, vous pouvez transférer
+vos fichiers.
+
+
+TRANSFERT DE VÉRITÉ DE TERRAIN :
+
+Depuis votre Mac (ouvrez un nouveau Terminal) :
+
+  scp -r ~/HPC_Centre_de_calculs/Exports_eScriptorium:Verite_de_terrain/Projet_A votre_login@hpc-login.u-strasbg.fr:~/Verite_Terrain/
+
+Cela copie tout le répertoire Projet_A dans Verite_Terrain/ sur le HPC.
+
+
+TRANSFERT DE MODÈLES DE BASE :
+
+Pour envoyer un modèle pré-entraîné :
+
+  scp ~/HPC_Centre_de_calculs/Modeles/Modeles_de_base_a_entrainer/model_medieval.mlmodel votre_login@hpc-login.u-strasbg.fr:~/HTR_model/
+
+
+TRANSFERT DE SCRIPTS :
+
+Pour envoyer vos scripts d'entraînement :
+
+  scp ~/HPC_Centre_de_calculs/Scripts/*.sh votre_login@hpc-login.u-strasbg.fr:~/Scripts/
+
+
+VÉRIFICATION DU TRANSFERT :
+
+Connectez-vous au HPC et vérifiez :
+
+  ssh votre_login@hpc-login.u-strasbg.fr
+  cd ~/Verite_Terrain/Projet_A
+  ls -lh
+  ls *.xml | wc -l
+
+Vérifiez votre quota :
+
+  diskquota
+
+ATTENTION : Quota par défaut = 500 Go
+Pour des besoins supérieurs, contactez l'équipe du centre de calcul.
+
+
+================================================================================
+                   7. COMPILATION DE LA VÉRITÉ DE TERRAIN
+================================================================================
+
+POURQUOI COMPILER ?
+
+La compilation convertit vos fichiers XML en format binaire (.arrow) optimisé
+pour l'entraînement GPU. Cela réduit drastiquement le temps d'entraînement.
+
+IMPORTANT : 
+  - La compilation est OBLIGATOIRE pour le fine-tuning de transcription
+  - Elle n'est PAS nécessaire pour le fine-tuning de segmentation
+  - La compilation est INTÉGRÉE dans le script de fine-tuning transcription
+
+
+COMPILATION INTÉGRÉE AU SCRIPT DE FINE-TUNING :
+
+Dans le script finetune_transcription.sh, la compilation est effectuée
+automatiquement AVANT l'entraînement avec la commande suivante :
+
+  ketos compile --random-split 0.8 0.1 0.1 --workers 64 -f xml -o DOSSIER_DE_SORTIE/NOM.arrow GT_CHEMIN/*.xml
+
+  Paramètres :
+    --random-split 0.8 0.1 0.1  : Split automatique des données
+                                  80% entraînement
+                                  10% validation
+                                  10% test
+    --workers 64                : Utilise 64 workers pour accélérer
+    -f xml                      : Format d'entrée (XML)
+    -o DOSSIER_DE_SORTIE        : Fichier de sortie (.arrow)
+    GT_CHEMIN/*.xml             : Tous les fichiers XML source
+
+Le split automatique évite de devoir séparer manuellement vos données
+en ensembles train/validation/test. Kraken le fait de manière aléatoire.
+
+AVANTAGE : Vous n'avez PAS besoin de compiler séparément avant de lancer
+l'entraînement. Le script fait tout d'un coup.
+
+
+MÉTHODE ALTERNATIVE : COMPILATION MANUELLE (si besoin)
+========================================================
+
+Si vous souhaitez compiler manuellement pour tester ou réutiliser :
+
+Connectez-vous au HPC :
+
+  ssh votre_login@hpc-login.u-strasbg.fr
+
+Chargez le module Kraken :
+
+  module load kraken
+
+Compilez avec split automatique :
+
+ketos compile --random-split 0.8 0.1 0.1 --workers 64 -f xml -o DOSSIER_DE_SORTIE/NOM.arrow GT_CHEMIN/*.xml
+
+Vérification :
+
+  ls -lh ~/GT_compile/
+
+
+VÉRIFICATION DE LA COMPILATION :
+
+  cd ~/GT_compile
+  ls -lh
+  
+  # Vous devriez voir vos fichiers .arrow
+
+
+ERREURS COURANTES :
+
+Si vous obtenez une erreur "No such file or directory" :
+  - Vérifiez que le chemin vers Verite_Terrain est correct
+  - Vérifiez que les fichiers XML existent : ls ~/Verite_Terrain/Projet/*.xml
+
+Si la compilation échoue :
+  - Vérifiez que vos XML sont bien formés (valides)
+  - Vérifiez qu'il y a une correspondance image/XML
+  - Consultez les logs d'erreur pour identifier le fichier problématique
+
+Si le split échoue :
+  - Assurez-vous d'avoir au moins 10 fichiers (pour pouvoir faire un split)
+  - Pour moins de 10 fichiers, compilez sans --random-split
+
+
+================================================================================
+                        8. SCRIPTS DE FINE-TUNING
+================================================================================
+
+SCRIPT 1 : FINE-TUNING DE TRANSCRIPTION
+========================================
+
+Créez un fichier finetune_transcription.sh sur votre Mac :
+
+---------------------- finetune_transcription.sh ----------------------
+#! /bin/sh
+
+#SBATCH -p publicgpu          # Partition GPU publique
+#SBATCH -N 1                  # 1 nœud
+#SBATCH -t 05:00:00           # Temps maximum : 5 heures
+#SBATCH --gres=gpu:1          # 1 GPU
+#SBATCH --constraint=gputc    # GPU tensor core
+#SBATCH --mail-type=END       # Email à la fin
+#SBATCH --mail-user=votre.email@unistra.fr
+
+# Chargement du module Kraken
+module load kraken
+
+# Chemins
+GT_PATH=~/Ground_Truth/NOM_PROJET
+DATASET_OUTPUT=~/GT_compile/NOM.arrow
+MODELE_BASE_PATH=~/Model_de_base/NOM_MODELE_BASE.mlmodel
+OUTPUT_DIR=~/Repertoire_model_finetune/NOM_PROJET
+
+# Compilation de la vérité de terrain avec split automatique
+ketos compile --random-split 0.8 0.1 0.1 --workers 64 -f xml -o DOSSIER_DE_SORTIE/NOM.arrow GT_CHEMIN/*.xml
+ketos -v train --optimizer Adam --augment --workers 64 -d cuda:0 --min-epochs 20 -w 0 --quit dumb --pad 24 -w 0 -o Repertoire_model_finetune/NOM_PROJET/NOM_PROJET -s '[1,128,0,1 Cr4,16,32 Do0.1,2 Mp2,2 Cr4,16,32 Do0.1,2 Mp2,2 Cr3,8,64 Do0.1,2 Mp2,2 Cr3,8,64 Do0.1,2 S1(1x0)1,3 Lbx256 Do0.3,2 Lbx256 Do0.3,2 Lbx256 Do0.3]' -f binary -r 0.0001 --resize new -i Model_de_base/NOM_MODELE_BASE.mlmodel GT_compile/NOM.arrow
+
+-----------------------------------------------------------------------
+
+EXPLICATION DES PARAMÈTRES D'ENTRAÎNEMENT :
+
+  ketos -v train
+    -v                          : Mode verbeux (affiche plus de détails)
+    --optimizer Adam            : Optimiseur Adam (recommandé)
+    --augment                   : Active l'augmentation de données
+    --workers 64                : Nombre de workers pour le chargement
+    -d cuda:0                   : Utilise le GPU 0
+    --min-epochs 20             : Minimum 20 époques d'entraînement
+    -w 0                        : Désactive la sauvegarde automatique
+    --quit dumb                 : Arrête si pas d'amélioration (early stopping)
+    --pad 24                    : Padding de 24 pixels
+    -o ${OUTPUT_DIR}            : Répertoire de sortie pour le modèle
+    -s '[...]'                  : Architecture du réseau neuronal
+    -f binary                   : Format du dataset (compilé en .arrow)
+    -r 0.0001                   : Learning rate (taux d'apprentissage)
+    --resize new                : Méthode de redimensionnement
+    -i ${MODELE_BASE_PATH}      : Modèle de base pour le fine-tuning
+    ${DATASET_OUTPUT}           : Dataset compilé à utiliser
+
+  Architecture -s '[...]' :
+    1,128,0,1                   : Input layer
+    Cr4,16,32                   : Convolution 4x4, 16 features, 32 channels
+    Do0.1,2                     : Dropout 10% bidirectionnel
+    Mp2,2                       : Max pooling 2x2
+    Cr3,8,64                    : Convolution 3x3, 8 features, 64 channels
+    S1(1x0)1,3                  : Sommation
+    Lbx256                      : LSTM bidirectionnel 256 unités
+    Do0.3,2                     : Dropout 30% bidirectionnel
+
+  Paramètres modifiables :
+    NOM_PROJET                  : Nom du projet et du modèle final
+    NOM_MODELE_BASE             : Nom du modèle de base (sans .mlmodel)
+    NOM.arrow                   : Nom du fichier compilé 
+    
+  Temps d'entraînement : 5 heures maximum (ajustez si nécessaire)
+
+Exemple concret d'un Script.sh de transcription : 
+
+#! /bin/sh
+
+#SBATCH -p publicgpu          # Partition GPU publique
+#SBATCH -N 1                  # 1 nœud
+#SBATCH -t 05:00:00           # Temps maximum : 5 heures
+#SBATCH --gres=gpu:1          # 1 GPU
+#SBATCH --constraint=gputc    # GPU tensor core
+#SBATCH --mail-type=END       # Email à la fin
+#SBATCH --mail-user=votre.email@unistra.fr
+
+module load kraken
+ketos compile --random-split 0.8 0.1 0.1 --workers 64 -f xml -o GT_compile/Odalricus.arrow Ground_Truth/Odalricus/*.xml
+ketos -v train --optimizer Adam --augment --workers 64 -d cuda:0 --min-epochs 20 -w 0 --quit dumb --pad 24 -w 0 -o Repertoire_model_finetune/Odalricus -s '[1,128,0,1 Cr4,16,32 Do0.1,2 Mp2,2 Cr4,16,32 Do0.1,2 Mp2,2 Cr3,8,64 Do0.1,2 Mp2,2 Cr3,8,64 Do0.1,2 S1(1x0)1,3 Lbx256 Do0.3,2 Lbx256 Do0.3,2 Lbx256 Do0.3]' -f binary -r 0.0001 --resize new -i Model_de_base/tridis_v2_medieval_earlymodern.mlmodel GT_compile/Odalricus.arrow
+
+
+SCRIPT 2 : FINE-TUNING DE SEGMENTATION
+========================================
+
+Créez un fichier finetune_segmentation.sh sur votre Mac :
+
+---------------------- finetune_segmentation.sh ----------------------
+#! /bin/sh
+
+#SBATCH -p publicgpu          # Partition GPU publique
+#SBATCH -N 1                  # 1 nœud
+#SBATCH -t 4:00:00            # Temps maximum : 4 heures
+#SBATCH --gres=gpu:1          # 1 GPU
+#SBATCH --constraint=gputc    # GPU tensor core
+#SBATCH --mail-type=END       # Email à la fin
+#SBATCH --mail-user=votre.email@unistra.fr
+
+# Chargement du module Kraken
+module load kraken
+
+# Chemins
+GT_PATH=~/Ground_Truth/NOM_PROJET
+MODELE_BASE_PATH=~/Model_de_base/NOM_MODELE_BASE.mlmodel
+OUTPUT_DIR=~/Repertoire_model_finetune/NOM_PROJET
+
+# Fine-tuning de segmentation
+ketos segtrain --optimizer Adam --augment --workers 64 -d cuda:0 -f page --min-epochs 60 -w 0 --quit dumb 20 -N 2000 --resize new -i Model_de_base/NOM_MODELE_BASE.mlmodel -o Repertoire_model_finetune/NOM_PROJET/NOM_PROJET -s '[1,1200,0,3 Cr7,7,64,2,2 Gn32 Cr3,3,128,2,2 Gn32 Cr3,3,128 Gn32 Cr3,3,256 Gn32]' -r 0.0001 Ground_Truth/NOM_PROJET/*.xml
+
+-----------------------------------------------------------------------
+
+EXPLICATION DES PARAMÈTRES DE SEGMENTATION :
+
+  ketos segtrain
+    --optimizer Adam            : Optimiseur Adam
+    --augment                   : Active l'augmentation de données
+    --workers 64                : Nombre de workers
+    -d cuda:0                   : Utilise le GPU 0
+    -f page                     : Format PageXML
+    --min-epochs 60             : Minimum 60 époques (segmentation plus longue)
+    -w 0                        : Désactive sauvegarde automatique
+    --quit dumb 20              : Early stopping après 20 époques sans amélioration
+    -N 2000                     : Nombre d'itérations par époque
+    --resize new                : Redimensionnement pour nouvelle architecture
+    -i ${MODELE_BASE_PATH}      : Modèle de segmentation de base
+    -o ${OUTPUT_DIR}            : Répertoire de sortie
+    -s '[...]'                  : Architecture du réseau de segmentation
+    -r 0.0001                   : Learning rate
+    ${GT_PATH}/*.xml            : Fichiers XML (pas de compilation pour segmentation)
+
+  Architecture -s '[...]' :
+    1,1200,0,3                  : Input layer (hauteur 1200)
+    Cr7,7,64,2,2                : Convolution 7x7, stride 2x2, 64 channels
+    Gn32                        : Group Normalization 32 groupes
+    Cr3,3,128,2,2               : Convolution 3x3, stride 2x2, 128 channels
+    Cr3,3,256                   : Convolution 3x3, 256 channels
+
+  IMPORTANT : La segmentation utilise directement les fichiers XML,
+  PAS de compilation en .arrow nécessaire.
+
+  Paramètres modifiables :
+    NOM_PROJET                  : Nom du projet
+    NOM_MODELE_BASE             : Nom du modèle de segmentation de base
+    
+  Temps d'entraînement : 4 heures maximum
+  
+  
+Exemple concret d'un Script.sh de transcription : 
+
+#! /bin/sh
+
+#SBATCH -p publicgpu   # 'p' pour Partition (file d'attente) public avec des GPU
+#SBATCH -N 1          # 1 nœud, kraken utilisera dans tous les cas 1 seul noeud. 
+#SBATCH -t 4:00:00           # Le job sera tué au bout de 4h
+#SBATCH --gres=gpu:1   # Il y a 4 GPU par nœud, Kraken n’en nécessite qu’un seul
+#SBATCH --constraint=gputc    # Nœuds GPU double précision, nous on va prendre gpu tensor core = puce spécialisé dans le deeplearning
+#SBATCH --mail-type=END       # Réception d'un mail à la fin du job
+#SBATCH --mail-user=brissetsaboureau@unistra.fr
+
+module load kraken
+ketos segtrain --optimizer Adam --augment --workers 64 -d cuda:0 -f page --min-epochs 60 -w 0 --quit dumb 20 -N 2000 --resize new -i Model_de_base/blla.mlmodel -o Repertoire_model_finetune/summa_elegantius/summa_elegantius -s '[1,1200,0,3 Cr7,7,64,2,2 Gn32 Cr3,3,128,2,2 Gn32 Cr3,3,128 Gn32 Cr3,3,256 Gn32]' -r 0.0001 Ground_Truth/summa_elegantius/*.xml
+
+================================================================================
+                    9. SOUMISSION ET SUIVI DES JOBS
+================================================================================
+
+AVANT DE SOUMETTRE :
+
+Connectez-vous au HPC :
+
+  ssh votre_login@hpc-login.u-strasbg.fr
+
+Vérifiez que tout est en place :
+
+  ls ~/Ground_Truth/            # Vérité de terrain présente ?
+  ls ~/Model_de_base/           # Modèle de base présent ?
+  ls ~/Scripts/                 # Scripts présents ?
+
+
+CRÉATION DU RÉPERTOIRE DE SORTIE :
+
+Avant de lancer l'entraînement, créez le répertoire de destination :
+
+  mkdir -p ~/Repertoire_model_finetune/NOM_DU_DOSSIER
+
+SOUMISSION D'UN JOB DE FINE-TUNING TRANSCRIPTION :
+
+  cd ~/Scripts
+  sbatch finetune_transcription.sh
+
+Réponse du système :
+
+  Submitted batch job 123456
+
+Notez ce numéro de job (123456 dans l'exemple).
+
+
+SOUMISSION D'UN JOB DE FINE-TUNING SEGMENTATION :
+
+  cd ~/Scripts
+  sbatch finetune_segmentation.sh
+
+
+SUIVI DE VOS JOBS :
+
+Voir l'état de vos jobs :
+
+  squeue -u votre_login
+
+Affichage typique :
+
+  JOBID PARTITION     NAME     USER ST       TIME  NODES
+  123456  publicgpu finetune_   user  R       5:23      1
+
+  ST = Status :
+    R  = Running (en cours)
+    PD = Pending (en attente)
+    CG = Completing (en finalisation)
+
+
+Voir les détails d'un job spécifique :
+
+  scontrol show job 123456
+
+
+Consulter les logs en temps réel :
+
+  cd 
+  tail -f slurm-123456.out
+
+Pour arrêter l'affichage : Ctrl+C
+
+
+Voir l'historique de vos jobs :
+
+  sacct -u votre_login
+
+
+ANNULER UN JOB :
+
+Si vous devez annuler un job :
+
+  scancel 123456
+
+Pour annuler tous vos jobs :
+
+  scancel -u votre_login
+
+
+COMPRENDRE LES PARTITIONS :
+
+publicgpu :
+  - Accessible à tous les utilisateurs Unistra
+  - Durée maximum : 24 heures
+  - Peut être préempté par des jobs prioritaires
+
+grantgpu :
+  - Sur projet avec quota d'heures
+  - Prioritaire sur publicgpu
+
+ATTENTION : Un job dans publicgpu peut être arrêté et remis en file
+d'attente si un job grantgpu démarre.
+
+
+NOTIFICATIONS EMAIL :
+
+Vous recevrez un email à la fin du job si vous avez configuré :
+
+  #SBATCH --mail-type=END
+  #SBATCH --mail-user=votre.email@unistra.fr
+
+Types de notifications possibles :
+  END       : Fin du job
+  FAIL      : Échec du job
+  BEGIN     : Début du job
+  ALL       : Tous les événements
+
+
+VÉRIFIER LES RÉSULTATS :
+
+Une fois le job terminé :
+
+  cd ~/Repertoire_model_finetune/NOM_DU_DOSSIER
+  ls -lh
+
+Vous devriez voir :
+  - model_best.mlmodel         : Le meilleur modèle
+  - Autres fichiers de checkpoints
+
+
+ERREURS COURANTES :
+
+Job ne démarre pas :
+  - Vérifiez la file : squeue
+  - Ressources disponibles : sinfo
+  - Priorités : sprio
+
+Job échoue immédiatement :
+  - Consultez slurm-123456.out
+  - Vérifiez les chemins dans le script
+  - Vérifiez que le dataset compilé existe
+
+Temps insuffisant :
+  - Augmentez #SBATCH -t 02:00:00 à 04:00:00 ou plus
+
+
+================================================================================
+                    10. RÉCUPÉRATION DES MODÈLES
+================================================================================
+
+LOCALISATION DES MODÈLES SUR LE HPC :
+
+Une fois l'entraînement terminé, connectez-vous :
+
+  ssh votre_login@hpc-login.u-strasbg.fr
+
+Naviguez vers le répertoire du modèle :
+
+  cd ~/Repertoire_model_finetune/NOM_DU_DOSSIER
+  ls -lh
+
+Identifiez le fichier principal :
+
+  model_best.mlmodel
+  ou
+  Le meilleur modèle selon les logs d'exécution (slurm-xxxx.out)
+
+
+TÉLÉCHARGEMENT DU MODÈLE (depuis Mac) :
+
+Ouvrez un Terminal sur votre Mac et exécutez :
+
+  scp votre_login@hpc-login.u-strasbg.fr:~/Repertoire_model_finetune/NOM_DU_DOSSIER/model_best.mlmodel ~/HPC_Centre_de_calculs/Modeles/Modele_fine_tune/
+
+
+TÉLÉCHARGEMENT DE PLUSIEURS FICHIERS :
+
+Pour récupérer tout le contenu du répertoire :
+
+  scp -r votre_login@hpc-login.u-strasbg.fr:~/Repertoire_model_finetune/ ~/HPC_Centre_de_calculs/Modeles/Modele_fine_tune/
+
+
+RÉCUPÉRATION DES LOGS :
+
+Pour analyser les logs d'entraînement :
+
+  scp votre_login@hpc-login.u-strasbg.fr:~/slurm-*.out ~/HPC_Centre_de_calculs/
+
+
+NETTOYAGE SUR LE HPC :
+
+IMPORTANT : Le centre de calcul n'est pas un espace d'archivage.
+
+Une fois vos modèles récupérés et sauvegardés localement :
+
+  ssh votre_login@hpc-login.u-strasbg.fr
+  
+  # Supprimer les fichiers .arrow compilés
+  rm ~/GT_compile/*.arrow
+  
+  # Supprimer les anciens logs
+  rm slurm-*.out
+  
+  # Supprimer un projet de Verite_Terrain terminé
+  rm -r ~/Ground_Truth/NOM_DU_PROJET
+  
+  # Garder uniquement les meilleurs modèles si besoin temporaire
+
+Vérifiez régulièrement votre quota :
+
+  diskquota
+
+Objectif : Garder le minimum sur le HPC, archiver localement et sur Zenodo.
+
+
+================================================================================
+                          RÉSOLUTION DE PROBLÈMES
+================================================================================
+
+PROBLÈME : Job ne démarre pas
+  → Vérifier : squeue
+  → Vérifier : sinfo (ressources disponibles)
+  → Attendre : La file publicgpu peut être occupée
+
+PROBLÈME : Erreur "No such file or directory"
+  → Vérifier les chemins dans le script
+  → Vérifier que les fichiers existent : ls ~/chemin/
+  → Vérifier que vous êtes dans le bon répertoire : pwd
+
+PROBLÈME : Compilation échoue
+  → Vérifier que les XML sont valides
+  → Vérifier la correspondance XML/images
+  → Consulter les logs d'erreur
+
+PROBLÈME : Transfert scp échoue
+  → Vérifier la connexion SSH
+  → Vérifier le chemin de destination
+  → Vérifier le quota : diskquota
+
+PROBLÈME : Modèle ne s'améliore pas
+  → Augmenter le nombre d'epochs
+  → Vérifier la qualité de la GT
+  → Essayer un autre modèle de base
+
+
+================================================================================
+                              RESSOURCES
+================================================================================
+
+Documentation Kraken :
+  https://kraken.re/main/index.html
+
+Documentation Slurm :
+  http://slurm.schedmd.com/man_index.html
+
+Partage de modèles :
+  https://zenodo.org/
+
+Support HPC :
+  Contactez l'équipe du centre de calcul pour assistance
+
+
+================================================================================
+                             FIN DU GUIDE
+================================================================================
+
+Version 1.0 - Créé le 25/11/2024
+Pour toute question : contactez l'équipe du centre de calcul
