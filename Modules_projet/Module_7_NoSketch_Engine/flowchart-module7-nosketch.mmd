@@ -71,8 +71,8 @@ flowchart TD
     subgraph DEPLOY_FLOW [🚀 Déploiement Serveur]
         DEPLOY_SHELL[🔌 Connexion Shell<br/>au serveur HPC]
         DEPLOY_SCP[📤 Export via scp<br/>vers le serveur]
-        DEPLOY_COMPILE[⚙️ Compilation<br/>sur le serveur]
-        DEPLOY_RUN[▶️ Exécution<br/>du concordancier]
+        DEPLOY_COMPILE[⚙️ Compilation<br/>make compile]
+        DEPLOY_RUN[▶️ Exécution<br/>make run]
         DEPLOY_TEST[🧪 Tests<br/>fonctionnels]
         DEPLOY_RESULT[✅ NoSketch Engine<br/>en production]
 

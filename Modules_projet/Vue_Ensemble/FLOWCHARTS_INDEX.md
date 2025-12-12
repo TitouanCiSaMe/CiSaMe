@@ -208,7 +208,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ## 🔄 Dernière Mise à Jour
 
-**Date:** 10 décembre 2024
+**Date:** 12 décembre 2025
 
 **Changements récents:**
 - ✅ Ajout Module 9 : Visualisation et Générateur de Requêtes (canon-law-toolkit)

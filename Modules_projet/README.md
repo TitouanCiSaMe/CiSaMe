@@ -19,32 +19,41 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Description** : Téléchargement des images depuis diverses sources (IIIF, PDF, Hexa, Tuiles) pour 317 manuscrits du corpus
 
 #### [`Module_2/`](./Module_2/)
-**Numérisation et OCR**
+**Méthodes de téléchargement**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
-  - `flowchart-module2.mmd` : Schéma du workflow OCR
-- **Description** : Reconnaissance optique de caractères (Tesseract, Kraken) pour extraction du texte des images
+  - `flowchart-module2.mmd` : Schéma du workflow de téléchargement
+  - `MODULE2_DOCUMENTATION.md` : Documentation complète du module
+- **Description** : Différentes méthodes d'acquisition d'images (IIIF, PDF, Hexadécimale, Tuiles, Manuel)
+- **Script principal** : `download_images.py` (racine du repo)
 
 #### [`Module_3/`](./Module_3/)
-**Segmentation et structuration**
+**Récupération d'éditions de manuscrits**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
-  - `flowchart-module3.mmd` : Schéma du workflow de segmentation
-- **Description** : Découpage et structuration du texte brut en unités sémantiques
+  - `flowchart-module3.mmd` : Schéma du workflow d'acquisition
+  - `MODULE3_DOCUMENTATION.md` : Documentation complète du module
+- **Description** : Acquisition et catégorisation des éditions selon les droits (libre/restreint/secret)
+- **Critères** : Libre = auteur mort +70 ans, Restreint = -70 ans, Secret = jamais publié
 
 #### [`Module_4/`](./Module_4/)
-**Corrections et consolidation**
+**Traitement eScriptorium (Segmentation et Transcription)**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
-  - `flowchart-module4.mmd` : Schéma du workflow de correction
-- **Description** : Validation et correction manuelle/semi-automatique des textes extraits
+  - `flowchart-module4.mmd` : Schéma du workflow de traitement
+  - `MODULE4_DOCUMENTATION.md` : Documentation complète du module
+- **Description** : Segmentation et transcription HTR/OCR via eScriptorium avec entraînement sur HPC
+- **Tutoriels** : [EN](https://escriptorium.readthedocs.io/en/latest/) | [FR](https://lectaurep.hypotheses.org/documentation/prendre-en-main-escriptorium)
+- **Scripts HPC** : Disponibles dans `Documentation/`
 
 #### [`Module_5/`](./Module_5/)
-**Export et archivage**
+**Nettoyage Post-eScriptorium**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
-  - `flowchart-module5.mmd` : Schéma du workflow d'export
-- **Description** : Préparation des données pour archivage et diffusion
+  - `flowchart-module5.mmd` : Schéma du workflow de nettoyage
+  - `MODULE5_DOCUMENTATION.md` : Documentation complète du module
+- **Description** : Nettoyage des fichiers XML PAGE avec Oxygène (XPath + Regex)
+- **Outil** : [Oxygène XML Editor](https://www.oxygenxml.com/) | [Licence d'essai](https://www.oxygenxml.com/xml_editor/register.html?p=editor)
 
 ### 🔸 Modules en développement
 
@@ -98,9 +107,13 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 
 #### [`Decret_Gratien/`](./Decret_Gratien/)
 **Pipeline spécifique au Décret de Gratien**
+- **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-decret-gratien.mmd` : Schéma du workflow dédié
+  - `DECRET_GRATIEN_DOCUMENTATION.md` : Documentation complète du corpus
 - **Description** : Pipeline adapté au format spécifique du Décret de Gratien
+- **Statistiques** : 4 149 fichiers .txt, ~4 000 canons, ~5 Mo
+- **Structure** : Premiere_partie (D.1-D.101), Deuxieme_partie (C.1-C.36/q.X), Troisieme_partie (D.1-D.5)
 - **⚠️ Important** : Ce corpus **ne passe pas** par le MODULE 6 (PAGEtopage), il possède son propre format .txt et est déjà sur NoSketch-Engine
 
 ### 📊 Vues d'ensemble
@@ -150,7 +163,7 @@ interrogeable publiques/privées
 
 - **Langages** : Python 3.10+, Shell
 - **OCR** : Tesseract, Kraken
-- **Enrichissement** : CLTK (Classical Language Toolkit)
+- **Enrichissement** : TreeTagger (lemmatisation, POS-tagging)
 - **Base de données** : Heurist
 - **Stockage** : Seafile (privé), Nakala (public)
 - **Corpus query** : NoSketch-Engine
@@ -227,4 +240,4 @@ Pour mettre à jour cette documentation :
 
 ---
 
-*Dernière mise à jour : 9 décembre 2025*
+*Dernière mise à jour : 12 décembre 2025*
