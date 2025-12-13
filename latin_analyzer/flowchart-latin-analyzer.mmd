@@ -1,0 +1,351 @@
+flowchart TD
+    %% ========================================
+    %% LATIN ANALYZER - ANALYSEUR DE TEXTES LATINS MÉDIÉVAUX
+    %% ========================================
+    %%
+    %% Ce schéma présente le workflow complet de l'analyseur de textes
+    %% latins médiévaux (Version 2.3), un outil automatisé de validation
+    %% et de détection intelligente des erreurs dans les textes latins.
+    %%
+    %% COMMANDES CLI DISPONIBLES :
+    %% ---------------------------
+    %% # Analyser un fichier texte
+    %% python3 latin_analyzer_v2.py -i texte.txt -o resultat.docx
+    %%
+    %% # Analyser des XML Pages (mode single colonne)
+    %% python3 latin_analyzer_v2.py -i corpus_xml/ -o resultat.docx -m xml-single
+    %%
+    %% # Analyser des XML Pages (mode dual - 2 colonnes)
+    %% python3 latin_analyzer_v2.py -i corpus_xml/ -o resultat.docx -m xml-dual
+    %%
+    %% # Avec dictionnaire Du Cange personnalisé
+    %% python3 latin_analyzer_v2.py -i texte.txt -o resultat.docx -d /chemin/ducange.txt
+    %%
+    %% # Avec rapport d'analyse des mots orange (non reconnus)
+    %% python3 latin_analyzer_v2.py -i texte.txt -o resultat.docx --report analyse.txt
+    %%
+    %% LIEN AVEC LES AUTRES MODULES :
+    %% ------------------------------
+    %% Entrée typique : XML Pages depuis Module 4 (eScriptorium) ou Module 5 (Post-traitement)
+    %% Utilisation recommandée : Validation qualité des transcriptions HTR/OCR
+    %% ========================================
+
+    START([🔍 LATIN ANALYZER<br/>Analyseur de textes latins médiévaux<br/>Version 2.3])
+
+    %% ========================================
+    %% INSTALLATION (PRÉREQUIS)
+    %% ========================================
+    subgraph INSTALL [🔧 Installation - Prérequis]
+        INSTALL_TITLE[📦 Installation automatique<br/>via setup.sh]
+        INSTALL_PYCOLLATINUS[📚 PyCollatinus<br/>Lemmatiseur latin classique<br/>~500k formes]
+        INSTALL_DUCANGE[📖 Dictionnaire Du Cange<br/>Latin médiéval<br/>99 917 mots]
+        INSTALL_DEPS[⚙️ Dépendances Python<br/>python-docx, lxml, unidecode]
+        INSTALL_READY[✅ Installation prête<br/>~3 minutes]
+
+        INSTALL_TITLE --> INSTALL_PYCOLLATINUS
+        INSTALL_TITLE --> INSTALL_DUCANGE
+        INSTALL_TITLE --> INSTALL_DEPS
+        INSTALL_PYCOLLATINUS --> INSTALL_READY
+        INSTALL_DUCANGE --> INSTALL_READY
+        INSTALL_DEPS --> INSTALL_READY
+    end
+
+    START -.->|Prérequis| INSTALL
+
+    %% ========================================
+    %% ENTRÉE
+    %% ========================================
+    INPUT_DECISION{Type<br/>d'entrée ?}
+
+    START --> INPUT_DECISION
+
+    %% ========================================
+    %% ÉTAPE 1 : EXTRACTION ET PRÉ-TRAITEMENT
+    %% ========================================
+    subgraph STEP1 [📄 ÉTAPE 1 : Extraction et Pré-traitement]
+        %% Branche XML
+        XML_DECISION{Mode<br/>colonnes ?}
+        XML_SINGLE[📄 XML Single<br/>1 colonne]
+        XML_DUAL[📄📄 XML Dual<br/>2 colonnes]
+        XML_PARSE[🔍 Extraction MainZone<br/>PageXMLParser]
+        XML_LINES[📝 Lignes extraites]
+
+        %% Branche TXT
+        TXT_READ[📖 Lecture fichier TXT<br/>Texte brut]
+        TXT_LINES[📝 Lignes lues]
+
+        %% Fusion commune
+        MERGE_HYPHENS[🔗 Fusion mots coupés<br/>sancti- + tatis → sanctitatis]
+        STEP1_OUTPUT[✅ Texte pré-traité]
+
+        XML_DECISION -->|single| XML_SINGLE
+        XML_DECISION -->|dual| XML_DUAL
+        XML_SINGLE --> XML_PARSE
+        XML_DUAL --> XML_PARSE
+        XML_PARSE --> XML_LINES
+        XML_LINES --> MERGE_HYPHENS
+
+        TXT_READ --> TXT_LINES
+        TXT_LINES --> MERGE_HYPHENS
+
+        MERGE_HYPHENS --> STEP1_OUTPUT
+    end
+
+    INPUT_DECISION -->|XML Pages| XML_DECISION
+    INPUT_DECISION -->|Fichier TXT| TXT_READ
+
+    %% ========================================
+    %% ÉTAPE 2 : NORMALISATION
+    %% ========================================
+    subgraph STEP2 [🔄 ÉTAPE 2 : Normalisation]
+        NORM_UV[🔤 Normalisation u/v<br/>uel → vel<br/>uidetur → videtur]
+        NORM_IJ[🔤 Normalisation i/j<br/>iam → jam<br/>iudicium → judicium]
+        FILTER_ROMAN[🔢 Filtrage chiffres romains<br/>xuiii., uii., ui.<br/>exclus de l'analyse]
+        STEP2_OUTPUT[✅ Texte normalisé]
+
+        NORM_UV --> NORM_IJ
+        NORM_IJ --> FILTER_ROMAN
+        FILTER_ROMAN --> STEP2_OUTPUT
+    end
+
+    STEP1_OUTPUT --> NORM_UV
+
+    %% ========================================
+    %% ÉTAPE 3 : ANALYSE MULTI-SOURCES
+    %% ========================================
+    subgraph STEP3 [🧠 ÉTAPE 3 : Analyse Multi-Sources]
+        ANALYSIS_START[📖 Pour chaque mot<br/>Contexte ±3 mots]
+
+        %% Analyse PyCollatinus
+        COLLATINUS_TITLE[🏛️ PyCollatinus]
+        COLLATINUS_TEST[🔍 Test latin classique<br/>Lemmatisation]
+        COLLATINUS_RESULT{Reconnu ?}
+        COLLATINUS_YES[✅ +30 points<br/>Latin classique valide]
+        COLLATINUS_NO[❌ 0 points]
+
+        %% Analyse Du Cange
+        DUCANGE_TITLE[📖 Du Cange]
+        DUCANGE_TEST[🔍 Test latin médiéval<br/>Dictionnaire 99k mots]
+        DUCANGE_RESULT{Présent ?}
+        DUCANGE_YES[✅ +40 points<br/>Latin médiéval valide]
+        DUCANGE_NO[❌ 0 points]
+
+        ANALYSIS_START --> COLLATINUS_TITLE
+        COLLATINUS_TITLE --> COLLATINUS_TEST
+        COLLATINUS_TEST --> COLLATINUS_RESULT
+        COLLATINUS_RESULT -->|Oui| COLLATINUS_YES
+        COLLATINUS_RESULT -->|Non| COLLATINUS_NO
+
+        ANALYSIS_START --> DUCANGE_TITLE
+        DUCANGE_TITLE --> DUCANGE_TEST
+        DUCANGE_TEST --> DUCANGE_RESULT
+        DUCANGE_RESULT -->|Oui| DUCANGE_YES
+        DUCANGE_RESULT -->|Non| DUCANGE_NO
+
+        STEP3_OUTPUT[📊 Résultats combinés<br/>pour chaque mot]
+
+        COLLATINUS_YES --> STEP3_OUTPUT
+        COLLATINUS_NO --> STEP3_OUTPUT
+        DUCANGE_YES --> STEP3_OUTPUT
+        DUCANGE_NO --> STEP3_OUTPUT
+    end
+
+    STEP2_OUTPUT --> ANALYSIS_START
+
+    %% ========================================
+    %% ÉTAPE 4 : SCORING MULTI-CRITÈRES
+    %% ========================================
+    subgraph STEP4 [🎯 ÉTAPE 4 : Scoring Multi-Critères]
+        SCORE_START[🔢 Calcul score 0-100]
+
+        CRIT1[Critère 1:<br/>Latin classique<br/>+30 points]
+        CRIT2[Critère 2:<br/>Latin médiéval<br/>+40 points]
+        CRIT3[Critère 3:<br/>Suffixe productif<br/>-arius, -atio, etc.<br/>+10 points]
+        CRIT4[Critère 4:<br/>Contexte ecclésiastique<br/>abbas, ecclesia, etc.<br/>+5 points]
+        CRIT5[Critère 5:<br/>Variante orthographique<br/>ae↔e, ti↔ci<br/>+10 points]
+
+        SCORE_CALC[➕ Score total<br/>min(somme, 100)]
+
+        COLOR_DECISION{Score ?}
+        COLOR_BLACK[⚫ Noir<br/>Score ≥75<br/>Mot validé]
+        COLOR_ORANGE[🟠 Orange<br/>Score 40-74<br/>À vérifier]
+        COLOR_RED[🔴 Rouge<br/>Score <40<br/>Erreur probable]
+
+        SCORE_START --> CRIT1
+        SCORE_START --> CRIT2
+        SCORE_START --> CRIT3
+        SCORE_START --> CRIT4
+        SCORE_START --> CRIT5
+
+        CRIT1 --> SCORE_CALC
+        CRIT2 --> SCORE_CALC
+        CRIT3 --> SCORE_CALC
+        CRIT4 --> SCORE_CALC
+        CRIT5 --> SCORE_CALC
+
+        SCORE_CALC --> COLOR_DECISION
+        COLOR_DECISION -->|≥75| COLOR_BLACK
+        COLOR_DECISION -->|40-74| COLOR_ORANGE
+        COLOR_DECISION -->|<40| COLOR_RED
+
+        STEP4_OUTPUT[🎨 Attribution couleur<br/>pour chaque mot]
+
+        COLOR_BLACK --> STEP4_OUTPUT
+        COLOR_ORANGE --> STEP4_OUTPUT
+        COLOR_RED --> STEP4_OUTPUT
+    end
+
+    STEP3_OUTPUT --> SCORE_START
+
+    %% ========================================
+    %% ÉTAPE 5 : GÉNÉRATION DES SORTIES
+    %% ========================================
+    subgraph STEP5 [📤 ÉTAPE 5 : Génération des Sorties]
+        OUTPUT_START[📝 Génération des fichiers]
+
+        %% Document DOCX
+        DOCX_GEN[📄 Document DOCX<br/>Colorisation 3 niveaux]
+        DOCX_FORMAT[✨ Formatage<br/>Page A3 paysage<br/>Légende incluse]
+        DOCX_FILE[📁 Fichier DOCX<br/>resultat.docx]
+
+        %% Rapport optionnel
+        REPORT_DECISION{Rapport<br/>demandé ?}
+        REPORT_GEN[📊 Génération rapport<br/>Analyse mots orange]
+        REPORT_STATS[📈 Statistiques détaillées<br/>Distribution, patterns, TOP 50]
+        REPORT_CATEG[📂 Catégorisation<br/>Abréviations, erreurs OCR, variantes]
+        REPORT_RECO[💡 Recommandations<br/>Améliorations potentielles]
+        REPORT_FILE[📁 Fichier rapport<br/>analyse_orange.txt]
+
+        OUTPUT_START --> DOCX_GEN
+        DOCX_GEN --> DOCX_FORMAT
+        DOCX_FORMAT --> DOCX_FILE
+
+        OUTPUT_START --> REPORT_DECISION
+        REPORT_DECISION -->|Oui --report| REPORT_GEN
+        REPORT_DECISION -->|Non| DOCX_FILE
+        REPORT_GEN --> REPORT_STATS
+        REPORT_STATS --> REPORT_CATEG
+        REPORT_CATEG --> REPORT_RECO
+        REPORT_RECO --> REPORT_FILE
+    end
+
+    STEP4_OUTPUT --> OUTPUT_START
+
+    %% ========================================
+    %% SORTIE FINALE
+    %% ========================================
+    OUTPUT([📤 SORTIE LATIN ANALYZER<br/>Document validé + Rapport optionnel])
+
+    DOCX_FILE --> OUTPUT
+    REPORT_FILE -.-> OUTPUT
+
+    %% ========================================
+    %% LIEN AVEC MODULES PROJET
+    %% ========================================
+    MODULE4_OUTPUT[📤 MODULE 4<br/>XML Pages eScriptorium<br/>Transcriptions HTR/OCR]
+    MODULE5_OUTPUT[📤 MODULE 5<br/>XML Pages post-traités<br/>Texte nettoyé]
+
+    MODULE4_OUTPUT -.->|Validation qualité| INPUT_DECISION
+    MODULE5_OUTPUT -.->|Validation qualité| INPUT_DECISION
+
+    %% ========================================
+    %% ANNOTATIONS
+    %% ========================================
+    note1[💡 Fusion césures:<br/>Traite automatiquement<br/>les mots coupés en fin de ligne<br/>Basé sur pattern regex]
+    note2[💡 Normalisation:<br/>u/v et i/j traités comme identiques<br/>Gère variantes médiévales<br/>uel=vel, uidetur=videtur]
+    note3[💡 PyCollatinus:<br/>~500k formes latines classiques<br/>Lemmatisation automatique<br/>API Python intégrée]
+    note4[💡 Du Cange:<br/>99 917 mots de latin médiéval<br/>Ecclésiastique, féodal, administratif<br/>Téléchargé via setup.sh]
+    note5[💡 Scoring:<br/>Multi-critères 0-100<br/>Évite les faux positifs<br/>Contextualisation intelligente]
+    note6[💡 Rapport orange:<br/>Analyse détaillée des mots non reconnus<br/>Patterns, fréquences, recommandations<br/>Estimation amélioration potentielle]
+    note7[💡 CLI flexible:<br/>Arguments -i input, -o output<br/>Mode -m txt/xml-single/xml-dual<br/>Pas de chemins en dur]
+
+    MERGE_HYPHENS -.-> note1
+    NORM_UV -.-> note2
+    COLLATINUS_TEST -.-> note3
+    DUCANGE_TEST -.-> note4
+    SCORE_CALC -.-> note5
+    REPORT_GEN -.-> note6
+    START -.-> note7
+
+    %% ========================================
+    %% OUTILS
+    %% ========================================
+    subgraph TOOLS [🛠️ Outils et Technologies]
+        T1[Python 3.10+ : Langage principal]
+        T2[PyCollatinus : Lemmatisation classique]
+        T3[Du Cange : Dictionnaire médiéval]
+        T4[python-docx : Génération DOCX]
+        T5[lxml : Parsing XML Pages]
+        T6[PageXMLParser : Extraction MainZone]
+    end
+
+    %% ========================================
+    %% WORKFLOW RÉSUMÉ
+    %% ========================================
+    subgraph WORKFLOW [🔄 Workflow Complet Résumé]
+        W1[1. Extraction : XML ou TXT]
+        W2[2. Normalisation : u/v, i/j]
+        W3[3. Analyse : PyCollatinus + Du Cange]
+        W4[4. Scoring : 0-100 points]
+        W5[5. Colorisation : Noir/Orange/Rouge]
+        W6[6. Export : DOCX + Rapport]
+
+        W1 --> W2
+        W2 --> W3
+        W3 --> W4
+        W4 --> W5
+        W5 --> W6
+    end
+
+    %% ========================================
+    %% AVANTAGES vs V1
+    %% ========================================
+    subgraph AVANTAGES [✅ Avantages vs. Version 1.x]
+        A1[✅ Automatique via CLI vs. GUI manuel]
+        A2[✅ 86% reconnaissance vs. 60%]
+        A3[✅ Scoring 0-100 vs. binaire]
+        A4[✅ XML Pages intégré]
+        A5[✅ Normalisation u/v, i/j]
+        A6[✅ Rapport d'analyse détaillé]
+    end
+
+    %% ========================================
+    %% STYLES
+    %% ========================================
+    classDef startEnd fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff
+    classDef decision fill:#ffeb3b,stroke:#f57f17,stroke-width:2px
+    classDef install fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef extract fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    classDef normalize fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px
+    classDef analysis fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef score fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    classDef output fill:#ffccbc,stroke:#d84315,stroke-width:2px
+    classDef success fill:#a5d6a7,stroke:#2e7d32,stroke-width:2px
+    classDef warning fill:#ffab91,stroke:#d84315,stroke-width:2px
+    classDef error fill:#ef9a9a,stroke:#c62828,stroke-width:2px
+    classDef note fill:#fff9c4,stroke:#f57f17,stroke-width:1px,stroke-dasharray: 5 5
+    classDef module fill:#b3e5fc,stroke:#01579b,stroke-width:2px
+
+    class START,OUTPUT startEnd
+    class INPUT_DECISION,XML_DECISION,COLLATINUS_RESULT,DUCANGE_RESULT,COLOR_DECISION,REPORT_DECISION decision
+    class INSTALL_TITLE,INSTALL_PYCOLLATINUS,INSTALL_DUCANGE,INSTALL_DEPS,INSTALL_READY install
+    class XML_SINGLE,XML_DUAL,XML_PARSE,XML_LINES,TXT_READ,TXT_LINES,MERGE_HYPHENS,STEP1_OUTPUT extract
+    class NORM_UV,NORM_IJ,FILTER_ROMAN,STEP2_OUTPUT normalize
+    class ANALYSIS_START,COLLATINUS_TITLE,COLLATINUS_TEST,DUCANGE_TITLE,DUCANGE_TEST,STEP3_OUTPUT analysis
+    class SCORE_START,CRIT1,CRIT2,CRIT3,CRIT4,CRIT5,SCORE_CALC,STEP4_OUTPUT score
+    class OUTPUT_START,DOCX_GEN,DOCX_FORMAT,DOCX_FILE,REPORT_GEN,REPORT_STATS,REPORT_CATEG,REPORT_RECO,REPORT_FILE output
+    class COLLATINUS_YES,DUCANGE_YES,COLOR_BLACK success
+    class COLOR_ORANGE warning
+    class COLLATINUS_NO,DUCANGE_NO,COLOR_RED error
+    class note1,note2,note3,note4,note5,note6,note7 note
+    class MODULE4_OUTPUT,MODULE5_OUTPUT module
+
+    style INSTALL fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style STEP1 fill:#e8f5e9,stroke:#1565c0,stroke-width:2px
+    style STEP2 fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+    style STEP3 fill:#fff8e1,stroke:#e65100,stroke-width:2px
+    style STEP4 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style STEP5 fill:#ffebee,stroke:#d84315,stroke-width:2px
+    style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
+    style WORKFLOW fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px,stroke-dasharray: 3 3
+    style AVANTAGES fill:#f1f8e9,stroke:#689f38,stroke-width:2px,stroke-dasharray: 3 3
