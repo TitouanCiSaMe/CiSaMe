@@ -37,7 +37,16 @@ flowchart TD
     %% Module 5
     M5[MODULE 5<br/>💾 Export & Préparation<br/>───<br/>Processus : Préparation archivage<br/>Entrée : Texte validé<br/>Sortie : Données prêtes]:::moduleOperationnel
 
-    M5 --> M6
+    M5 --> VALIDATION_DECISION
+
+    %% Latin Analyzer (validation optionnelle)
+    VALIDATION_DECISION{Validation<br/>qualité latine ?}:::decision
+    VALIDATION_DECISION -->|Non| M6
+    VALIDATION_DECISION -->|Oui| LATIN_ANALYZER
+
+    LATIN_ANALYZER[LATIN ANALYZER<br/>🔍 Validation Textes Latins<br/>───<br/>Optionnel - Contrôle Qualité<br/>───<br/>Sources :<br/>• PyCollatinus classique 500k formes<br/>• Du Cange médiéval 99k mots<br/>───<br/>Scoring 0-100 multi-critères<br/>Colorisation 3 niveaux<br/>───<br/>Sortie : DOCX + Rapport]:::moduleTransversal
+
+    LATIN_ANALYZER --> M6
 
     %% Module Métadonnées (transversal)
     META_START([📋 Fiches Manuscrits]):::output
@@ -110,7 +119,7 @@ flowchart TD
 
     %% === NOTES ET LÉGENDES ===
 
-    NOTE1[ℹ️ NOTES IMPORTANTES<br/>───<br/>1. MODULE 6 en développement<br/>2. Métadonnées : processus manuel<br/>Heurist → config.yaml<br/>3. Décret de Gratien :<br/>pipeline séparé, déjà opérationnel<br/>4. Module 7 utilise uniquement<br/>fichiers .vertical.txt<br/>5. Module 8 : diffusion finale<br/>tous formats selon licence]:::moduleTransversal
+    NOTE1[ℹ️ NOTES IMPORTANTES<br/>───<br/>1. MODULE 6 en développement<br/>2. Métadonnées : processus manuel<br/>Heurist → config.yaml<br/>3. Latin Analyzer : validation<br/>qualité optionnelle après M4/M5<br/>4. Décret de Gratien :<br/>pipeline séparé, déjà opérationnel<br/>5. Module 7 utilise uniquement<br/>fichiers .vertical.txt<br/>6. Module 8 : diffusion finale<br/>tous formats selon licence]:::moduleTransversal
 
     %% === LÉGENDE ===
 

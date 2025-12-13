@@ -18,6 +18,7 @@ Le schéma le plus à jour et complet, montrant :
 ```
 MODULE 1 (Images) → MODULE 2 (OCR) → MODULE 3 (Segmentation)
 → MODULE 4 (Corrections) → MODULE 5 (Nettoyage Oxygène)
+→ [LATIN ANALYZER optionnel: Validation qualité]
 → MODULE 6 (PAGEtopage + Métadonnées)
 → MODULE 7 (NoSketch-Engine) + MODULE 8 (Diffusion Données)
 → MODULE 9 (Visualisation & Analyse)
@@ -80,6 +81,16 @@ Corrections manuelles et validation :
 - Support layouts : 1, 2 ou 4 régions Main par page
 - Temps : ~20 min par œuvre
 - Format : NOMÉDITION_ID.xml
+
+### LATIN ANALYZER (Optionnel - Contrôle Qualité)
+**Validation de textes latins médiévaux** : Module optionnel entre M5 et M6
+- **PyCollatinus** : ~500 000 formes de latin classique
+- **Du Cange** : 99 917 mots de latin médiéval
+- **Scoring multi-critères** : 0-100 points par mot
+- **Colorisation 3 niveaux** : Noir (validé), Orange (à vérifier), Rouge (erreur)
+- **Sortie** : Document DOCX colorisé + Rapport d'analyse optionnel
+- **Utilisation** : Validation qualité après Module 4 ou 5
+- Technologies : Python 3.10+, PyCollatinus, python-docx, lxml
 
 ### MODULE 6 (🚧 Développement)
 **PAGEtopage** : Enrichissement linguistique (4 étapes)
@@ -175,9 +186,9 @@ mmdc -i flowchart-pipeline-complet-integre.mmd -o pipeline.svg
 | Éditions de manuscrits | ~150 |
 | Records Heurist | 5,768 |
 | Modules principaux | 9 |
-| Modules transversaux | 1 (Métadonnées) |
+| Modules transversaux | 2 (Métadonnées, Latin Analyzer) |
 | Pipelines parallèles | 1 (Décret de Gratien) |
-| Modules opérationnels | 8 (1-5, 7-9) |
+| Modules opérationnels | 9 (1-5, 7-9, Latin Analyzer) |
 | Modules en développement | 1 (MODULE 6) |
 
 ---

@@ -90,6 +90,22 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 - Format : NOMÉDITION_ID.xml
 - Temps : ~20 min par œuvre
 
+### LATIN ANALYZER - Validation Textes Latins Médiévaux
+**Fichier:** `Modules_projet/Module_Latin_Analyzer/flowchart-latin-analyzer.mmd`
+**Détail:** ⭐⭐⭐⭐⭐
+**Statut:** ✅ Opérationnel (Version 2.3)
+
+**Contenu:**
+- Installation : setup.sh, PyCollatinus, Du Cange (99k mots)
+- Étape 1 - Extraction : XML Pages (single/dual) ou TXT + fusion césures
+- Étape 2 - Normalisation : u/v, i/j, chiffres romains
+- Étape 3 - Analyse multi-sources : PyCollatinus (500k formes classiques) + Du Cange (99k médiéval)
+- Étape 4 - Scoring 0-100 : 5 critères (classique, médiéval, suffixe, contexte, variante)
+- Étape 5 - Génération sorties : DOCX colorisé (3 niveaux) + rapport optionnel
+- Lien avec modules 4/5 : validation qualité transcriptions
+- Commandes CLI : -i input, -o output, -m mode, --report
+- Technologies : Python 3.10+, PyCollatinus, Du Cange, python-docx, lxml
+
 ### MODULE 6 - PAGEtopage (Enrichissement Linguistique)
 **Fichier:** `Modules_projet/Module_6_PAGEtopage/flowchart-module6-pagetopage.mmd`
 **Détail:** ⭐⭐⭐⭐⭐
@@ -191,6 +207,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 ### Par Fonctionnalité
 - **Acquisition** : Modules 1, 2, 3
 - **Traitement** : Modules 4, 5
+- **Validation Qualité** : Latin Analyzer
 - **Enrichissement** : Module 6, Métadonnées
 - **Diffusion** : Modules 7, 8
 - **Visualisation/Analyse** : Module 9
@@ -198,6 +215,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### Par Technologie
 - **Oxygène XML** : Module 5
+- **PyCollatinus/Du Cange** : Latin Analyzer
 - **TreeTagger** : Module 6
 - **NoSketch-Engine** : Module 7
 - **Nakala/Seafile** : Module 8
