@@ -90,19 +90,21 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 - Format : NOMÉDITION_ID.xml
 - Temps : ~20 min par œuvre
 
-### LATIN ANALYZER - Validation Textes Latins Médiévaux
+### LATIN ANALYZER (Outil Indépendant)
 **Fichier:** `Modules_projet/Module_Latin_Analyzer/flowchart-latin-analyzer.mmd`
 **Détail:** ⭐⭐⭐⭐⭐
 **Statut:** ✅ Opérationnel (Version 2.3)
+**Type:** 🟣 Outil indépendant (hors pipeline)
 
 **Contenu:**
+- ⚠️ **N'alimente PAS le pipeline** : Contrôle qualité manuel uniquement
 - Installation : setup.sh, PyCollatinus, Du Cange (99k mots)
 - Étape 1 - Extraction : XML Pages (single/dual) ou TXT + fusion césures
 - Étape 2 - Normalisation : u/v, i/j, chiffres romains
 - Étape 3 - Analyse multi-sources : PyCollatinus (500k formes classiques) + Du Cange (99k médiéval)
 - Étape 4 - Scoring 0-100 : 5 critères (classique, médiéval, suffixe, contexte, variante)
 - Étape 5 - Génération sorties : DOCX colorisé (3 niveaux) + rapport optionnel
-- Lien avec modules 4/5 : validation qualité transcriptions
+- **Usage** : Contrôle qualité autonome des transcriptions latines
 - Commandes CLI : -i input, -o output, -m mode, --report
 - Technologies : Python 3.10+, PyCollatinus, Du Cange, python-docx, lxml
 
@@ -207,11 +209,11 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 ### Par Fonctionnalité
 - **Acquisition** : Modules 1, 2, 3
 - **Traitement** : Modules 4, 5
-- **Validation Qualité** : Latin Analyzer
 - **Enrichissement** : Module 6, Métadonnées
 - **Diffusion** : Modules 7, 8
 - **Visualisation/Analyse** : Module 9
 - **Spécifique** : Décret de Gratien
+- **Outil Indépendant** : Latin Analyzer (contrôle qualité manuel)
 
 ### Par Technologie
 - **Oxygène XML** : Module 5

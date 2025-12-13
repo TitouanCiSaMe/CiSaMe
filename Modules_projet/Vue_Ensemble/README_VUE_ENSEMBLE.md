@@ -18,11 +18,13 @@ Le schéma le plus à jour et complet, montrant :
 ```
 MODULE 1 (Images) → MODULE 2 (OCR) → MODULE 3 (Segmentation)
 → MODULE 4 (Corrections) → MODULE 5 (Nettoyage Oxygène)
-→ [LATIN ANALYZER optionnel: Validation qualité]
 → MODULE 6 (PAGEtopage + Métadonnées)
 → MODULE 7 (NoSketch-Engine) + MODULE 8 (Diffusion Données)
 → MODULE 9 (Visualisation & Analyse)
 ```
+
+**Outil indépendant (hors pipeline) :**
+- **Latin Analyzer** : Contrôle qualité manuel des transcriptions latines (n'alimente pas le pipeline)
 
 **À utiliser pour :**
 - Comprendre le flux complet du projet
@@ -82,15 +84,16 @@ Corrections manuelles et validation :
 - Temps : ~20 min par œuvre
 - Format : NOMÉDITION_ID.xml
 
-### LATIN ANALYZER (Optionnel - Contrôle Qualité)
-**Validation de textes latins médiévaux** : Module optionnel entre M5 et M6
+### LATIN ANALYZER (Outil Indépendant)
+**Contrôle qualité manuel des transcriptions latines** : Outil hors pipeline
 - **PyCollatinus** : ~500 000 formes de latin classique
 - **Du Cange** : 99 917 mots de latin médiéval
 - **Scoring multi-critères** : 0-100 points par mot
 - **Colorisation 3 niveaux** : Noir (validé), Orange (à vérifier), Rouge (erreur)
+- **Entrée** : XML Pages ou fichiers TXT (textes latins)
 - **Sortie** : Document DOCX colorisé + Rapport d'analyse optionnel
-- **Utilisation** : Validation qualité après Module 4 ou 5
-- Technologies : Python 3.10+, PyCollatinus, python-docx, lxml
+- **⚠️ Important** : N'alimente pas le pipeline, sert uniquement au contrôle qualité manuel
+- Technologies : Python 3.10+, PyCollatinus, Du Cange, python-docx, lxml
 
 ### MODULE 6 (🚧 Développement)
 **PAGEtopage** : Enrichissement linguistique (4 étapes)
@@ -151,6 +154,14 @@ Corrections manuelles et validation :
 - Corpus opérationnel : 4149 fichiers, 5 Mo
 - Format ID : Grat_XXXX
 
+### Outil Indépendant : Latin Analyzer
+**Contrôle qualité manuel (hors pipeline)**
+- ⚠️ N'ALIMENTE PAS le pipeline principal
+- Analyse autonome de textes latins (XML Pages ou TXT)
+- Produit DOCX colorisé pour validation manuelle
+- Usage : Contrôle qualité des transcriptions
+- Ne se connecte à aucun autre module
+
 ---
 
 ## 🛠️ Visualiser les schémas Mermaid
@@ -186,9 +197,10 @@ mmdc -i flowchart-pipeline-complet-integre.mmd -o pipeline.svg
 | Éditions de manuscrits | ~150 |
 | Records Heurist | 5,768 |
 | Modules principaux | 9 |
-| Modules transversaux | 2 (Métadonnées, Latin Analyzer) |
+| Modules transversaux | 1 (Métadonnées) |
 | Pipelines parallèles | 1 (Décret de Gratien) |
-| Modules opérationnels | 9 (1-5, 7-9, Latin Analyzer) |
+| Outils indépendants | 1 (Latin Analyzer) |
+| Modules opérationnels | 8 (1-5, 7-9) |
 | Modules en développement | 1 (MODULE 6) |
 
 ---
