@@ -81,7 +81,6 @@ Quand le scraping est possible, choix de la méthode selon la bibliothèque et l
 **Exemples de correspondances** :
 - Gallica, Vatican, BNF → IIIF
 - British Library → Hexadécimale
-- Münchener → Tuiles (algorithme perdu)
 
 ### Étape 4 : Téléchargement
 
@@ -135,7 +134,6 @@ Les images téléchargées sont uploadées sur le cloud universitaire Seafile av
 - manuscripta.at - Pas IIIF
 - EMMSM Université de Caen (emmsm.unicaen.fr) - IIIF
 - British Library - Hexadécimale
-- Münchener Digitale - Tuiles
 - Manoscritti giuridici medievali (beic.it) - Variable
 
 ---
@@ -149,8 +147,6 @@ Les images téléchargées sont uploadées sur le cloud universitaire Seafile av
 - Recherche manifest.json (si IIIF) : 5-8 min (phase la plus chronophage)
 - Configuration et lancement script : 1-2 min
 - Téléchargement : automatique (dépend du nombre de pages)
-
-**Pour 317 manuscrits** : ~53 heures de travail
 
 **Facteur de répétition** : Élevé
 - Même bibliothèque = même méthode
@@ -248,12 +244,7 @@ Pour les manuscrits IIIF d'une même bibliothèque, un script pourrait automatis
 - Tests manuels systématiques par ordre de préférence
 - Documentation au fur et à mesure dans la liste
 - Scripts robustes avec gestion d'erreurs
-
-**Cas spéciaux identifiés** :
-- "Pas de manifest iiif" → Fallback sur PDF ou autre méthode
-- "Impossible bonne qualité" → Manuscrit disponible mais qualité insuffisante
-- "CiSaMe has full HD ms" → Déjà traité, skip
-
+- 
 ---
 
 ## 🔗 Lien avec les modules suivants
