@@ -35,6 +35,22 @@ Guide d'utilisation du script de téléchargement de manuscrits
 - Méthodes IIIF
 - Configuration et usage
 
+#### **Guide_Kraken_HTR_Mac.txt**
+Guide d'installation et d'utilisation de Kraken HTR sur Mac
+- Procédures d'installation
+- Configuration pour la transcription automatique
+- Module 2 : OCR & Reconnaissance
+
+#### **Fine_tuning_transcription.sh**
+Script shell pour le fine-tuning des modèles de transcription
+- Entraînement des modèles Kraken
+- Module 2 : OCR & Reconnaissance
+
+#### **Fine_tuning_segmentation.sh**
+Script shell pour le fine-tuning des modèles de segmentation
+- Entraînement des modèles de segmentation de lignes
+- Module 3 : Segmentation
+
 #### **NoSKetch_Unistra.txt**
 Informations de connexion et commandes NoSketch-Engine
 - Connexion SSH serveur Unistra
@@ -53,6 +69,25 @@ Liste complète des manuscrits du corpus CiSaMe
 Document Word original de la liste des manuscrits
 - Version source avant extraction CSV
 - Contient annotations et notes supplémentaires
+
+#### **Apport.docx**
+Document détaillant les apports et contributions au projet
+- Notes de développement
+- Évolutions et améliorations
+
+#### **CalKit corrections.docx**
+Corrections et annotations pour le CalKit
+- Notes de correction
+- Améliorations proposées
+
+### Scripts et Utilitaires
+
+#### **Fusion_txt_NoSketch.py**
+Script Python pour fusionner des fichiers texte
+- Fusion de tous les fichiers d'un dossier en un seul
+- Préparation pour import NoSketch-Engine
+- Extension et séparateur configurables
+- Module 7 : Préparation corpus NoSketch
 
 ---
 

@@ -56,4 +56,4 @@ if __name__ == "__main__":
     fichier_sortie = "/home/titouan/Documents/Github/data/Articles/Articles.txt"
 
     # Fusionner tous les fichiers .txt du dossier avec un double saut de ligne entre chaque fichier
-    fusion_fichiers_texte_dossier(dossier, fichier_sortie, extension=".txt", separateur="\n\n"
+    fusion_fichiers_texte_dossier(dossier, fichier_sortie, extension=".txt", separateur="\n\n")
