@@ -40,15 +40,14 @@ Le MODULE 3 gère l'acquisition des **éditions de manuscrits** (différent des 
 **Principe** : Contacts personnels avec d'autres chercheurs ou institutions
 
 **Usage** :
-- Éditions rares non numérisées
+- Éditions non numérisées
 - Partage entre projets de recherche
-- Thèses non publiées
-
+  
 ### 3. Prêt de bibliothèque
 
 **Processus** :
-1. Emprunter l'édition physique
-2. Numériser via la BNU (convention)
+1. Utiliser/Faire venir l'édition physique (convention)
+2. Numériser via la BNU (payant)
 3. Récupérer les fichiers numérisés
 
 **Convention BNU** : Partenariat avec la Bibliothèque Nationale et Universitaire de Strasbourg permettant l'utilisation des images pour la transcription à but scientifique. Ce type de convention peut s'appliquer à d'autres bibliothèques numériques.
