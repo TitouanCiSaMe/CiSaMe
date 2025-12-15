@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"  standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd">
+  <Metadata>
+	<Creator>escriptorium</Creator>
+	<Created>2025-12-08T08:47:07.253491+00:00</Created>
+        <LastChange>2025-12-08T08:47:07.253519+00:00</LastChange>
+
+  </Metadata>
+  <Page imageFilename="0052_11.jpg" imageWidth="2261" imageHeight="2983">
+
+    
+    <TextRegion id="eSc_textblock_c49d93a6"  custom="structure {type:MainZone;}">
+      <Coords points="169,338 1735,338 1722,899 1742,908 1748,1383 1722,1385 1722,1483 1748,1478 1748,1682 1723,1642 1722,1748 1748,1710 1748,2013 1768,2041 1748,2139 112,2126 106,503 119,344 169,338"/>
+      
+      
+      <TextLine id="eSc_line_ecce909f" custom="structure {type:default;}">
+        <Coords points="1710,349 1694,349 1677,349 1660,349 1644,348 1627,348 1611,348 1594,346 1578,346 1561,346 1544,346 1528,344 1511,344 1498,344 1488,346 1471,344 1460,343 1445,343 1428,343 1412,341 1402,341 1395,344 1394,344 1390,344 1377,341 1362,341 1345,339 1344,339 1334,343 1331,346 1157,346 1148,343 1122,334 1120,334 1118,334 911,341 861,343 855,341 832,334 832,334 815,334 798,336 789,336 739,341 731,341 727,341 717,338 716,338 699,338 682,338 672,341 668,343 550,343 545,343 533,343 517,343 500,343 484,344 467,344 450,344 434,344 417,346 401,346 384,346 367,346 351,348 334,348 318,348 301,348 285,349 268,349 251,349 235,349 235,374 235,399 1710,399 1712,382 1710,349 1710,349"/>
+        <Baseline points="235,374 1712,382"/>
+        <TextEquiv conf="0.994394062316581">
+          <Unicode>peccato hoc a perfectis fieri potest. Resp.: Lex naturalis que aliis con-</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_cf025816" custom="structure {type:default;}">
+        <Coords points="237,429 237,452 1710,450 1712,435 1710,401 237,394 237,429"/>
+        <Baseline points="237,429 1712,435"/>
+        <TextEquiv conf="0.9948823321355532">
+          <Unicode>gruit esta circa perfectos modificata amplius, immo sublata per ius diui-</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_5d39886d" custom="structure {type:default;}">
+        <Coords points="235,478 233,493 276,505 278,505 280,505 381,497 532,507 533,507 581,498 616,507 618,507 619,507 774,498 775,498 777,498 827,508 828,508 830,508 861,500 1125,510 1127,512 1231,512 1231,510 1233,510 1234,510 1246,502 1478,512 1480,512 1481,512 1483,512 1496,503 1518,512 1520,512 1521,512 1710,503 1712,487 1710,447 235,447 235,478"/>
+        <Baseline points="235,478 1712,487"/>
+        <TextEquiv conf="0.9935792902159313">
+          <Unicode>num euuangelicum. Sic ergo in omni animanti congruit, set circa</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_e8f497ef" custom="structure {type:default;}">
+        <Coords points="235,530 233,546 1707,556 1710,540 1709,507 235,498 235,530"/>
+        <Baseline points="235,530 1710,540"/>
+        <TextEquiv conf="0.993771250988986">
+          <Unicode>imperfectos est modificata per ius ciuile, et sublata per ius diuinum per-</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_8a5b1a33" custom="structure {type:default;}">
+        <Coords points="162,555 119,555 111,571 109,583 109,606 177,599 177,583 172,566 162,555"/>
+        <Baseline points="109,583 177,583"/>
+        <TextEquiv conf="0.9994535247484843">
+          <Unicode></Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_e61d1530" custom="structure {type:default;}">
+        <Coords points="233,583 232,598 265,609 266,609 268,609 346,601 429,609 430,609 694,601 697,601 724,609 726,609 727,609 992,603 1216,613 1218,613 1707,604 1709,588 1707,558 233,553 233,583"/>
+        <Baseline points="233,583 1709,588"/>
+        <TextEquiv conf="0.9944696673980126">
+          <Unicode>fectis. equum: Non ab equitate composita, set vrudi quasi natureb</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_1815c32c" custom="structure {type:default;}">
+        <Coords points="233,633 232,649 276,659 278,659 853,656 875,664 876,664 878,664 1026,657 1077,666 1079,666 1709,661 1710,644 1709,611 233,594 233,633"/>
+        <Baseline points="233,633 1710,644"/>
+        <TextEquiv conf="0.996428040095738">
+          <Unicode>institutione, ut sic congruat omni animanti. Et nota quod ius naturale</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_59a75354" custom="structure {type:default;}">
+        <Coords points="233,686 232,701 286,710 288,710 454,704 475,704 485,704 540,712 542,712 677,707 724,705 742,707 785,714 787,714 1009,710 1185,709 1208,714 1228,717 1705,719 1709,696 1707,659 233,652 233,686"/>
+        <Baseline points="233,686 1709,696"/>
+        <TextEquiv conf="0.9935297145359758">
+          <Unicode>dicitur uel a natura et secundum hoc dicitur illud quod sola natura a</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_b4153e0b" custom="structure {type:default;}">
+        <Coords points="232,740 230,757 1705,767 1709,745 1707,714 232,707 232,740"/>
+        <Baseline points="232,740 1709,745"/>
+        <TextEquiv conf="0.9954376640454144">
+          <Unicode>Deo insita inspirat et est commune omni animanti, uel a naturali ratio-</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_0b037af9" custom="structure {type:default;}">
+        <Coords points="232,792 230,808 263,818 265,818 266,818 540,812 586,812 590,813 600,820 601,820 603,820 605,820 845,815 961,813 966,817 971,821 973,821 974,821 976,821 1125,818 1263,815 1707,823 1710,798 1709,759 232,755 232,792"/>
+        <Baseline points="232,792 1710,798"/>
+        <TextEquiv conf="0.9848083663677824">
+          <Unicode>ne et est commune soli homini huiusque iuris vi. sunt acceptiones, ut</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_09471215" custom="structure {type:default;}">
+        <Coords points="155,808 139,808 134,808 106,808 109,843 111,866 174,858 174,840 165,817 155,808"/>
+        <Baseline points="109,843 174,840"/>
+        <TextEquiv conf="0.9999969402949015">
+          <Unicode></Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_b28934e8" custom="structure {type:default;}">
+        <Coords points="232,843 230,856 253,866 255,866 256,866 402,860 528,868 530,868 1707,865 1709,851 1707,813 232,812 232,843"/>
+        <Baseline points="232,843 1709,851"/>
+        <TextEquiv conf="0.9968764195075401">
+          <Unicode>supra, et singularum acceptionum genera a se diuersa sunt. Ab uno</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_98377350" custom="structure {type:default;}">
+        <Coords points="233,894 232,913 528,924 530,924 1705,921 1707,903 1705,870 233,863 233,894"/>
+        <Baseline points="233,894 1707,903"/>
+        <TextEquiv conf="0.9936352890470753">
+          <Unicode>tamen fonte procedunt tamquam diuersi radii ab lumine, pluresc ab uno</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_72a04c26" custom="structure {type:default;}">
+        <Coords points="232,946 230,966 250,979 251,979 253,979 339,981 341,981 343,981 386,966 387,949 387,916 366,908 364,908 363,908 334,914 323,916 232,908 232,946"/>
+        <Baseline points="232,946 387,949"/>
+        <TextEquiv conf="0.999992847442627">
+          <Unicode>fonte.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_9bfe23bd" custom="structure {type:default;}">
+        <Coords points="230,999 228,1014 497,1025 498,1025 548,1017 555,1017 561,1017 623,1027 624,1027 735,1019 750,1019 755,1019 785,1027 787,1027 789,1027 790,1027 813,1020 818,1019 847,1020 969,1029 971,1029 1705,1027 1707,1005 1704,964 1606,972 1317,964 1236,962 1234,962 1223,964 1195,971 1084,964 1034,962 1032,962 1012,964 969,971 959,966 953,961 951,961 949,961 837,961 835,961 833,961 823,966 815,969 731,966 591,959 590,959 588,959 568,966 561,967 555,966 528,959 527,959 525,959 230,966 230,999"/>
+        <Baseline points="230,999 1707,1005"/>
+        <TextEquiv conf="0.9907423739563929">
+          <Unicode>c. Ius ciuile sibi proprium: Set tunc debet eius ciuitatisd; nam simpli-</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_792ba715" custom="structure {type:default;}">
+        <Coords points="228,1052 227,1065 273,1077 275,1077 427,1068 440,1068 444,1068 474,1078 475,1078 477,1078 586,1070 603,1070 606,1072 624,1078 626,1078 628,1078 852,1075 926,1073 941,1075 976,1082 977,1082 979,1082 999,1077 1012,1073 1105,1078 1223,1083 1224,1083 1283,1080 1367,1075 1702,1085 1705,1062 1704,1027 228,1019 228,1052"/>
+        <Baseline points="228,1052 1705,1062"/>
+        <TextEquiv conf="0.9998063062553975">
+          <Unicode>citer sibi dictum significat ius ciuile Romanorum. diuina humana:</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_87e267ac" custom="structure {type:default;}">
+        <Coords points="230,1105 230,1130 936,1125 997,1135 1006,1135 1007,1135 1016,1135 1070,1126 1216,1135 1224,1135 1226,1135 1228,1135 1244,1126 1326,1135 1339,1136 1341,1138 1707,1138 1709,1111 1707,1078 230,1072 230,1105"/>
+        <Baseline points="230,1105 1709,1111"/>
+        <TextEquiv conf="0.9953996707016314">
+          <Unicode>pro diuinis et humanis, nam de diuinis tractat; uel quelibet ciuitas si</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_cc9d6c48" custom="structure {type:default;}">
+        <Coords points="232,1156 230,1173 1700,1184 1704,1165 1702,1125 232,1123 232,1156"/>
+        <Baseline points="232,1156 1704,1165"/>
+        <TextEquiv conf="0.9967904206779268">
+          <Unicode>sibi ius ciuile constituit diuina causa facere debet ne contra Deum sit.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_f0fb830c" custom="structure {type:default;}">
+        <Coords points="182,1209 182,1239 208,1241 210,1209 210,1179 182,1176 182,1209"/>
+        <Baseline points="182,1209 210,1209"/>
+        <TextEquiv conf="0.9999788999557495">
+          <Unicode></Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_84e8fec0" custom="structure {type:default;}">
+        <Coords points="223,1208 222,1224 321,1234 323,1234 487,1228 517,1228 523,1229 550,1236 551,1236 553,1236 722,1231 787,1229 815,1232 871,1237 873,1237 939,1232 979,1231 1702,1241 1705,1216 1704,1183 223,1174 223,1208"/>
+        <Baseline points="223,1208 1705,1216"/>
+        <TextEquiv conf="0.9922263439496358">
+          <Unicode>Set quid si ius ciuile huius ciuitatis contrarium iurie scripto Resp.: Non</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_cb01724f" custom="structure {type:default;}">
+        <Coords points="230,1259 228,1277 261,1289 263,1289 508,1290 510,1290 512,1290 530,1282 578,1290 580,1290 581,1290 608,1282 611,1282 613,1282 639,1290 641,1290 643,1290 762,1284 787,1284 802,1286 858,1292 860,1292 861,1292 886,1286 896,1284 905,1286 923,1292 924,1292 926,1292 1075,1289 1195,1286 1203,1290 1208,1294 1210,1294 1211,1294 1213,1294 1292,1290 1404,1287 1433,1292 1448,1295 1450,1297 1702,1297 1704,1269 1702,1234 230,1228 230,1259"/>
+        <Baseline points="230,1259 1704,1269"/>
+        <TextEquiv conf="0.9950754218979886">
+          <Unicode>ualet nisi princeps eas causas confirmauerit, ut in illa ciuitate optineant,</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_533da980" custom="structure {type:default;}">
+        <Coords points="228,1314 228,1332 432,1339 434,1339 585,1330 605,1330 616,1330 716,1339 717,1339 807,1329 807,1314 805,1282 228,1282 228,1314"/>
+        <Baseline points="228,1314 807,1314"/>
+        <TextEquiv conf="0.9992054058955266">
+          <Unicode>non obstante iure scripto.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_1b404e13" custom="structure {type:default;}">
+        <Coords points="228,1363 227,1377 409,1388 411,1388 575,1382 606,1382 629,1383 734,1392 735,1392 1072,1388 1365,1387 1702,1397 1705,1373 1704,1335 228,1329 228,1363"/>
+        <Baseline points="228,1363 1705,1373"/>
+        <TextEquiv conf="0.995947886039229">
+          <Unicode>c. Ius gentium: Nota quod ius quandoque procedit a nature instinctu</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_38fdc9ab" custom="structure {type:default;}">
+        <Coords points="227,1415 225,1430 1699,1446 1702,1426 1699,1390 1510,1395 1420,1388 1372,1385 1370,1385 1369,1385 1360,1388 1345,1393 1229,1388 1140,1383 1138,1383 1115,1387 1089,1392 989,1387 858,1380 856,1380 813,1387 795,1388 785,1387 765,1380 764,1380 762,1380 699,1385 668,1388 663,1385 653,1378 651,1378 649,1378 648,1378 488,1385 439,1387 416,1385 341,1377 339,1377 227,1383 227,1415"/>
+        <Baseline points="227,1415 1702,1426"/>
+        <TextEquiv conf="0.9989785493259699">
+          <Unicode>et conuenit omni animanti et dicitur ius naturale; quandoque a naturali</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_05dcfc8f" custom="structure {type:default;}">
+        <Coords points="227,1469 225,1483 560,1494 561,1494 1065,1489 1112,1498 1113,1498 1702,1491 1704,1478 1702,1436 227,1436 227,1469"/>
+        <Baseline points="227,1469 1704,1478"/>
+        <TextEquiv conf="0.995021153802741">
+          <Unicode>ratione et conuenit omni genti et dicitur ius gentium, et hoc ipsum dici-</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_346c4970" custom="structure {type:default;}">
+        <Coords points="228,1521 227,1534 1700,1544 1704,1531 1700,1489 1468,1496 1271,1488 1208,1486 1206,1486 228,1486 228,1521"/>
+        <Baseline points="228,1521 1704,1531"/>
+        <TextEquiv conf="0.988095261156559">
+          <Unicode>tur ius naturale. Set non uidetur hec diuisio: ius aliud naturale, aliud</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_b039edb2" custom="structure {type:default;}">
+        <Coords points="179,1542 179,1576 179,1597 210,1592 210,1576 208,1536 179,1541 179,1542"/>
+        <Baseline points="179,1576 210,1576"/>
+        <TextEquiv conf="0.9999949932098389">
+          <Unicode></Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_6a777f7e" custom="structure {type:default;}">
+        <Coords points="217,1574 215,1589 1699,1602 1702,1582 1700,1547 217,1541 217,1574"/>
+        <Baseline points="217,1574 1702,1582"/>
+        <TextEquiv conf="0.9864404849384142">
+          <Unicode>gentium, data per opposita, set idem est istud quod illud. Resp.: Per</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_a23290a6" custom="structure {type:default;}">
+        <Coords points="227,1625 225,1638 248,1648 250,1648 251,1648 520,1642 586,1650 588,1650 1011,1645 1112,1653 1113,1653 1700,1647 1702,1634 1699,1595 1418,1600 1337,1594 1286,1590 1284,1590 1256,1594 1220,1599 1155,1594 1084,1589 1082,1589 1016,1594 971,1597 949,1594 921,1589 919,1589 918,1589 916,1589 910,1594 903,1597 896,1594 886,1589 885,1589 883,1589 845,1594 818,1597 798,1594 764,1587 762,1587 654,1594 611,1595 606,1594 591,1587 590,1587 588,1587 542,1594 523,1595 505,1594 454,1585 452,1585 227,1592 227,1625"/>
+        <Baseline points="227,1625 1702,1634"/>
+        <TextEquiv conf="0.9987284676595167">
+          <Unicode>opposita data est secundum primam acceptionem iuris naturalis; nam</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_a73e34a1" custom="structure {type:default;}">
+        <Coords points="227,1677 225,1693 1699,1701 1702,1688 1700,1658 1516,1648 1515,1648 1471,1655 1440,1647 1438,1647 1437,1647 1243,1653 1238,1653 1218,1645 1216,1645 1215,1645 1117,1653 1103,1653 1100,1653 1070,1643 1069,1643 1067,1643 1029,1652 1027,1652 1024,1652 900,1643 898,1643 825,1650 823,1650 798,1642 797,1642 795,1642 747,1650 744,1650 740,1650 712,1642 711,1642 709,1642 605,1648 601,1648 580,1640 578,1640 576,1640 575,1640 545,1648 542,1648 528,1648 371,1638 369,1638 227,1645 227,1677"/>
+        <Baseline points="227,1677 1702,1688"/>
+        <TextEquiv conf="0.9990226364496982">
+          <Unicode>secundum quasdam alias hoc ius est idem illi, ut in Inst. de rerum</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_6d190a69" custom="structure {type:default;}">
+        <Coords points="225,1728 223,1745 1070,1758 1072,1758 1458,1753 1476,1753 1478,1753 1525,1761 1526,1761 1699,1753 1700,1740 1699,1706 225,1696 225,1728"/>
+        <Baseline points="225,1728 1700,1740"/>
+        <TextEquiv conf="0.9921394651883269">
+          <Unicode>diuis. Quandoque a ciuium compositione et dicitur ius ciuile. Ius ergo</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_0b8532de" custom="structure {type:default;}">
+        <Coords points="225,1779 223,1791 242,1801 243,1801 245,1801 401,1794 406,1794 409,1794 457,1803 459,1803 563,1796 578,1796 593,1796 668,1804 669,1804 1027,1803 1322,1803 1355,1808 1374,1811 1375,1811 1407,1809 1473,1804 1695,1813 1699,1793 1697,1761 1370,1761 1357,1758 1312,1750 1311,1750 1120,1756 1089,1756 1085,1756 1064,1748 1062,1748 1060,1748 1059,1748 1044,1754 1040,1756 825,1756 822,1753 803,1746 802,1746 800,1746 643,1751 605,1753 596,1751 555,1743 553,1743 435,1751 412,1751 409,1750 392,1741 391,1741 389,1741 225,1748 225,1779"/>
+        <Baseline points="225,1779 1699,1793"/>
+        <TextEquiv conf="0.991220243713435">
+          <Unicode>naturale ceteris est uetustius; nam cepit exordio rerum uiuentium.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_3bbe1e90" custom="structure {type:default;}">
+        <Coords points="159,1814 159,1831 157,1844 402,1856 404,1856 1205,1854 1261,1862 1263,1862 1700,1856 1702,1842 1700,1808 601,1808 586,1804 533,1796 532,1796 487,1804 482,1804 477,1804 417,1796 416,1796 283,1803 265,1794 263,1794 261,1794 174,1803 159,1814"/>
+        <Baseline points="159,1831 1702,1842"/>
+        <TextEquiv conf="0.9903386415857257">
+          <Unicode> Ius uero gentium cepit secundum quosdam simul cum homine, uel</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_a6c7a2da" custom="structure {type:default;}">
+        <Coords points="223,1885 222,1899 246,1909 248,1909 250,1909 1438,1909 1453,1917 1455,1917 1457,1917 1458,1917 1702,1909 1704,1895 1704,1864 223,1852 223,1885"/>
+        <Baseline points="223,1885 1704,1895"/>
+        <TextEquiv conf="0.9960142471897069">
+          <Unicode>etiam secundum alios si cepit cum homine, non est ratio quare etiam</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_0f27a2fc" custom="structure {type:default;}">
+        <Coords points="223,1938 222,1952 1145,1965 1147,1965 1395,1958 1404,1958 1407,1958 1486,1967 1488,1967 1700,1958 1702,1947 1700,1917 1568,1917 1566,1915 1549,1907 1548,1907 1546,1907 1544,1907 1521,1915 1520,1915 1345,1915 1345,1914 1321,1905 1319,1905 1317,1905 1316,1905 1284,1914 1283,1914 1276,1914 1176,1905 1175,1905 1042,1912 1037,1912 1036,1912 994,1904 992,1904 888,1912 875,1912 868,1912 813,1902 812,1902 810,1902 775,1910 770,1910 548,1902 547,1902 545,1902 530,1910 528,1910 520,1910 464,1900 462,1900 223,1907 223,1938"/>
+        <Baseline points="223,1938 1702,1947"/>
+        <TextEquiv conf="0.9970602542161942">
+          <Unicode>non ceperit cum angelis, cum ipsi rationem habeant et sic uetustius esse</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_c7e03a27" custom="structure {type:default;}">
+        <Coords points="223,1988 223,2008 919,2008 943,2010 1016,2016 1017,2016 1165,2010 1196,2010 1198,2010 1208,2018 1210,2018 1211,2018 1213,2018 1342,2011 1349,2011 1355,2011 1485,2020 1486,2020 1700,2011 1702,1998 1700,1970 1486,1960 1485,1960 1483,1960 1460,1968 1457,1968 1452,1967 1427,1958 1425,1958 1423,1958 1375,1967 1372,1967 964,1967 961,1963 936,1955 934,1955 933,1955 931,1955 911,1963 910,1963 833,1955 832,1955 760,1963 750,1963 747,1963 717,1953 716,1953 714,1953 223,1958 223,1988"/>
+        <Baseline points="223,1988 1702,1998"/>
+        <TextEquiv conf="0.9924415693138585">
+          <Unicode>etiam naturali Vnde dicunt hoc ius cepisse a tempore Nembrot; nam</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_041682a1" custom="structure {type:default;}">
+        <Coords points="225,2040 223,2054 281,2064 283,2064 419,2058 422,2058 427,2058 560,2066 561,2066 638,2059 648,2059 659,2059 769,2068 770,2068 852,2061 866,2061 885,2063 968,2069 969,2071 1695,2071 1697,2049 1695,2021 1573,2011 1571,2011 1569,2011 1568,2011 1556,2020 1554,2021 1475,2021 1471,2020 1452,2010 1450,2010 1448,2010 1271,2018 1246,2018 1138,2018 1137,2016 1125,2008 1123,2008 1122,2008 1120,2008 1047,2016 1039,2016 1032,2016 979,2008 977,2008 833,2015 818,2015 817,2015 795,2006 794,2006 792,2006 732,2015 722,2015 721,2015 706,2005 704,2005 702,2005 701,2005 699,2005 674,2013 674,2015 527,2015 525,2013 515,2005 513,2005 512,2005 510,2005 477,2011 465,2003 464,2003 462,2003 460,2003 225,2010 225,2040"/>
+        <Baseline points="225,2040 1697,2049"/>
+        <TextEquiv conf="0.9943301140422552">
+          <Unicode>usque ad illud tempus homines regebantur iure naturali rudi et informi.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_6389c2fd" custom="structure {type:default;}">
+        <Coords points="157,2093 155,2107 1695,2119 1699,2104 1697,2074 1258,2063 157,2063 157,2093"/>
+        <Baseline points="157,2093 1699,2104"/>
+        <TextEquiv conf="0.9911604269462473">
+          <Unicode> Quod non est uerum cum matrimonium ante fuerit institutum et Caim</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_57aee927"  custom="structure {type:NumberingZone;}">
+      <Coords points="850,225 1112,225 1125,243 1112,290 868,283 868,265 1100,258 868,250 850,225"/>
+      
+      
+      <TextLine id="eSc_line_be318647" custom="structure {type:default;}">
+        <Coords points="1090,235 870,235 858,246 856,263 856,294 893,288 900,293 901,294 901,296 903,296 905,296 906,298 973,298 973,296 1007,290 1021,286 1022,288 1032,296 1034,296 1036,296 1037,298 1079,298 1079,296 1080,296 1103,285 1103,263 1100,248 1090,235"/>
+        <Baseline points="856,263 1103,263"/>
+        <TextEquiv conf="0.9757643479567307">
+          <Unicode>D.1 c.7 - c.9</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_dbe094c1"  custom="structure {type:NumberingZone;}">
+      <Coords points="1672,232 1715,232 1695,263 1722,290 1650,283 1672,232"/>
+      
+      
+      <TextLine id="eSc_line_a8ca5dcc" custom="structure {type:default;}">
+        <Coords points="1690,235 1674,232 1664,240 1660,271 1660,290 1704,288 1704,268 1700,235 1690,235"/>
+        <Baseline points="1660,271 1704,268"/>
+        <TextEquiv conf="0.84601229429245">
+          <Unicode>11</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_109acb48"  custom="structure {type:MarginTextZone;}">
+      <Coords points="251,2174 1709,2187 1709,2338 1669,2359 1662,2497 225,2497 212,2187 251,2174"/>
+      
+      
+      <TextLine id="eSc_line_1641fbbf" custom="structure {type:default;}">
+        <Coords points="1689,2243 225,2232 225,2258 223,2277 263,2286 626,2290 628,2290 686,2281 687,2281 689,2281 798,2291 800,2291 1263,2286 1349,2296 1350,2296 1471,2288 1513,2298 1515,2298 1516,2298 1697,2288 1699,2272 1697,2255 1689,2243"/>
+        <Baseline points="225,2258 1699,2272"/>
+        <TextEquiv conf="0.9934788346290588">
+          <Unicode>a etiam L b a iure L c Forsan riuuli vel simile verbum addendum d Forsan adden-</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_e6454aa2" custom="structure {type:default;}">
+        <Coords points="228,2306 227,2320 510,2320 512,2308 510,2283 228,2281 228,2306"/>
+        <Baseline points="228,2306 512,2308"/>
+        <TextEquiv conf="0.9709043375083378">
+          <Unicode>dum nomen addi</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_52c37f5d" custom="structure {type:default;}">
+        <Coords points="520,2308 520,2320 740,2331 742,2308 742,2283 520,2283 520,2308"/>
+        <Baseline points="520,2308 742,2308"/>
+        <TextEquiv conf="0.9987739487127825">
+          <Unicode>e iuris Lac</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_f2b69237" custom="structure {type:default;}">
+        <Coords points="1302,2311 1302,2335 1337,2335 1337,2311 1336,2285 1302,2286 1302,2311"/>
+        <Baseline points="1302,2311 1337,2311"/>
+        <TextEquiv conf="0.9990573525428772">
+          <Unicode>4</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_263da824" custom="structure {type:default;}">
+        <Coords points="225,2406 223,2431 707,2444 709,2444 805,2436 820,2436 825,2436 856,2446 858,2446 860,2446 989,2437 1009,2437 1026,2437 1128,2447 1130,2447 1132,2447 1150,2439 1165,2449 1166,2449 1168,2449 1170,2449 1458,2442 1465,2442 1466,2442 1529,2452 1531,2452 1629,2442 1631,2426 1631,2391 225,2378 225,2406"/>
+        <Baseline points="225,2406 601,2417 1631,2426"/>
+        <TextEquiv conf="0.9895228025424911">
+          <Unicode>56 tunc 1 - Romanorum cf. S. Lips. et Inst. 1.2.2 57 Inst. 2.1.11 58 Cf. D.5 pr. 81</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_72caf4db" custom="structure {type:default;}">
+        <Coords points="227,2451 225,2480 296,2480 300,2482 326,2494 328,2494 329,2495 424,2495 424,2494 426,2494 444,2485 450,2482 457,2485 482,2495 484,2495 485,2495 631,2489 633,2460 631,2431 227,2422 227,2451"/>
+        <Baseline points="227,2451 305,2459 633,2460"/>
+        <TextEquiv conf="0.9750554047781845">
+          <Unicode>59 Cf. S. Ste. D. 1 pr., p. 7</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_60b74c88"  custom="structure {type:MainZone;}">
+      <Coords points="1735,1458 1748,1458 1748,1469 1730,1463 1735,1458"/>
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_219eff08"  custom="structure {type:MainZone;}">
+      <Coords points="1781,2041 1781,2046 1776,2046 1776,2041 1781,2041"/>
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_a44e6b6a"  custom="structure {type:MainZone;}">
+      <Coords points="1733,1398 1748,1398 1742,1436 1730,1436 1733,1398"/>
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_feef2358"  custom="structure {type:MainZone;}">
+      <Coords points="1740,802 1742,807 1737,807 1737,802 1740,802"/>
+      
+    </TextRegion>
+    
+
+    
+  </Page>
+</PcGts>

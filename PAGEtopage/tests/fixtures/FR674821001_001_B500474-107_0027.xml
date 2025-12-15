@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"  standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd">
+  <Metadata>
+	<Creator>escriptorium</Creator>
+	<Created>2024-09-06T13:38:52.249495+00:00</Created>
+        <LastChange>2024-09-06T13:38:52.249526+00:00</LastChange>
+
+  </Metadata>
+  <Page imageFilename="FR674821001_001_B500474-107_0027.jpg" imageWidth="3129" imageHeight="4511">
+
+    
+    <TextRegion id="eSc_textblock_7c4cb6e9"  custom="structure {type:MainZone;}">
+      <Coords points="2533,611 2533,3116 455,3116 455,1883 455,611"/>
+      
+      
+      <TextLine id="eSc_line_bab0b4e0" custom="structure {type:default;}">
+        <Coords points="2459,616 2449,611 2431,608 2429,608 2426,608 2336,624 2334,624 2196,608 2193,608 2191,608 2188,608 2168,624 2166,626 2065,626 2063,624 2040,608 2038,608 2035,608 1923,606 1907,608 1882,608 1857,608 1832,608 1822,608 1707,621 1679,611 1657,611 1642,611 1607,621 1604,621 1582,613 1556,613 1534,613 1519,621 1516,624 1424,624 1421,621 1411,616 1406,616 1381,616 1356,616 1331,616 1313,616 1278,621 1263,621 1130,621 1105,621 1095,621 1080,621 1055,621 1030,621 1005,621 980,624 955,624 930,624 905,624 880,624 854,624 829,626 804,626 779,626 754,626 729,626 704,626 679,626 654,629 629,629 604,629 579,629 554,629 554,664 551,686 2494,689 2499,671 2499,626 2464,616 2459,616"/>
+        <Baseline points="554,664 2499,671"/>
+        <TextEquiv conf="0.9942850528491868">
+          <Unicode>The handwriting of one scribe is to be found in all four sections of the</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_3dfbf150" custom="structure {type:default;}">
+        <Coords points="486,744 483,764 2492,771 2497,751 2494,709 2301,709 2299,706 2274,691 2271,691 2269,691 2266,691 2264,691 2211,706 2208,706 2206,706 2123,691 2121,691 2118,691 2068,706 2065,706 2045,691 2043,691 2040,691 2038,691 1855,706 1827,706 1820,704 1770,689 1767,689 1765,689 1687,704 1684,704 1682,704 1564,689 1561,689 1559,689 1524,704 1521,704 1509,704 1346,691 1343,691 1246,704 1231,704 1221,704 1150,686 1148,686 1037,701 1035,704 880,704 877,701 842,686 839,686 837,686 486,699 486,744"/>
+        <Baseline points="486,744 2497,751"/>
+        <TextEquiv conf="0.9956109770139059">
+          <Unicode>manuscript: he corrected the main text of the Timaeus, added the glosses to</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_d96d49b4" custom="structure {type:default;}">
+        <Coords points="483,829 481,847 2489,852 2494,834 2489,771 1709,784 1677,771 1674,771 1672,771 1594,784 1526,771 1524,771 1521,771 1489,784 1268,769 1253,769 1251,769 1248,769 1246,769 1193,781 804,769 789,769 787,769 784,769 782,769 764,784 556,784 483,769 483,829"/>
+        <Baseline points="483,829 2494,834"/>
+        <TextEquiv conf="0.9940739297553113">
+          <Unicode>the text, and left comments throughout the other sections of the manuscript.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_c27858e6" custom="structure {type:default;}">
+        <Coords points="483,912 483,934 2497,934 2499,912 2497,867 912,849 910,849 907,849 854,864 804,849 802,849 799,849 797,849 764,867 669,867 649,849 646,849 644,849 516,849 513,849 511,849 483,862 483,912"/>
+        <Baseline points="483,912 2499,912"/>
+        <TextEquiv conf="0.989143883859789">
+          <Unicode>Another scribe noted in Old Irish that his teacher Tuilecnad had been away</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_5f5ff2eb" custom="structure {type:default;}">
+        <Coords points="483,992 483,1014 2497,1014 2499,992 2497,947 2374,929 2371,929 2369,929 2314,944 2266,932 2264,932 2261,932 2173,944 2098,929 2096,929 1968,942 1892,929 1890,929 1887,929 1845,944 1712,929 1709,929 1707,929 1704,929 1687,944 1551,944 1491,929 1489,929 1486,929 1484,929 1444,947 1331,947 1303,929 1301,929 1298,929 1296,929 1103,942 1083,929 1080,929 1078,929 920,929 917,929 915,929 852,944 804,929 802,929 799,929 797,929 794,929 772,944 629,932 626,932 483,944 483,992"/>
+        <Baseline points="483,992 2499,992"/>
+        <TextEquiv conf="0.9930020115877453">
+          <Unicode>on a tour of teaching, but had returned on the Feast of Saint Benedict. From</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_e556614d" custom="structure {type:default;}">
+        <Coords points="483,1070 483,1095 2502,1095 2502,1070 2497,1009 2444,1024 2301,1009 2258,1007 2256,1007 2253,1007 2251,1007 2246,1009 2223,1027 1958,1027 1933,1012 1920,1007 1918,1007 1915,1007 1913,1007 1900,1014 1877,1027 1699,1027 1682,1014 1677,1012 1674,1012 1672,1012 1669,1012 1667,1012 1664,1012 1662,1014 1652,1022 1642,1014 1632,1007 1629,1007 1627,1007 1624,1007 1529,1017 1494,1019 1486,1017 1474,1007 1471,1007 1469,1007 1273,1007 1271,1007 1268,1007 1238,1019 1223,1027 1007,1027 975,1019 882,1007 880,1007 877,1007 839,1022 832,1024 829,1022 809,1007 807,1007 804,1007 802,1007 712,1019 513,1007 511,1007 508,1007 506,1007 483,1019 483,1070"/>
+        <Baseline points="483,1070 2502,1070"/>
+        <TextEquiv conf="0.998797607421875">
+          <Unicode>this it has been speculated that Tuilecnad (a name that means &quot;Wave of</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_f74dce80" custom="structure {type:default;}">
+        <Coords points="483,1152 483,1177 2497,1172 2499,1152 2497,1110 2416,1110 2414,1107 2391,1092 2389,1092 2386,1092 2384,1092 2314,1107 2306,1110 2060,1110 2045,1105 1995,1092 1993,1092 1990,1092 1930,1105 1907,1107 1870,1102 1780,1092 1777,1092 1775,1092 1745,1102 1729,1107 1722,1102 1709,1092 1707,1092 1704,1092 1632,1092 1629,1092 1627,1092 1624,1092 1614,1100 1602,1110 1326,1110 1298,1097 1281,1092 1278,1092 1110,1092 1108,1092 1105,1092 1093,1097 1060,1107 1025,1095 1015,1092 1012,1092 1010,1092 1007,1092 1000,1095 975,1110 844,1110 824,1095 824,1092 822,1092 819,1092 636,1092 634,1092 631,1092 629,1092 574,1107 483,1092 483,1152"/>
+        <Baseline points="483,1152 2499,1152"/>
+        <TextEquiv conf="0.9865555788079897">
+          <Unicode>Knowledge&quot;) was the director and main scribe of the volume’s corrections</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_11cf3067" custom="structure {type:default;}">
+        <Coords points="483,1230 481,1250 2492,1255 2497,1235 2494,1187 2409,1172 2406,1172 2068,1185 2048,1185 2040,1185 1933,1172 1930,1172 1584,1185 1526,1185 1511,1185 1411,1170 1409,1170 1406,1170 1368,1182 1301,1170 1298,1170 1218,1182 1215,1182 1165,1170 1163,1170 1160,1170 1158,1170 1128,1182 1125,1182 1043,1170 1040,1170 483,1180 483,1230"/>
+        <Baseline points="483,1230 2497,1235"/>
+        <TextEquiv>
+          <Unicode>and glosses. ³⁰Hereafter, for the sake of convenience, I shall refer to the Irish</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_9b467b51" custom="structure {type:default;}">
+        <Coords points="486,1310 483,1330 2489,1335 2494,1315 2494,1273 2431,1253 2429,1253 2426,1253 2424,1253 2421,1253 2394,1270 2299,1255 2296,1255 2294,1255 2246,1270 2188,1253 2186,1253 2183,1253 2181,1253 2116,1270 2070,1255 2068,1255 2065,1255 2063,1255 2010,1270 2008,1270 2000,1270 1840,1258 1837,1258 1835,1258 1832,1258 1815,1270 1812,1270 1757,1258 1755,1258 1632,1268 1599,1253 1597,1253 1594,1253 1391,1268 1366,1250 1363,1250 1361,1250 1358,1250 1040,1268 1032,1268 1030,1268 942,1250 940,1250 834,1268 829,1268 802,1250 799,1250 797,1250 737,1250 734,1250 644,1268 636,1268 631,1268 539,1250 536,1250 534,1250 486,1265 486,1310"/>
+        <Baseline points="486,1310 2494,1315"/>
+        <TextEquiv conf="0.9996880301057476">
+          <Unicode>scribe of the glosses in question as Tuilecnad, despite the fact that the</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_9851bd72" custom="structure {type:default;}">
+        <Coords points="486,1393 486,1418 1491,1418 1491,1393 1491,1353 1419,1353 1416,1350 1396,1335 1394,1335 1391,1335 1388,1335 1308,1348 1293,1353 1085,1353 1075,1345 1063,1335 1060,1335 1058,1335 1055,1335 1053,1335 1025,1345 1005,1350 486,1338 486,1393"/>
+        <Baseline points="486,1393 1491,1393"/>
+        <TextEquiv conf="0.9893140609447773">
+          <Unicode>identification is merely a supposition.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_9ce08863" custom="structure {type:default;}">
+        <Coords points="549,1471 546,1493 2489,1498 2494,1481 2492,1428 2391,1428 2389,1425 2349,1408 2346,1408 2344,1408 2276,1425 2266,1428 2091,1428 2083,1423 2063,1413 2060,1413 2058,1413 2055,1413 2030,1420 2015,1425 1902,1425 1895,1420 1877,1405 1875,1405 1872,1405 1870,1405 1546,1415 1524,1415 1516,1415 1441,1403 1439,1403 1436,1403 1434,1403 1421,1415 1411,1423 1248,1423 1178,1410 1128,1405 1125,1405 1123,1405 1105,1410 1070,1420 990,1410 920,1400 917,1400 854,1408 794,1415 774,1408 764,1403 762,1403 759,1403 714,1405 611,1415 549,1405 549,1471"/>
+        <Baseline points="549,1471 2494,1481"/>
+        <TextEquiv conf="0.9874422638802915">
+          <Unicode>In adding glosses to the Timaeus, Tuilecnad drew directly from the Glosae.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_b5ee0cee" custom="structure {type:default;}">
+        <Coords points="483,1551 481,1573 2492,1578 2497,1558 2494,1513 483,1506 483,1551"/>
+        <Baseline points="483,1551 2497,1558"/>
+        <TextEquiv conf="0.9948733295943286">
+          <Unicode>He excerpted freely, altered a few glosses, and only departed from it when</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_8579684a" custom="structure {type:default;}">
+        <Coords points="486,1631 483,1656 2492,1659 2497,1641 2494,1598 2389,1581 2386,1581 2384,1581 2381,1581 2364,1596 2274,1596 2216,1596 2211,1596 2141,1581 2138,1581 2136,1581 2103,1596 2101,1596 2093,1596 1993,1578 1990,1578 1988,1578 1950,1593 1644,1578 1642,1578 1639,1578 1637,1578 1619,1593 1592,1593 1494,1593 1489,1593 1451,1576 1449,1576 1376,1576 1373,1576 1371,1576 1368,1576 1348,1591 1348,1593 1180,1593 1178,1591 1160,1578 1158,1578 1155,1578 1153,1578 1088,1591 1080,1591 1078,1591 1050,1576 1048,1576 1045,1576 1043,1576 1040,1576 1017,1591 1015,1591 1010,1591 967,1576 965,1576 962,1576 792,1588 782,1588 779,1588 744,1573 742,1573 739,1573 486,1586 486,1631"/>
+        <Baseline points="486,1631 2497,1641"/>
+        <TextEquiv conf="0.991289990049013">
+          <Unicode>he added some simple glosses on the opening section of the Timaeus (see</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_573b057b" custom="structure {type:default;}">
+        <Coords points="486,1714 483,1731 2492,1736 2497,1719 2494,1676 2374,1659 2371,1659 2369,1659 2366,1659 2341,1674 2339,1676 2186,1676 2183,1674 2153,1659 2151,1659 2148,1659 1933,1674 1905,1674 1875,1674 1672,1659 1669,1659 1667,1659 1614,1671 1602,1674 1584,1671 1489,1656 1406,1656 1404,1656 1401,1656 1399,1656 1376,1671 1368,1671 1266,1656 1263,1656 1203,1671 1193,1671 1173,1671 1030,1656 1027,1656 957,1669 942,1671 917,1669 802,1656 799,1656 797,1656 794,1656 777,1669 774,1671 762,1669 712,1656 709,1656 707,1656 486,1666 486,1714"/>
+        <Baseline points="486,1714 2497,1719"/>
+        <TextEquiv conf="0.996448666265566">
+          <Unicode>Appendix 3.4). After repeating, albeit in slightly corrupted form, a long</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_47f87a4c" custom="structure {type:default;}">
+        <Coords points="486,1796 486,1821 2492,1816 2494,1801 2494,1754 2442,1736 2439,1736 2437,1736 2203,1751 2201,1751 2143,1736 2141,1736 2138,1736 2136,1736 2106,1751 2103,1754 1955,1754 1953,1751 1913,1736 1910,1736 1907,1736 1905,1736 1872,1751 1870,1754 1719,1754 1717,1751 1674,1736 1672,1736 1669,1736 1667,1736 1664,1736 1642,1751 1637,1754 1491,1754 1486,1751 1441,1734 1439,1734 1436,1734 1434,1734 1386,1749 1296,1734 1048,1734 1045,1734 955,1749 950,1749 945,1749 872,1734 870,1734 867,1734 864,1734 847,1749 844,1751 769,1751 767,1749 729,1734 727,1734 561,1734 559,1734 486,1746 486,1796"/>
+        <Baseline points="486,1796 2494,1801"/>
+        <TextEquiv conf="0.9962567197133417">
+          <Unicode>passage from Glosde 5.35-44 (significat... rebus) on Timaeus 34c (W26:6),</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_9862093b" custom="structure {type:default;}">
+        <Coords points="488,1872 486,1892 2492,1899 2497,1879 2494,1821 488,1821 488,1872"/>
+        <Baseline points="488,1872 2497,1879"/>
+        <TextEquiv conf="0.9998853073191287">
+          <Unicode>Tuilecnad added the comment: &quot;Lege Bernardum et Calcidium et multas</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_949e47bb" custom="structure {type:default;}">
+        <Coords points="486,1952 483,1972 2492,1979 2497,1959 2497,1909 2484,1899 2482,1899 2479,1899 2477,1899 2474,1899 2447,1912 2447,1914 2248,1914 2241,1912 2143,1897 2141,1897 2138,1897 2106,1912 2103,1914 1968,1914 1963,1912 1935,1897 1933,1897 1707,1894 1704,1894 1564,1909 1556,1909 1551,1909 1484,1894 1481,1894 1479,1894 1476,1894 1451,1909 1449,1912 1316,1912 1313,1909 1278,1894 1276,1894 1273,1894 1271,1894 1243,1909 1241,1909 1236,1909 1188,1894 1185,1894 1183,1894 1180,1894 1178,1894 1160,1907 1158,1909 1153,1907 1108,1894 1105,1894 1103,1894 982,1907 962,1892 960,1892 957,1892 849,1892 847,1892 844,1892 842,1892 817,1907 814,1909 654,1909 651,1907 634,1892 631,1892 629,1892 626,1892 486,1904 486,1952"/>
+        <Baseline points="486,1952 2497,1959"/>
+        <TextEquiv>
+          <Unicode>formas inuenies&quot; (see the frontispiece, bottom left). ³¹ If we read Bernard and</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_c9a64256" custom="structure {type:default;}">
+        <Coords points="486,2034 483,2055 2492,2060 2497,2039 2494,1994 2351,1994 2349,1992 2329,1979 2326,1979 2324,1979 2321,1979 2231,1992 2203,1994 2191,1992 2156,1979 2153,1979 2151,1979 2148,1979 2126,1992 2116,1997 2028,1997 2020,1989 2008,1979 2005,1979 2003,1979 2000,1979 1998,1979 1965,1989 1950,1997 1827,1997 1815,1989 1800,1979 1797,1979 1795,1979 1667,1979 1664,1979 1662,1979 1644,1987 1632,1994 1617,1987 1604,1982 1602,1982 1599,1982 1551,1987 1491,1994 1394,1987 1308,1979 1306,1979 1303,1979 1301,1979 1293,1987 1281,1994 1002,1994 985,1984 970,1977 967,1977 767,1977 764,1977 762,1977 759,1977 752,1982 739,1992 709,1982 691,1977 689,1977 686,1977 486,1979 486,2034"/>
+        <Baseline points="486,2034 2497,2039"/>
+        <TextEquiv conf="0.9979021875063578">
+          <Unicode>Calcidius, the sentence seems to say, we shall find a number of opinions on</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_3f7adae6" custom="structure {type:default;}">
+        <Coords points="486,2115 483,2135 2492,2140 2497,2120 2494,2077 1747,2077 1745,2075 1719,2062 1717,2062 1714,2062 1652,2075 1644,2075 1629,2062 1627,2062 1624,2062 1449,2060 1446,2060 1444,2060 1401,2072 1243,2060 1241,2060 486,2070 486,2115"/>
+        <Baseline points="486,2115 2497,2120"/>
+        <TextEquiv conf="0.9940370933650291">
+          <Unicode>the world-soul. Alternatively one might take the sentence to mean that we</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_eed40d76" custom="structure {type:default;}">
+        <Coords points="486,2192 483,2212 2492,2220 2497,2200 2497,2152 2477,2140 2474,2140 2472,2140 2469,2140 2329,2152 2251,2137 2248,2137 2246,2137 2181,2152 2086,2137 2083,2137 2080,2137 2078,2137 2055,2152 2055,2155 1960,2155 1960,2152 1925,2137 1923,2137 1920,2137 1830,2152 1825,2152 1790,2152 1747,2152 1727,2135 1724,2135 1722,2135 1719,2135 1386,2150 1383,2150 1346,2135 1343,2135 1236,2135 1233,2135 1160,2150 1158,2150 1153,2150 1075,2132 1073,2132 1002,2147 799,2132 797,2132 579,2147 569,2147 566,2147 516,2132 513,2132 511,2132 508,2132 486,2142 486,2192"/>
+        <Baseline points="486,2192 2497,2200"/>
+        <TextEquiv conf="0.9978136154445442">
+          <Unicode>should read more of Bernard in order to find the opinions of Calcidius and</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_ede8f680" custom="structure {type:default;}">
+        <Coords points="486,2273 483,2293 2497,2300 2502,2280 2499,2235 2331,2217 2329,2217 2326,2217 2324,2217 2306,2232 2243,2220 2241,2220 2238,2220 2193,2232 2191,2235 1837,2235 1832,2232 1807,2215 1805,2215 1802,2215 1800,2215 1797,2215 1760,2230 1760,2232 1421,2232 1414,2230 1328,2215 1326,2215 1323,2215 1273,2230 1268,2230 1258,2230 1155,2212 930,2212 927,2212 854,2227 852,2227 829,2212 827,2212 824,2212 722,2212 719,2212 651,2227 646,2227 629,2212 626,2212 624,2212 549,2212 546,2212 486,2225 486,2273"/>
+        <Baseline points="486,2273 2502,2280"/>
+        <TextEquiv conf="0.994939417024202">
+          <Unicode>others on the world-soul. In fact, if one examines the entire passage in Glosae</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_c741a051" custom="structure {type:default;}">
+        <Coords points="488,2358 486,2375 2492,2380 2497,2363 2494,2318 2251,2300 2248,2300 2181,2315 2131,2300 2128,2300 2126,2300 2045,2315 2043,2315 2040,2315 2000,2300 1998,2300 1995,2300 1900,2315 1895,2315 1890,2315 1825,2300 1822,2300 1820,2300 1817,2300 1797,2315 1795,2318 1504,2318 1501,2315 1479,2298 1476,2298 1474,2298 1471,2298 1469,2298 1436,2315 1356,2315 1336,2298 1333,2298 1331,2298 1328,2298 1233,2313 1155,2298 1153,2298 729,2313 717,2313 697,2298 694,2298 691,2298 513,2298 511,2298 508,2298 506,2298 488,2308 488,2358"/>
+        <Baseline points="488,2358 2497,2363"/>
+        <TextEquiv conf="0.9979238788802902">
+          <Unicode>5.33-85, one does discover a discussion of just such a series of positions on</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_472393bb" custom="structure {type:default;}">
+        <Coords points="486,2435 483,2455 2492,2463 2497,2443 2494,2395 2421,2380 2419,2380 2416,2380 2414,2380 2394,2393 2394,2395 2080,2395 2078,2393 2035,2378 2033,2378 2030,2378 2028,2378 2000,2388 1825,2375 1822,2375 1820,2375 1765,2390 1765,2393 1667,2393 1667,2390 1647,2375 1644,2375 1642,2375 1639,2375 1561,2390 1559,2390 1534,2375 1531,2375 1529,2375 1358,2375 1356,2375 1353,2375 1351,2375 1336,2388 1278,2375 1276,2375 1273,2375 1271,2375 1253,2390 1251,2393 1173,2393 1168,2390 1145,2375 1143,2375 1140,2375 1138,2375 1135,2375 1108,2388 1108,2390 930,2390 927,2388 897,2373 895,2373 892,2373 486,2385 486,2435"/>
+        <Baseline points="486,2435 2497,2443"/>
+        <TextEquiv conf="0.999406052778845">
+          <Unicode>the world-soul, among them that of Calcidius at 5.58-64. Furthermore, the</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_4ca2f0d9" custom="structure {type:default;}">
+        <Coords points="486,2521 486,2546 2497,2543 2497,2521 2497,2481 2163,2481 2106,2463 2103,2463 2101,2463 2098,2463 2043,2481 1750,2481 1717,2463 1714,2463 1526,2463 1524,2463 1521,2463 1474,2481 1226,2481 1005,2463 1002,2463 915,2478 849,2463 847,2463 844,2463 712,2478 679,2463 676,2463 526,2463 524,2463 521,2463 486,2478 486,2521"/>
+        <Baseline points="486,2521 2497,2521"/>
+        <TextEquiv conf="0.9996605010496246">
+          <Unicode>gloss in question does not correspond closely to any specific passage in</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_d7f0b905" custom="structure {type:default;}">
+        <Coords points="486,2596 483,2613 2492,2621 2497,2603 2494,2561 2284,2546 2281,2546 1674,2556 1649,2556 1647,2556 1632,2543 1629,2543 1627,2543 1624,2543 1561,2556 1556,2556 1554,2556 1484,2543 1338,2543 1336,2543 1333,2543 1331,2543 1316,2556 1313,2556 1271,2543 1268,2543 1266,2543 1263,2543 1261,2543 1246,2556 1241,2556 784,2556 782,2553 767,2541 764,2541 762,2541 759,2541 486,2551 486,2596"/>
+        <Baseline points="486,2596 2497,2603"/>
+        <TextEquiv conf="0.9880095720291138">
+          <Unicode>Calcidius&#x27; commentary, so that Tuilecnad can not have meant that one</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_ea616df6" custom="structure {type:default;}">
+        <Coords points="488,2676 486,2694 496,2704 496,2706 498,2706 501,2706 503,2706 1135,2696 1168,2709 1170,2709 1173,2709 1765,2699 1827,2711 1830,2711 2492,2699 2494,2684 2492,2638 2339,2638 2336,2636 2311,2621 2309,2621 2306,2621 2304,2621 2301,2621 2269,2636 2266,2636 2264,2636 2203,2621 2201,2621 2198,2621 2196,2621 2163,2636 2158,2636 2121,2636 1825,2618 1697,2618 1694,2618 1692,2618 1659,2631 1654,2633 1644,2631 1587,2621 1584,2621 1582,2621 1579,2621 1564,2631 1559,2636 1446,2636 1439,2631 1424,2618 1421,2618 1419,2618 1416,2618 1318,2631 1283,2633 1276,2628 1261,2618 1258,2618 1256,2618 1253,2618 1125,2628 1088,2631 1083,2628 1063,2616 1060,2616 1058,2616 1055,2616 1053,2616 1015,2628 1002,2631 488,2626 488,2676"/>
+        <Baseline points="488,2676 2494,2684"/>
+        <TextEquiv conf="0.9913270578664892">
+          <Unicode>should turn separately to both Bernard and Calcidius for the &quot;multas</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_3cd6b797" custom="structure {type:default;}">
+        <Coords points="488,2756 486,2779 2492,2781 2497,2764 2494,2716 2294,2701 2291,2701 2213,2714 2203,2714 2198,2714 2166,2699 2163,2699 2161,2699 2158,2699 2128,2711 2123,2714 1672,2714 1667,2709 1649,2696 1647,2696 1644,2696 1642,2696 1564,2709 1536,2711 1451,2706 1253,2696 1251,2696 1208,2706 1183,2711 1175,2706 1160,2694 1158,2694 1155,2694 990,2694 987,2694 985,2694 982,2694 967,2704 957,2709 925,2704 872,2694 870,2694 488,2699 488,2756"/>
+        <Baseline points="488,2756 2497,2764"/>
+        <TextEquiv conf="0.9914867439203792">
+          <Unicode>formas.&quot; We should also note that Bernard’s name is not mentioned in the</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_ac111c8e" custom="structure {type:default;}">
+        <Coords points="488,2836 486,2856 2492,2861 2497,2841 2494,2796 1729,2796 1722,2791 1694,2781 1692,2781 1689,2781 1569,2791 1534,2794 1526,2791 1494,2779 1491,2779 1489,2779 1429,2791 1424,2791 1421,2791 1399,2779 1396,2779 1394,2779 488,2786 488,2836"/>
+        <Baseline points="488,2836 2497,2841"/>
+        <TextEquiv conf="0.9893003884951274">
+          <Unicode>body of the Oxford gloss itself. Thus his opinions seem to be quoted rather</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_baefd202" custom="structure {type:default;}">
+        <Coords points="488,2917 486,2934 2492,2942 2497,2924 2494,2879 2366,2861 2364,2861 2361,2861 2311,2877 2309,2879 2208,2879 2206,2877 2188,2861 2186,2861 2183,2861 2181,2861 2178,2861 2176,2861 2153,2877 2151,2879 1882,2879 1875,2877 1825,2861 1822,2861 1820,2861 1689,2874 1667,2859 1664,2859 1662,2859 1659,2859 1529,2874 1521,2874 1514,2874 1426,2859 1424,2859 1358,2874 1353,2874 1336,2859 1333,2859 1331,2859 1251,2859 1248,2859 1170,2874 1160,2874 1153,2874 1095,2856 1093,2856 1090,2856 1088,2856 1050,2869 1010,2856 1007,2856 1005,2856 1002,2856 972,2872 895,2856 892,2856 824,2872 822,2872 817,2872 759,2856 757,2856 754,2856 488,2869 488,2917"/>
+        <Baseline points="488,2917 2497,2924"/>
+        <TextEquiv conf="0.9964585602283478">
+          <Unicode>than discussed by Tuilecnad. In effect, Tuilecnad has provided us with a</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_e36ea50c" custom="structure {type:default;}">
+        <Coords points="488,2997 486,3024 2494,3024 2497,3002 2494,2959 2424,2944 2421,2944 2419,2944 2391,2957 2284,2944 2281,2944 2213,2957 2208,2957 2168,2957 1617,2944 1614,2944 1521,2954 1494,2957 1469,2954 1381,2942 1378,2942 1376,2942 1331,2954 1323,2957 1145,2957 1143,2954 1128,2942 1125,2942 1123,2942 1120,2942 1118,2942 1095,2952 1090,2954 1080,2952 1027,2942 1025,2942 947,2952 927,2954 920,2952 895,2942 892,2942 890,2942 814,2952 792,2954 782,2952 749,2942 747,2942 744,2942 488,2949 488,2997"/>
+        <Baseline points="488,2997 2497,3002"/>
+        <TextEquiv conf="0.9977941925709064">
+          <Unicode>footnote to his source, the preceding material being a direct extract from the</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_82d4b109" custom="structure {type:default;}">
+        <Coords points="493,3077 491,3107 707,3102 709,3082 709,3044 596,3042 576,3024 574,3024 571,3024 569,3024 493,3037 493,3077"/>
+        <Baseline points="493,3077 709,3082"/>
+        <TextEquiv conf="0.9999678305217198">
+          <Unicode>Glosde.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_1e60e632"  custom="structure {type:RunningTitleZone;}">
+      <Coords points="1161,405 1161,530 1713,530 1857,530 1857,405"/>
+      
+      
+      <TextLine id="eSc_line_1c8bb74a" custom="structure {type:default;}">
+        <Coords points="1782,438 1223,438 1203,471 1203,478 1203,503 1802,503 1802,478 1800,473 1782,438"/>
+        <Baseline points="1203,478 1802,478"/>
+        <TextEquiv conf="0.9991394595095986">
+          <Unicode>AUTHORSHIP AND DATE</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_d1a5f93c"  custom="structure {type:NumberingZone;}">
+      <Coords points="2514,421 2504,528 2386,498 2429,400"/>
+      
+      
+      <TextLine id="eSc_line_fa23aca6" custom="structure {type:default;}">
+        <Coords points="2477,426 2452,423 2426,428 2426,481 2426,503 2494,506 2497,481 2497,428 2477,426"/>
+        <Baseline points="2426,481 2497,481"/>
+        <TextEquiv conf="0.9999132454395294">
+          <Unicode>11</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_dd29354f"  custom="structure {type:MarginTextZone;}">
+      <Coords points="2534,3147 2534,3907 2504,3947 471,3927 491,3147 2459,3127"/>
+      
+      
+      <TextLine id="eSc_line_17b5e093" custom="structure {type:default;}">
+        <Coords points="551,3197 549,3217 2494,3222 2499,3202 2497,3157 674,3157 551,3145 551,3197"/>
+        <Baseline points="551,3197 2499,3202"/>
+        <TextEquiv>
+          <Unicode>³⁰ The Old Irish glosses of the Ms were first edited by Whitley Stokes, &quot;Irish Glosses and</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_e109bcb5" custom="structure {type:default;}">
+        <Coords points="496,3267 496,3293 2494,3288 2497,3262 2492,3225 493,3217 496,3267"/>
+        <Baseline points="496,3267 2497,3262"/>
+        <TextEquiv conf="0.9898189371758765">
+          <Unicode>Notes on Chalcidius,&quot; Zeitschrift fur Vergleichende Sprachforschung 29, Neue Folge 9 (1887)</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_325c3963" custom="structure {type:default;}">
+        <Coords points="498,3328 498,3350 2494,3345 2497,3323 2492,3288 496,3280 498,3328"/>
+        <Baseline points="498,3328 2497,3323"/>
+        <TextEquiv conf="0.9955186545848846">
+          <Unicode>372-380; they were reedited and translated by F. Shaw, &quot;The Irish Glosses and Marginalia</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_71174f5a" custom="structure {type:default;}">
+        <Coords points="496,3368 496,3388 496,3413 2497,3413 2497,3388 2497,3345 511,3345 496,3368"/>
+        <Baseline points="496,3388 2497,3388"/>
+        <TextEquiv conf="0.9965489904085795">
+          <Unicode>in Bodl. MS. Auct. F.3.15,&quot; Proceedings of of the Royal Irish Academy 58, Section C (1956)</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_5bd85d1b" custom="structure {type:default;}">
+        <Coords points="501,3445 498,3470 2492,3475 2497,3450 2494,3410 501,3405 501,3445"/>
+        <Baseline points="501,3445 2497,3450"/>
+        <TextEquiv conf="0.9961155886235444">
+          <Unicode>17-20. The Tuilecnad references and other indications of provenance are found there in items</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_3ab75012" custom="structure {type:default;}">
+        <Coords points="496,3516 496,3536 2497,3533 2499,3511 2494,3473 508,3463 506,3463 503,3463 501,3463 501,3465 493,3470 496,3516"/>
+        <Baseline points="496,3516 2499,3511"/>
+        <TextEquiv conf="0.9913301097719293">
+          <Unicode>23, 27-28, pp. 19-20. In the catalogue A Thousand Years of Irish Script: An Exhibition of Irish</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_5abd02ea" custom="structure {type:default;}">
+        <Coords points="501,3576 501,3596 2492,3591 2494,3571 2487,3528 498,3536 501,3576"/>
+        <Baseline points="501,3576 2494,3571"/>
+        <TextEquiv conf="0.9966667118397626">
+          <Unicode>Manuscripts in Oxford Libraries Arranged by Francis John Byrne (Oxford, 1979), pp. 14-15</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_04361fc6" custom="structure {type:default;}">
+        <Coords points="496,3636 496,3658 2497,3656 2497,3636 2497,3598 496,3598 496,3636"/>
+        <Baseline points="496,3636 2497,3636"/>
+        <TextEquiv conf="0.996157076695691">
+          <Unicode>(no.5), Tuilecnad is identified as the chief scribe and director of the volume. On the Irish</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_adebdfa0" custom="structure {type:default;}">
+        <Coords points="496,3699 496,3724 2499,3721 2499,3699 2497,3656 496,3656 496,3699"/>
+        <Baseline points="496,3699 2499,3699"/>
+        <TextEquiv conf="0.9964097019122995">
+          <Unicode>character of the Ms, see also James F. Kenney, The Sources for the Early History of Ireland:</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_ba5e6735" custom="structure {type:default;}">
+        <Coords points="496,3754 493,3776 2153,3781 2158,3759 2156,3721 496,3716 496,3754"/>
+        <Baseline points="496,3754 2158,3759"/>
+        <TextEquiv conf="0.9935703194803662">
+          <Unicode>An Introduction and Guide (New York, 1929; rpt. 1966), p. 679 (no. 539).</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_c2c1d3b4" custom="structure {type:default;}">
+        <Coords points="569,3809 569,3854 1200,3854 1215,3864 1256,3891 1258,3891 1261,3891 1263,3891 1266,3891 1303,3874 1391,3891 1394,3894 1757,3894 1757,3891 1760,3891 1762,3891 1787,3874 1810,3891 1812,3891 1815,3891 1817,3894 2058,3894 2058,3891 2060,3891 2098,3876 2101,3876 2143,3891 2146,3891 2148,3891 2492,3881 2494,3819 2492,3781 569,3769 569,3809"/>
+        <Baseline points="569,3809 669,3819 2494,3819"/>
+        <TextEquiv>
+          <Unicode>³¹ For a transcription and comparison of the tuo copies of the gloss, see Dutton, &quot;Ihe</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+      
+      <TextLine id="eSc_line_82c38cc1" custom="structure {type:default;}">
+        <Coords points="496,3876 493,3899 566,3922 569,3922 571,3922 651,3912 794,3927 797,3927 885,3907 1093,3907 1095,3881 1095,3839 1078,3829 1075,3829 1073,3829 905,3829 902,3829 804,3841 799,3841 784,3829 784,3826 782,3826 779,3826 777,3826 774,3826 772,3826 752,3841 699,3841 561,3841 561,3839 549,3829 549,3826 546,3826 544,3826 541,3826 539,3826 496,3836 496,3876"/>
+        <Baseline points="496,3876 1095,3881"/>
+        <TextEquiv conf="0.9902389740943909">
+          <Unicode>Uncovering.&#x27; pp. 207-208.</Unicode>
+        </TextEquiv>
+      </TextLine>
+
+      
+    </TextRegion>
+    
+    <TextRegion id="eSc_textblock_77def2d2"  custom="structure {type:MarginTextZone;}">
+      <Coords points="478,3538 478,3546 471,3546 473,3538"/>
+      
+    </TextRegion>
+    
+
+    
+  </Page>
+</PcGts>
