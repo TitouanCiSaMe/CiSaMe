@@ -35,7 +35,7 @@ Guide d'utilisation du script de téléchargement de manuscrits
 - Méthodes IIIF
 - Configuration et usage
 
-#### **TUTORIEL_FUSION_EXPORT_NOSKETCH.md**
+#### **TUTORIEL_FUSION_EXPORT_NOSKETCH.txt**
 Tutoriel complet pour débutants en ligne de commande
 - Fusion des fichiers verticaux en un corpus unique
 - Export vers le serveur NoSketch-Engine via SCP
