@@ -111,22 +111,18 @@ Vous devriez voir le dossier `Documentation` apparaître dans la liste.
 
 ### Étape 3.1 : Préparer vos fichiers
 
-Assurez-vous que tous vos fichiers `.vertical.txt` sont dans un même dossier.
+Assurez-vous que tous vos fichiers au format vertical sont dans un même dossier.
 
 **Exemple de structure** :
 ```
 /Users/votrenom/Documents/Corpus/
-├── texte_edition_1.vertical.txt
-├── texte_edition_2.vertical.txt
-├── texte_edition_3.vertical.txt
+├── texte_edition_1.txt
+├── texte_edition_2.txt
+├── texte_edition_3.txt
 └── ...
 ```
 
-### Étape 3.2 : Créer un script de fusion simple
-
-Nous allons créer un petit fichier pour faciliter la fusion.
-
-#### Option A : Utilisation du script existant (recommandé)
+### Étape 3.2 : Utilisation du script de fusion
 
 Le script `Fusion_txt_NoSketch.py` est déjà dans le dossier `Documentation`.
 
@@ -145,39 +141,13 @@ fichier_sortie = "/Users/votrenom/Documents/Corpus/Corpus.txt"
 python Documentation/Fusion_txt_NoSketch.py
 ```
 
-#### Option B : Script simplifié en une commande
-
-Si vous préférez ne pas modifier le fichier, voici une commande directe :
-
-```bash
-python -c "
-import os
-
-dossier = '/Users/votrenom/Documents/Corpus'  # ⚠️ MODIFIEZ CE CHEMIN
-fichier_sortie = '/Users/votrenom/Documents/Corpus/Corpus.txt'  # ⚠️ ET CELUI-CI
-
-fichiers = sorted([f for f in os.listdir(dossier) if f.endswith('.vertical.txt')])
-
-with open(fichier_sortie, 'w', encoding='utf-8') as dest:
-    for fichier in fichiers:
-        print(f'Fusion de {fichier}...')
-        with open(os.path.join(dossier, fichier), 'r', encoding='utf-8') as src:
-            dest.write(src.read())
-            dest.write('\n\n')  # Séparateur entre fichiers
-
-print(f'✓ Fusion terminée ! Fichier créé : {fichier_sortie}')
-"
-```
-
-> **⚠️ IMPORTANT** : Remplacez `/Users/votrenom/Documents/Corpus` par le vrai chemin vers votre dossier !
-
 ### Étape 3.3 : Vérifier le résultat
 
 Vous devriez voir des messages comme :
 ```
-Fusion de texte_edition_1.vertical.txt...
-Fusion de texte_edition_2.vertical.txt...
-Fusion de texte_edition_3.vertical.txt...
+Fusion de texte_edition_1.txt...
+Fusion de texte_edition_2.txt...
+Fusion de texte_edition_3.txt...
 ✓ Fusion terminée ! Fichier créé : /Users/votrenom/Documents/Corpus/Corpus.txt
 ```
 
@@ -269,7 +239,12 @@ Vous devriez voir :
 ### Étape 5.4 : Compiler le corpus
 
 ```bash
-compilecorp --config cisame_corpus.xml
+make compile
+```
+### Étape 5.5 : Exécuter le corpus
+
+```bash
+make run
 ```
 
 **Explication** : Cette commande transforme votre fichier `.txt` en un format optimisé pour les recherches dans NoSketch.
@@ -340,18 +315,6 @@ Vérifiez vos identifiants et contactez l'administrateur du serveur.
 1. Vérifiez votre connexion internet
 2. Vérifiez l'adresse du serveur
 3. Contactez l'administrateur
-
----
-
-### Problème : La fusion ne contient qu'un seul fichier
-
-**Cause** : L'extension `.vertical.txt` n'est pas reconnue.
-
-**Solution** :
-Dans le script, modifiez la ligne pour chercher la bonne extension :
-```python
-fichiers = sorted([f for f in os.listdir(dossier) if f.endswith('.vertical.txt')])
-```
 
 ---
 
