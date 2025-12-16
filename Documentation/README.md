@@ -35,6 +35,14 @@ Guide d'utilisation du script de téléchargement de manuscrits
 - Méthodes IIIF
 - Configuration et usage
 
+#### **TUTORIEL_FUSION_EXPORT_NOSKETCH.md**
+Tutoriel complet pour débutants en ligne de commande
+- Fusion des fichiers verticaux en un corpus unique
+- Export vers le serveur NoSketch-Engine via SCP
+- Compilation et mise en ligne du corpus
+- Compatible Mac/Linux avec explications pas à pas
+- Module 7 : Pipeline complet d'export NoSketch
+
 #### **Guide_Kraken_HTR_Mac.txt**
 Guide d'installation et d'utilisation de Kraken HTR sur Mac
 - Procédures d'installation
