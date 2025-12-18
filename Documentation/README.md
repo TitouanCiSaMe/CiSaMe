@@ -83,11 +83,6 @@ Document détaillant les apports et contributions au projet
 - Notes de développement
 - Évolutions et améliorations
 
-#### **CalKit corrections.docx**
-Corrections et annotations pour le CalKit
-- Notes de correction
-- Améliorations proposées
-
 ### Scripts et Utilitaires
 
 #### **Fusion_txt_NoSketch.py**
