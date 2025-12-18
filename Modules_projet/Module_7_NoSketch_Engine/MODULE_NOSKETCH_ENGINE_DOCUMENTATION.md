@@ -57,7 +57,9 @@ verbum  N       verbum
 
 ### 2. Fusion des textes
 
-**Outil** : `Fusion_txt_NoSketch.py` (algorithme existant)
+**Outil** : `PAGEtopage/fusion_vertical.py` (interface CLI moderne)
+
+**Localisation** : Le script de fusion a été déplacé dans le dossier PAGEtopage pour une meilleure organisation du workflow.
 
 **Processus** :
 1. Lecture de tous les fichiers `.vertical.txt` du dossier source
@@ -65,12 +67,18 @@ verbum  N       verbum
 3. Préservation des métadonnées de séparation entre textes
 4. Génération du fichier `Corpus.txt` unique
 
+**Usage** :
+```bash
+python PAGEtopage/fusion_vertical.py -i /path/to/vertical/files -o Corpus.txt
+```
+
 **Sortie** : `Corpus.txt` - fichier vertical unique contenant tous les textes fusionnés
 
 **Caractéristiques** :
 - Maintien de la structure verticale
 - Séparateurs entre textes pour traçabilité
 - Encodage UTF-8
+- Interface CLI avec arguments (--input, --output, --extension, --separator)
 
 ### 3. Copie dans le projet local
 
@@ -220,11 +228,13 @@ Le Décret de Gratien :
 
 ## Outils et technologies
 
-### Fusion_txt_NoSketch.py
+### PAGEtopage/fusion_vertical.py
 - **Fonction** : Fusion des fichiers verticaux
-- **Langage** : Python
+- **Langage** : Python 3
+- **Interface** : CLI avec argparse
 - **Entrée** : Dossier contenant fichiers `.vertical.txt`
 - **Sortie** : `Corpus.txt` unique
+- **Localisation** : `PAGEtopage/fusion_vertical.py`
 
 ### NoSketch-Engine
 - **Type** : Corpus query system
@@ -284,9 +294,10 @@ Corpus interrogeable
 
 ### Fusion des fichiers verticaux
 ```bash
-python Fusion_txt_NoSketch.py \
-  --input-dir /path/to/vertical/files \
-  --output Corpus.txt
+python PAGEtopage/fusion_vertical.py -i /path/to/vertical/files -o Corpus.txt
+
+# Ou avec extension personnalisée
+python PAGEtopage/fusion_vertical.py -i /path/to/output -o Corpus.txt -e .vertical.txt
 ```
 
 ### Copie vers instance de test
@@ -351,6 +362,8 @@ Ces statistiques sont accessibles via l'interface web NoSketch-Engine.
 
 ## Conclusion
 
-Le module NoSketch-Engine finalise le pipeline CiSaMe en rendant les corpus enrichis accessibles et interrogeables. La vérification sur instance de test est cruciale pour garantir la qualité du corpus en production. L'utilisation de l'algorithme `Fusion_txt_NoSketch.py` existant assure une fusion cohérente des textes verticaux lemmatisés.
+Le module NoSketch-Engine finalise le pipeline CiSaMe en rendant les corpus enrichis accessibles et interrogeables. La vérification sur instance de test est cruciale pour garantir la qualité du corpus en production.
+
+Le script de fusion `PAGEtopage/fusion_vertical.py` a été déplacé dans le dossier PAGEtopage pour une meilleure organisation logique : PAGEtopage génère les fichiers `.vertical.txt`, puis le script de fusion les prépare pour NoSketch-Engine.
 
 La boucle de retour en cas de corpus non viable permet une correction à la source, maintenant ainsi l'intégrité de l'ensemble du pipeline.
