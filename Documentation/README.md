@@ -85,14 +85,7 @@ Document détaillant les apports et contributions au projet
 
 ### Scripts et Utilitaires
 
-#### **Fusion_txt_NoSketch.py**
-Script Python pour fusionner des fichiers texte
-- Fusion de tous les fichiers d'un dossier en un seul
-- Préparation pour import NoSketch-Engine
-- Interface CLI avec arguments (--input, --output, --extension, --separator)
-- Extension et séparateur configurables
-- Module 7 : Préparation corpus NoSketch
-- Usage : `python Fusion_txt_NoSketch.py -i <dossier> -o <fichier_sortie>`
+> **📦 Script de fusion déplacé** : Le script de fusion des fichiers verticaux est maintenant dans [`PAGEtopage/fusion_vertical.py`](../PAGEtopage/fusion_vertical.py) pour une meilleure organisation du workflow PAGEtopage → NoSketch-Engine.
 
 ---
 

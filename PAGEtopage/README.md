@@ -240,6 +240,36 @@ Cette commande :
 
 ---
 
+## Fusion des fichiers verticaux (pour NoSketch-Engine)
+
+Si vous voulez créer un corpus unique pour NoSketch-Engine à partir de plusieurs fichiers `.vertical.txt`, utilisez le script de fusion inclus :
+
+```bash
+python fusion_vertical.py -i ./dossier_fichiers_verticaux/ -o Corpus_complet.txt
+```
+
+**Options disponibles** :
+
+```bash
+# Fusion de tous les .txt d'un dossier
+python fusion_vertical.py -i ./output/ -o Corpus.txt
+
+# Fusion avec extension personnalisée
+python fusion_vertical.py -i ./output/ -o Corpus.txt -e .vertical.txt
+
+# Fusion avec séparateur personnalisé
+python fusion_vertical.py -i ./output/ -o Corpus.txt -s "\n\n---\n\n"
+
+# Aide complète
+python fusion_vertical.py --help
+```
+
+**Résultat** : Un seul fichier contenant tous vos corpus verticaux fusionnés, prêt pour l'import dans NoSketch-Engine.
+
+> **Note** : Ce script est particulièrement utile si vous avez traité plusieurs éditions/manuscrits séparément et souhaitez les regrouper en un seul corpus interrogeable.
+
+---
+
 ## Les formats de sortie
 
 ### Format "scholarly" (recommandé)

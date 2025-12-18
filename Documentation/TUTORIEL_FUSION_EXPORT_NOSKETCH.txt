@@ -134,11 +134,11 @@ Exemple de structure :
 Étape 3.2 : Utilisation du script de fusion
 --------------------------------------------
 
-Le script Fusion_txt_NoSketch.py est déjà dans le dossier Documentation.
+Le script de fusion est maintenant dans le dossier PAGEtopage (fusion_vertical.py).
 
 Exécutez le script avec les arguments suivants :
 
-    python Documentation/Fusion_txt_NoSketch.py -i /Users/votrenom/Documents/Corpus -o Corpus.txt
+    python PAGEtopage/fusion_vertical.py -i /Users/votrenom/Documents/Corpus -o Corpus.txt
 
 Explication de la commande :
 - -i : Dossier contenant vos fichiers .vertical.txt
@@ -146,7 +146,7 @@ Explication de la commande :
 
 Vous pouvez aussi spécifier un chemin complet pour le fichier de sortie :
 
-    python Documentation/Fusion_txt_NoSketch.py -i /Users/votrenom/Documents/Corpus -o /Users/votrenom/Documents/Corpus/Corpus.txt
+    python PAGEtopage/fusion_vertical.py -i /Users/votrenom/Documents/Corpus -o /Users/votrenom/Documents/Corpus/Corpus.txt
 
 
 Étape 3.3 : Vérifier le résultat
@@ -341,7 +341,7 @@ RÉCAPITULATIF DES COMMANDES
     cd /chemin/vers/CiSaMe
 
     # 2. Fusionner les fichiers
-    python Documentation/Fusion_txt_NoSketch.py -i /chemin/vers/fichiers_verticaux -o Corpus.txt
+    python PAGEtopage/fusion_vertical.py -i /chemin/vers/fichiers_verticaux -o Corpus.txt
 
     # 3. Exporter vers le serveur
     scp /chemin/vers/fichiers_verticaux/Corpus.txt debian@fip-185-155-93-80.iaas.unistra.fr:/home/debian/NoSketch-Engine-Docker/corpora/cisame/vertical/
