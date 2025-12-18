@@ -16,28 +16,15 @@ Modeles/
 
 ## Utilisation
 
-### 1. Import dans eScriptorium
+### Import dans eScriptorium
 - Importer le modèle correspondant au type de document
 - Appliquer automatiquement sur les pages
-
-### 2. Fine-tuning sur HPC
-Utiliser comme modèle de base pour entraîner un nouveau modèle spécifique :
-
-```bash
-# Transcription
-ketos train -i Model_de_base/NOM_MODELE.mlmodel ...
-
-# Segmentation
-ketos segtrain -i Model_de_base/NOM_MODELE.mlmodel ...
-```
-
-Voir `Documentation/Fine_tuning_*.sh` pour les scripts complets.
 
 ## Types de documents
 
 ### Éditions (imprimées)
 - Texte régulier, meilleurs résultats (CER < 2%)
-- Modèles : PETRUS_CANTOR_PARISIENSIS, RUFINUS, STEPHANUS, TOTUS_HOMO, WINROTH
+- Modèles : EXPOSANT, EDITION_GENERALE, CATMUS_PRINT_FONDUE_LARGE
 
 ### Manuscrits (médiévaux)
 - Écriture manuscrite variable (CER 4-8%)
