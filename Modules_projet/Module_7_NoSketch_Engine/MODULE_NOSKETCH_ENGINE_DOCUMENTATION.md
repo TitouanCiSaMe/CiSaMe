@@ -132,9 +132,10 @@ scp Corpus.txt user@nosketch-server:/path/to/nosketch/data/
 
 **Emplacement** : Sur le serveur NoSketch-Engine
 
-**Commande** (exemple générique) :
+**Commandes** :
 ```bash
-compilecorp --config corpus_config.xml
+cd /home/debian/NoSketch-Engine-Docker/corpora/cisame/vertical/
+make compile
 ```
 
 **Processus** :
@@ -152,6 +153,11 @@ compilecorp --config corpus_config.xml
 ### 7. Mise en service (Run)
 
 **Action** : Activation du corpus dans l'interface NoSketch-Engine
+
+**Commande** :
+```bash
+make run
+```
 
 **Résultat** : Corpus interrogeable via l'interface web NoSketch-Engine
 
@@ -302,9 +308,10 @@ scp Corpus.txt user@nosketch-prod.server:/data/nosketch/corpora/
 
 ### Connexion et compilation sur serveur
 ```bash
-ssh user@nosketch-prod.server
-cd /data/nosketch/corpora/
-compilecorp --config cisame_corpus.xml
+ssh debian@fip-185-155-93-80.iaas.unistra.fr
+cd /home/debian/NoSketch-Engine-Docker/corpora/cisame/vertical/
+make compile
+make run
 ```
 
 ## Métriques et statistiques

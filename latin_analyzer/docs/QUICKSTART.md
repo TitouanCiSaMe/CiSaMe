@@ -27,36 +27,38 @@ cd /home/user/Data_Base && python3 download_ducange.py
 
 ## Utilisation
 
-### 📄 Analyser des fichiers XML Pages
+### 📝 Analyser un fichier texte brut
 
 ```bash
-# Extraction seule
-python3 page_xml_parser.py /path/to/xml_folder/ single
-
-# Analyse complète avec colorisation
-python3 -c "
-from latin_analyzer_v2 import LatinAnalyzer
-from page_xml_parser import PageXMLParser
-
-analyzer = LatinAnalyzer(ducange_dict_file='ducange_data/dictionnaire_ducange.txt')
-results = analyzer.analyze_page_xml('/path/to/xml/', column_mode='single')
-
-parser = PageXMLParser(column_mode='single')
-text, _ = parser.parse_folder('/path/to/xml/')
-analyzer.generate_docx(text.split('\n'), 'resultat.docx', results)
-"
+cd latin_analyzer/src
+python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx
 ```
 
 ---
 
-### 📝 Analyser un fichier texte brut
+### 📄 Analyser des fichiers XML Pages (1 colonne)
 
-```python
-from latin_analyzer_v2 import LatinAnalyzer
+```bash
+cd latin_analyzer/src
+python3 latin_analyzer_v2.py -i /path/to/xml_folder/ -o resultat.docx -m xml-single
+```
 
-analyzer = LatinAnalyzer(ducange_dict_file='ducange_data/dictionnaire_ducange.txt')
-results = analyzer.analyze_text_file('texte.txt')
-analyzer.generate_docx('texte.txt', 'resultat.docx', results)
+---
+
+### 📄 Analyser des fichiers XML Pages (2 colonnes)
+
+```bash
+cd latin_analyzer/src
+python3 latin_analyzer_v2.py -i /path/to/xml_folder/ -o resultat.docx -m xml-dual
+```
+
+---
+
+### 📊 Générer un rapport d'analyse des mots non reconnus
+
+```bash
+cd latin_analyzer/src
+python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx --report analyse_orange.txt
 ```
 
 ---
