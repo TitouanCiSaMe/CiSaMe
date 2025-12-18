@@ -94,8 +94,10 @@ Corrections et annotations pour le CalKit
 Script Python pour fusionner des fichiers texte
 - Fusion de tous les fichiers d'un dossier en un seul
 - Préparation pour import NoSketch-Engine
+- Interface CLI avec arguments (--input, --output, --extension, --separator)
 - Extension et séparateur configurables
 - Module 7 : Préparation corpus NoSketch
+- Usage : `python Fusion_txt_NoSketch.py -i <dossier> -o <fichier_sortie>`
 
 ---
 
@@ -130,7 +132,7 @@ CiSaMe/
 │   └── Vue_Ensemble/           # Schéma global
 ├── PAGEtopage/             # Code MODULE 6
 ├── latin_analyzer/         # Code MODULE 5B (futur)
-├── canon-law-toolkit/      # Code MODULE 9 (canon-law-toolkit)
+├── canon-law-toolkit/      # ⚠️ MODULE 9 (En développement - dossier vide)
 └── download_images.py      # Script MODULE 1
 ```
 

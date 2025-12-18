@@ -136,17 +136,17 @@ Exemple de structure :
 
 Le script Fusion_txt_NoSketch.py est déjà dans le dossier Documentation.
 
-Ouvrez-le avec un éditeur de texte et modifiez les lignes 53 et 56 :
+Exécutez le script avec les arguments suivants :
 
-    # Ligne 53 : Chemin vers votre dossier contenant les fichiers .vertical.txt
-    dossier = "/Users/votrenom/Documents/Corpus"
+    python Documentation/Fusion_txt_NoSketch.py -i /Users/votrenom/Documents/Corpus -o Corpus.txt
 
-    # Ligne 56 : Chemin où sauvegarder le fichier fusionné
-    fichier_sortie = "/Users/votrenom/Documents/Corpus/Corpus.txt"
+Explication de la commande :
+- -i : Dossier contenant vos fichiers .vertical.txt
+- -o : Nom du fichier de sortie (sera créé dans le dossier -i)
 
-Ensuite, exécutez le script :
+Vous pouvez aussi spécifier un chemin complet pour le fichier de sortie :
 
-    python Documentation/Fusion_txt_NoSketch.py
+    python Documentation/Fusion_txt_NoSketch.py -i /Users/votrenom/Documents/Corpus -o /Users/votrenom/Documents/Corpus/Corpus.txt
 
 
 Étape 3.3 : Vérifier le résultat
@@ -341,19 +341,20 @@ RÉCAPITULATIF DES COMMANDES
     cd /chemin/vers/CiSaMe
 
     # 2. Fusionner les fichiers
-    python Documentation/Fusion_txt_NoSketch.py
+    python Documentation/Fusion_txt_NoSketch.py -i /chemin/vers/fichiers_verticaux -o Corpus.txt
 
     # 3. Exporter vers le serveur
-    scp /chemin/Corpus.txt debian@serveur:/chemin/destination/
+    scp /chemin/vers/fichiers_verticaux/Corpus.txt debian@fip-185-155-93-80.iaas.unistra.fr:/home/debian/NoSketch-Engine-Docker/corpora/cisame/vertical/
 
     # 4. Se connecter au serveur
-    ssh debian@serveur
+    ssh debian@fip-185-155-93-80.iaas.unistra.fr
 
     # 5. Aller dans le dossier
     cd /home/debian/NoSketch-Engine-Docker/corpora/cisame/vertical/
 
-    # 6. Compiler
-    compilecorp --config cisame_corpus.xml
+    # 6. Compiler et lancer
+    make compile
+    make run
 
     # 7. Se déconnecter
     exit

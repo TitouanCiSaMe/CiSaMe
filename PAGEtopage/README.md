@@ -62,15 +62,17 @@ TreeTagger (outil de lemmatisation rapide) sera téléchargé et installé autom
 
 ### Option A : Téléchargement direct
 
-1. Téléchargez le dossier `PAGEtopage` depuis le dépôt GitHub
+1. Téléchargez le dossier `PAGEtopage` depuis le dépôt GitLab
 2. Placez-le dans un dossier de votre choix (par exemple `C:\Mes_Projets\` ou `~/Projets/`)
 
 ### Option B : Cloner le dépôt (si vous avez Git)
 
 ```bash
-git clone https://github.com/TitouanCiSaMe/Data_Base.git
-cd Data_Base/projects/algorithmes_python
+git clone <URL_GITLAB_CISAME>
+cd CiSaMe/PAGEtopage
 ```
+
+> **Note** : Remplacez `<URL_GITLAB_CISAME>` par l'URL de votre dépôt GitLab
 
 ---
 

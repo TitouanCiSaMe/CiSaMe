@@ -19,8 +19,11 @@ Vous devriez voir quelque chose comme `Python 3.10.x`. Si ce n'est pas le cas, i
 ## Étape 2 : Installez les dépendances
 
 ```
-pip install pyyaml cltk
+pip install pyyaml treetaggerwrapper
 ```
+
+**TreeTagger s'installe automatiquement !**
+TreeTagger (outil de lemmatisation rapide) sera téléchargé et installé automatiquement lors de la première utilisation. Pas besoin de configuration manuelle !
 
 ---
 
@@ -58,7 +61,7 @@ extraction:
   merge_hyphenated: true
 
 enrichment:
-  lemmatizer: cltk
+  lemmatizer: treetagger
   language: lat
 
 export:
