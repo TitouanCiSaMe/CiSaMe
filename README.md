@@ -46,7 +46,7 @@ Images → OCR/HTR → Segmentation → Corrections → Nettoyage XML
 ### MODULE 1 : Télécharger des images
 
 ```bash
-python download_images.py --iiif <url_manifest>
+python Module_1_Scripts/download_images.py --iiif <url_manifest>
 ```
 
 ### MODULE 6 : Enrichir linguistiquement
@@ -68,7 +68,8 @@ python PAGEtopage/fusion_vertical.py -i ./corpus/ -o corpus_complet.vertical.txt
 
 ```
 CiSaMe/
-├── download_images.py           # MODULE 1 : Téléchargement images (IIIF, PDF)
+├── Module_1_Scripts/            # MODULE 1 : Scripts téléchargement images
+│   └── download_images.py       #   - Téléchargement IIIF, PDF, etc.
 ├── PAGEtopage/                  # MODULE 6 : Enrichissement TreeTagger
 │   ├── step1_extract/           #   - Extraction XML → JSON
 │   ├── step2_enrich/            #   - Lemmatisation + POS-tagging
@@ -208,7 +209,7 @@ Visualisation
 
 ### Workflow typique
 
-1. **Télécharger images** (MODULE 1) : `python download_images.py --iiif <url>`
+1. **Télécharger images** (MODULE 1) : `python Module_1_Scripts/download_images.py --iiif <url>`
 2. **Transcrire** (MODULE 4) : Importer dans eScriptorium, appliquer modèles Kraken
 3. **Nettoyer** (MODULE 5) : Oxygène XML avec XPath + Regex
 4. **Enrichir** (MODULE 6) : `python -m PAGEtopage run --input ./xml/ --output ./output/ --config config.yaml`
