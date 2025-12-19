@@ -221,6 +221,10 @@ Pour les manuscrits IIIF d'une même bibliothèque, un script pourrait automatis
 
 ## 📁 Fichiers du MODULE 1
 
+**Schéma** :
+- `flowchart-module1.mmd` : Schéma du workflow de téléchargement
+
+**Scripts** :
 ```
 /
 ├── Liste MSS juridiques.docx          # Liste originale des chercheurs

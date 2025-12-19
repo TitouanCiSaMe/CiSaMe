@@ -360,6 +360,19 @@ Ces statistiques sont accessibles via l'interface web NoSketch-Engine.
 3. Refusionner le corpus complet
 4. Tester et réexporter
 
+## 📚 Fichiers et ressources
+
+**Schémas** :
+- `flowchart-module7-nosketch.mmd` : Schéma du pipeline NoSketch-Engine
+
+**Scripts** :
+- `PAGEtopage/fusion_vertical.py` : Fusion des fichiers verticaux
+
+**Documentation** :
+- Documentation NoSketch-Engine : https://www.sketchengine.eu/
+
+---
+
 ## Conclusion
 
 Le module NoSketch-Engine finalise le pipeline CiSaMe en rendant les corpus enrichis accessibles et interrogeables. La vérification sur instance de test est cruciale pour garantir la qualité du corpus en production.

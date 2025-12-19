@@ -270,7 +270,7 @@ Seafile/
 ## 📚 Fichiers et ressources
 
 **Schémas** :
-- `Shema_module_projet/module_donnees_textuelles.mermaid`
+- `flowchart-module8-diffusion.mmd` : Schéma de décision de diffusion
 
 **Scripts** :
 - `algo_hecate.py` : Export vers Nakala
