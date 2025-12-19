@@ -84,7 +84,7 @@ Quand le scraping est possible, choix de la méthode selon la bibliothèque et l
 
 ### Étape 4 : Téléchargement
 
-**Script principal** : `download_images.py`
+**Script principal** : `Module_1_Scripts/download_images.py`
 
 **Fonctionnalités** :
 - Lecture du manifest.json IIIF
@@ -199,7 +199,7 @@ Pour les manuscrits IIIF d'une même bibliothèque, un script pourrait automatis
 ## 🛠️ Outils et technologies
 
 **Scripts Python** :
-- `download_images.py` : Téléchargement IIIF
+- `Module_1_Scripts/download_images.py` : Téléchargement IIIF
 - Script British Library : Méthode hexadécimale
 - (Script Tuiles : perdu)
 
@@ -226,10 +226,12 @@ Pour les manuscrits IIIF d'une même bibliothèque, un script pourrait automatis
 
 **Scripts** :
 ```
-/
+Module_1_Scripts/
+└── download_images.py                 # Script téléchargement IIIF
+
+Documentation/
 ├── Liste MSS juridiques.docx          # Liste originale des chercheurs
 ├── liste_manuscrits.csv               # Extraction CSV (317 manuscrits)
-├── download_images.py                 # Script téléchargement IIIF
 ├── README_MANUSCRIPT_DOWNLOADER.md    # Documentation du script
 └── (script British Library)           # Méthode hexadécimale
 ```
