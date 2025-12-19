@@ -1,21 +1,43 @@
-# CiSaMe - Corpus informatisé des Sources de l'Ancien droit Médiéval et moderne
+# CiSaMe - Circulation des Savoirs Médiévaux
 
-Pipeline de numérisation, transcription et enrichissement linguistique de manuscrits juridiques médiévaux (droit canonique et civil).
+**Suite d'outils numériques pour l'analyse de manuscrits juridiques médiévaux**
 
-**Université de Strasbourg** | 317 manuscrits | ~150 éditions
+**Université de Strasbourg** | Droit canonique et civil | Moyen Âge
 
 ---
 
-## 📋 Vue d'ensemble
+## 📖 Présentation du projet
 
-Pipeline automatisé de traitement en 9 modules pour transformer des images de manuscrits en corpus interrogeables :
+**CiSaMe** (Circulation des Savoirs Médiévaux) est un projet de recherche numérique visant à constituer, enrichir et diffuser un corpus de **317 manuscrits juridiques médiévaux** (droit canonique et civil) pour les chercheurs en histoire du droit.
+
+### Objectifs
+
+1. **Numériser** : Acquisition d'images haute résolution depuis sources IIIF, PDF et archives
+2. **Transcrire** : Reconnaissance automatique HTR/OCR via eScriptorium et modèles Kraken
+3. **Enrichir** : Annotation linguistique (lemmatisation, POS-tagging) avec TreeTagger
+4. **Analyser** : Outils d'analyse lexicométrique et structurelle (Query Generator, Concordance Analyzer)
+5. **Diffuser** : Archives scientifiques (Nakala/Seafile) et corpus interrogeables (NoSketch-Engine)
+
+### Résultats
+
+- **~150 éditions** transcrites et enrichies
+- **5,768 records** de métadonnées bibliographiques (Heurist)
+- **Corpus annotés** avec lemmes et parties du discours
+- **Plateforme web d'analyse** (https://cisame.vercel.app)
+- **Concordancier en ligne** pour requêtes CQL avancées
+
+---
+
+## 📋 Pipeline de traitement
+
+Pipeline automatisé en 9 modules pour transformer des images de manuscrits en corpus exploitables :
 
 ```
 Images → OCR/HTR → Segmentation → Corrections → Nettoyage XML
-  → Enrichissement linguistique → Corpus interrogeable + Diffusion
+  → Enrichissement linguistique → Concordancier + Diffusion + Analyse
 ```
 
-**Résultat** : Corpus annotés (lemmes, POS tags) accessibles via concordancier web + archives scientifiques (Nakala/Seafile)
+**Technologies** : Python, eScriptorium, Kraken, TreeTagger, NoSketch-Engine, React
 
 ---
 
@@ -97,14 +119,17 @@ CiSaMe/
 
 | Composant | Technologie |
 |-----------|-------------|
-| **Langages** | Python 3.10+, Shell, YAML |
+| **Langages** | Python 3.10+, JavaScript, Shell, YAML |
 | **OCR/HTR** | eScriptorium, Kraken (HPC Unistra) |
 | **Enrichissement** | TreeTagger (lemmatisation auto-installée) |
 | **Validation latin** | PyCollatinus + Du Cange (100k mots médiévaux) |
 | **Base de données** | Heurist (métadonnées bibliographiques) |
 | **Stockage** | Seafile (privé), Nakala (public) |
 | **Concordancier** | NoSketch-Engine (requêtes CQL) |
-| **Visualisation** | React 18, D3.js, Recharts (MODULE 9) |
+| **Frontend** | React 18.2, Vite 5.0 (MODULE 9) |
+| **Visualisation** | Recharts, D3.js (MODULE 9) |
+| **Tests** | Vitest, React Testing Library (MODULE 9) |
+| **Déploiement** | Vercel (MODULE 9) |
 | **Formats** | XML PAGE, JSON, YAML, Vertical (NoSketch) |
 
 ---
@@ -121,7 +146,7 @@ CiSaMe/
 | **MODULE 6** | ✅ Opérationnel | PAGEtopage (enrichissement TreeTagger) |
 | **MODULE 7** | ✅ Opérationnel | NoSketch-Engine (concordancier) |
 | **MODULE 8** | ✅ Opérationnel | Diffusion Nakala/Seafile |
-| **MODULE 9** | 🚧 En développement | Canon-Law-Toolkit (dépôt séparé) |
+| **MODULE 9** | ✅ Opérationnel | Canon-Law-Toolkit (plateforme web d'analyse) |
 | **Transversal** | ✅ Opérationnel | Module Métadonnées (Heurist) |
 | **Parallèle** | ✅ Opérationnel | Décret de Gratien (pipeline spécifique) |
 
@@ -194,7 +219,84 @@ Visualisation
 
 ---
 
-## 📚 Ressources externes
+## 🔬 MODULE 9 : Canon-Law-Toolkit
+
+**Plateforme web d'analyse lexicométrique et structurelle**
+
+🌐 **URL** : https://cisame.vercel.app
+📦 **Repository** : https://github.com/TitouanCiSaMe/canon-law-toolkit
+📌 **Version** : 1.5.0 (Novembre 2025)
+
+### Outils disponibles
+
+#### 1. Query Generator (Générateur de requêtes CQL)
+
+Création de requêtes CQL pour NoSketch-Engine avec :
+
+- **Recherches de proximité** : Localisation de mots à distance configurable (1-20 tokens)
+- **Variations orthographiques médiévales** : 96 variantes automatiques (ae/e, v/u, j/i, ti/ci)
+- **Recherches sémantiques** : Découverte conceptuelle par lemmes
+- **Combinaisons avancées** : Fusion proximité + variations
+
+**Exemple** : Rechercher "dominus" et ses variantes dans un rayon de 5 mots autour de "ecclesia"
+
+#### 2. Concordance Analyzer (Analyseur de concordances)
+
+Analyse de concordances avec **9 vues spécialisées** :
+
+- **Enrichissement automatique** : Métadonnées Edi-XX injectées
+- **Visualisations interactives** : Graphiques, chronologies, nuages de mots
+- **Comparaison de corpus** : Analyse sur 5 dimensions
+- **Filtrage avancé** : Recherche multicritères
+- **Export** : CSV, JSON, PNG
+
+**Fonctionnalités** :
+- Calcul de taux de correspondance métadonnées
+- Analyse par domaine juridique, auteur, lieu
+- Chronologies avec granularités variables
+- Représentations type Gantt
+- Word clouds basés sur fréquences
+
+### Technologies
+
+| Composant | Stack |
+|-----------|-------|
+| **Frontend** | React 18.2, Vite 5.0 |
+| **Routing** | React Router DOM v6 |
+| **Visualisation** | Recharts, D3.js |
+| **i18n** | react-i18next (FR/EN) |
+| **Tests** | Vitest + React Testing Library |
+| **Styling** | CSS Modules |
+| **Déploiement** | Vercel (CI/CD automatique) |
+
+### Statut qualité
+
+- ✅ **100% tests UI** : 93/93 composants testés
+- ✅ **70% tests vues** : 64/91 composants testés
+- ✅ **Production** : Déployé sur Vercel avec CDN global
+- ✅ **Bilingue** : Interface FR/EN complète
+
+### Installation locale
+
+```bash
+git clone https://github.com/TitouanCiSaMe/canon-law-toolkit.git
+cd canon-law-toolkit
+npm install
+npm run dev
+```
+
+**Accès** : http://localhost:5173
+
+---
+
+## 📚 Ressources
+
+### Plateformes CiSaMe
+
+- **Canon-Law-Toolkit** (MODULE 9) : https://cisame.vercel.app
+- **Repository GitHub** : https://github.com/TitouanCiSaMe/canon-law-toolkit
+
+### Outils externes
 
 - **eScriptorium** : https://escriptorium.readthedocs.io/
 - **Kraken HTR** : https://kraken.re/
