@@ -72,11 +72,10 @@ CiSaMe/
 │   ├── Module_Metadonnees/      # Base Heurist (5768 records, transversal)
 │   ├── Decret_Gratien/          # Pipeline parallèle (4149 fichiers)
 │   └── Vue_Ensemble/            # Schéma global intégré
-├── Documentation/               # Guides techniques et scripts
-│   ├── Fine_tuning_*.sh         # Scripts HPC entraînement Kraken
-│   ├── liste_manuscrits.csv     # Corpus 317 manuscrits
-│   └── Guide_Kraken_HTR_Mac.txt # Installation Kraken
-└── canon-law-toolkit/           # MODULE 9 (en développement)
+└── Documentation/               # Guides techniques et scripts
+    ├── Fine_tuning_*.sh         # Scripts HPC entraînement Kraken
+    ├── liste_manuscrits.csv     # Corpus 317 manuscrits
+    └── Guide_Kraken_HTR_Mac.txt # Installation Kraken
 ```
 
 ---
@@ -122,7 +121,7 @@ CiSaMe/
 | **MODULE 6** | ✅ Opérationnel | PAGEtopage (enrichissement TreeTagger) |
 | **MODULE 7** | ✅ Opérationnel | NoSketch-Engine (concordancier) |
 | **MODULE 8** | ✅ Opérationnel | Diffusion Nakala/Seafile |
-| **MODULE 9** | 🚧 En développement | Canon-Law-Toolkit (Query Generator + Analyzer) |
+| **MODULE 9** | 🚧 En développement | Canon-Law-Toolkit (dépôt séparé) |
 | **Transversal** | ✅ Opérationnel | Module Métadonnées (Heurist) |
 | **Parallèle** | ✅ Opérationnel | Décret de Gratien (pipeline spécifique) |
 
