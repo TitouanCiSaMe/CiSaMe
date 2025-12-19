@@ -37,6 +37,7 @@ latin_analyzer/
 ├── src/                          # Code source
 │   ├── latin_analyzer_v2.py      # Analyseur principal
 │   ├── page_xml_parser.py        # Parser XML Pages
+│   ├── export_xml_to_txt.py      # Export XML → TXT simple
 │   └── __init__.py               # Package init
 │
 ├── tests/                        # Tests
@@ -164,6 +165,38 @@ Le rapport contient :
 - **i/j** : Traités comme identiques (iam = jam, iudicium = judicium)
 - **Chiffres romains** : xuiii., uii., ui. filtrés (normalisés avec u→v avant test)
 - **Césures** : Mots coupés fusionnés automatiquement (sancti- + tatis → sanctitatis)
+
+---
+
+## 🔧 Utilitaires
+
+### Export XML vers TXT (sans analyse)
+
+Si vous voulez simplement extraire le texte de fichiers XML Pages sans lancer l'analyse complète :
+
+```bash
+cd latin_analyzer/src
+python3 export_xml_to_txt.py <input_xml_ou_dossier> <output.txt> [single|dual]
+```
+
+**Exemples :**
+
+```bash
+# Extraire un seul fichier XML
+python3 export_xml_to_txt.py page_001.xml resultat.txt single
+
+# Extraire un dossier complet
+python3 export_xml_to_txt.py /path/to/xml_folder/ corpus_complet.txt single
+
+# Mode 2 colonnes
+python3 export_xml_to_txt.py /path/to/dual_xml/ corpus_dual.txt dual
+```
+
+**Cas d'usage :**
+- Prévisualisation rapide du contenu XML
+- Export simple sans analyse linguistique
+- Préparation de corpus pour d'autres outils
+- Pipelines personnalisés
 
 ---
 

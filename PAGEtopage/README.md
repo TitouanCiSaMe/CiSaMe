@@ -94,7 +94,11 @@ mon_projet/
 
 ### Créer le fichier de configuration
 
-Créez un fichier `config.yaml` avec un éditeur de texte (Notepad, TextEdit, VS Code...) :
+Créez un fichier `config.yaml` avec un éditeur de texte (Notepad, TextEdit, VS Code...).
+
+> **Astuce** : Vous pouvez copier le fichier `config_example.yaml` fourni dans le dossier PAGEtopage et l'adapter à vos besoins.
+
+**Exemple de configuration :**
 
 ```yaml
 # === MÉTADONNÉES DE VOTRE CORPUS ===
@@ -531,8 +535,17 @@ python -m PAGEtopage export --help
 python -m PAGEtopage re-enrich --help
 ```
 
-### Générer un fichier de configuration vide
+### Générer un fichier de configuration
 
+Deux options pour créer votre configuration :
+
+**Option 1 : Copier l'exemple fourni (recommandé)**
+```bash
+cp PAGEtopage/config_example.yaml config.yaml
+# Puis éditez config.yaml selon vos besoins
+```
+
+**Option 2 : Générer un fichier vierge**
 ```bash
 python -m PAGEtopage init --output ma_config.yaml
 ```

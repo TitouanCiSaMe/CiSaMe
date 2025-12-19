@@ -465,7 +465,7 @@ Les métadonnées doivent être **copiées manuellement** depuis Heurist dans co
 - `DOCUMENTATION_PAGETOPAGE_SCHEMA.md` : Liens avec schémas
 
 **Schémas** :
-- `Shema_module_projet/flowchart-module6-pagetopage.mmd` : Pipeline détaillé
+- `flowchart-module6-pagetopage.mmd` : Pipeline détaillé
 
 ---
 

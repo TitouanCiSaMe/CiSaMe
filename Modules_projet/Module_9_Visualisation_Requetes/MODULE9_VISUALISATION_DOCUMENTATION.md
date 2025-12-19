@@ -507,4 +507,19 @@ Pour Netlify, créer `public/_redirects` :
 
 ---
 
+## 📚 Fichiers et ressources
+
+**Schémas** :
+- `flowchart-module9-visualisation.mmd` : Schéma du module de visualisation et générateur de requêtes
+
+**Repository** :
+- GitLab : https://gitlab.com/cisame/canon-law-toolkit
+
+**Documentation** :
+- README principal du toolkit
+- Documentation Query Generator
+- Documentation Concordance Analyzer
+
+---
+
 *Pour revenir à la documentation des modules, voir [`../README.md`](../README.md)*

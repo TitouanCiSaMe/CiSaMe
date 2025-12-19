@@ -495,7 +495,7 @@ Les métadonnées sont copiées manuellement de Heurist vers config.yaml de PAGE
 - `ANALYSE_SCHEMAS_DOCUMENTATION.md` : Analyse complète de la base Heurist
 
 **Schémas** :
-- `Shema_module_projet/module_fiches_metadonnees.mermaid`
+- `flowchart-metadonnees.mmd` : Schéma d'extraction vers Heurist
 
 **Exports CSV** :
 - `Liste MSS juridiques.docx` (liste initiale)
