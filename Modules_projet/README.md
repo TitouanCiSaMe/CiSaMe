@@ -59,7 +59,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 
 #### [`Module_6_PAGEtopage/`](./Module_6_PAGEtopage/)
 **Enrichissement linguistique avec PAGEtopage**
-- **Statut** : 🚧 En développement
+- **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-module6-pagetopage.mmd` : Schéma du pipeline PAGEtopage
   - `MODULE6_PAGETOPAGE_DOCUMENTATION.md` : Documentation détaillée (Extract → Enrich → Export → Re-enrich)
@@ -219,7 +219,7 @@ interrogeable publiques/privées
 | **MODULE 3** : Segmentation | ✅ Opérationnel | Complété |
 | **MODULE 4** : Corrections | ✅ Opérationnel | Complété |
 | **MODULE 5** : Export | ✅ Opérationnel | Complété |
-| **MODULE 6** : PAGEtopage (Enrichissement) | 🚧 Développement | Haute |
+| **MODULE 6** : PAGEtopage (Enrichissement) | ✅ Opérationnel | Complété |
 | **MODULE 7** : NoSketch-Engine | ✅ Opérationnel | Complété |
 | **MODULE 8** : Diffusion Données | ✅ Opérationnel | Complété |
 | **Transversal** : Métadonnées (Heurist) | ✅ Opérationnel | Complété |
