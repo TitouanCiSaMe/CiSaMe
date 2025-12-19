@@ -8,7 +8,7 @@
 
 ## 📖 Présentation du projet
 
-**CiSaMe** (Circulation des Savoirs Médiévaux) est un projet de recherche numérique visant à constituer, enrichir et diffuser un corpus de **317 manuscrits juridiques médiévaux** (droit canonique et civil) pour les chercheurs en histoire du droit.
+**CiSaMe** (Circulation des Savoirs Médiévaux) est un projet de recherche numérique visant à constituer, enrichir et diffuser un corpus de **manuscrits juridiques et théologiques médiévaux** (droit canonique et romain) pour les chercheurs en histoire du droit.
 
 ### Objectifs
 
