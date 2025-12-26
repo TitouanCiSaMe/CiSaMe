@@ -15,6 +15,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-module1.mmd` : Schéma du workflow de téléchargement
+  - `flowchart-module1.png` : Image du schéma
   - `MODULE1_DOCUMENTATION.md` : Documentation complète du module
 - **Description** : Téléchargement des images depuis diverses sources (IIIF, PDF, Hexa, Tuiles) pour 317 manuscrits du corpus
 
@@ -23,6 +24,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-module2.mmd` : Schéma du workflow de téléchargement
+  - `flowchart-module2.png` : Image du schéma
   - `MODULE2_DOCUMENTATION.md` : Documentation complète du module
 - **Description** : Différentes méthodes d'acquisition d'images (IIIF, PDF, Hexadécimale, Tuiles, Manuel)
 - **Script principal** : `Modules_projet/Module_1/download_images.py`
@@ -32,6 +34,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-module3.mmd` : Schéma du workflow d'acquisition
+  - `flowchart-module3.png` : Image du schéma
   - `MODULE3_DOCUMENTATION.md` : Documentation complète du module
 - **Description** : Acquisition et catégorisation des éditions selon les droits (libre/restreint/secret)
 - **Critères** : Libre = auteur mort +70 ans, Restreint = -70 ans, Secret = jamais publié
@@ -41,6 +44,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-module4.mmd` : Schéma du workflow de traitement
+  - `flowchart-module4.png` : Image du schéma
   - `MODULE4_DOCUMENTATION.md` : Documentation complète du module
 - **Description** : Segmentation et transcription HTR/OCR via eScriptorium avec entraînement sur HPC
 - **Tutoriels** : [EN](https://escriptorium.readthedocs.io/en/latest/) | [FR](https://lectaurep.hypotheses.org/documentation/prendre-en-main-escriptorium)
@@ -51,6 +55,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-module5.mmd` : Schéma du workflow de nettoyage
+  - `flowchart-module5.png` : Image du schéma
   - `MODULE5_DOCUMENTATION.md` : Documentation complète du module
 - **Description** : Nettoyage des fichiers XML PAGE avec Oxygène (XPath + Regex)
 - **Outil** : [Oxygène XML Editor](https://www.oxygenxml.com/) | [Licence d'essai](https://www.oxygenxml.com/xml_editor/register.html?p=editor)
@@ -62,6 +67,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-module6-pagetopage.mmd` : Schéma du pipeline PAGEtopage
+  - `flowchart-module6-pagetopage.png` : Image du schéma
   - `MODULE6_PAGETOPAGE_DOCUMENTATION.md` : Documentation détaillée (Extract → Enrich → Export → Re-enrich)
 - **Description** : Pipeline d'enrichissement linguistique en 4 étapes (3 + correction optionnelle) utilisant TreeTagger (installation automatique) pour lemmatisation et POS-tagging (Latin/Français)
 - **Technologies** : Python 3.10+, TreeTagger, treetaggerwrapper, PyYAML
@@ -72,8 +78,8 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 **Pipeline NoSketch-Engine (Corpus interrogeables)**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
-  - `module_nosketch_engine.mermaid` : Schéma du pipeline principal
-  - `module_nosketch_installation.mermaid` : Schéma d'installation de l'instance test
+  - `flowchart-module7-nosketch.mmd` : Schéma du pipeline principal
+  - `flowchart-module7-nosketch.png` : Image du schéma
   - `MODULE_NOSKETCH_ENGINE_DOCUMENTATION.md` : Documentation complète du pipeline
 - **Description** : Création de corpus interrogeables à partir des fichiers verticaux (.vertical.txt) produits par MODULE 6
 - **Workflow** : Fusion → Test → Export → Compilation → Mise en service
@@ -84,12 +90,27 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 **Diffusion finale des données textuelles**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
-  - `module_donnees_textuelles.mermaid` : Schéma de décision de diffusion
+  - `flowchart-module8-diffusion.mmd` : Schéma de décision de diffusion
+  - `flowchart-module8-diffusion.png` : Image du schéma
   - `MODULE_DONNEES_TEXTUELLES_DOCUMENTATION.md` : Documentation complète
 - **Description** : Gestion de la diffusion finale des corpus enrichis (avec/sans images, libre/restreint)
 - **Destinations** :
   - **Nakala** : Données libres (Algo Hécate + connecteur Nakala)
   - **Seafile** : Données restreintes (cloud universitaire)
+
+#### [`Module_9_Visualisation_Requetes/`](./Module_9_Visualisation_Requetes/)
+**Visualisation et Générateur de Requêtes**
+- **Statut** : ✅ Production
+- **Contenu** :
+  - `flowchart-module9-visualisation.mmd` : Schéma du pipeline de visualisation
+  - `flowchart-module9-visualisation.png` : Image du schéma
+  - `MODULE9_VISUALISATION_DOCUMENTATION.md` : Documentation complète
+- **Description** : Plateforme web d'analyse pour NoSketch-Engine (canon-law-toolkit)
+- **Fonctionnalités** :
+  - **Query Generator** : Générateur de requêtes CQL (4 types de recherche, 96 variantes orthographiques)
+  - **Concordance Analyzer** : 9 vues d'analyse, comparaison de 2 corpus
+- **Technologies** : React 18.2, Vite 5.0, Recharts, D3.js, react-i18next
+- **Repository** : [canon-law-toolkit](https://github.com/TitouanCiSaMe/canon-law-toolkit)
 
 ### 🔸 Modules transversaux
 
@@ -97,7 +118,8 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 **Extraction et gestion des métadonnées (Transversal)**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
-  - `module_fiches_metadonnees.mermaid` : Schéma d'extraction vers Heurist
+  - `flowchart-metadonnees.mmd` : Schéma d'extraction vers Heurist
+  - `flowchart-metadonnees.png` : Image du schéma
   - `MODULE_METADONNEES_DOCUMENTATION.md` : Documentation de la structure Heurist
 - **Description** : Extraction des métadonnées des fiches manuscrits vers la base Heurist (3 tables : Auteurs, Oeuvres, Éditions). Alimente le config.yaml du MODULE 6.
 - **Base de données** : Heurist (hdb_cisame_misha) - 5,768 records, 129 éditions
@@ -110,6 +132,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
   - `flowchart-decret-gratien.mmd` : Schéma du workflow dédié
+  - `flowchart-decret-gratien.png` : Image du schéma
   - `DECRET_GRATIEN_DOCUMENTATION.md` : Documentation complète du corpus
 - **Description** : Pipeline adapté au format spécifique du Décret de Gratien
 - **Statistiques** : 4 149 fichiers .txt, ~4 000 canons, ~5 Mo
@@ -121,11 +144,10 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 #### [`Vue_Ensemble/`](./Vue_Ensemble/)
 **Schémas récapitulatifs et analyses**
 - **Contenu** :
-  - `flowchart-complete-improved.mmd` : Schéma complet amélioré de tous les modules
-  - `flowchart-overview.mmd` : Vue d'ensemble du projet
-  - `flowchart-simple.mmd` : Vue simplifiée du workflow
+  - `flowchart-pipeline-complet-integre.mmd` : Schéma complet amélioré de tous les modules
+  - `flowchart-pipeline-complet-integre.png` : Image du schéma principal
   - `FLOWCHARTS_INDEX.md` : Index de tous les schémas du projet
-  - `ANALYSE_SCHEMAS_DOCUMENTATION.md` : Analyse détaillée de la base Heurist (1,152 lignes)
+  - `README_VUE_ENSEMBLE.md` : Documentation de la vue d'ensemble
 - **Description** : Documentation globale, schémas récapitulatifs et analyses approfondies du projet
 
 ## 🔗 Pipeline complet intégré
@@ -155,6 +177,11 @@ Engine       Données
     ↓           ↓
 Corpus       Archives
 interrogeable publiques/privées
+    ↓
+MODULE 9
+Visualisation
+& Requêtes
+(canon-law-toolkit)
 ```
 
 **Pipeline parallèle** : Décret de Gratien (workflow spécifique, déjà sur NoSketch-Engine)
@@ -222,6 +249,7 @@ interrogeable publiques/privées
 | **MODULE 6** : PAGEtopage (Enrichissement) | ✅ Opérationnel | Complété |
 | **MODULE 7** : NoSketch-Engine | ✅ Opérationnel | Complété |
 | **MODULE 8** : Diffusion Données | ✅ Opérationnel | Complété |
+| **MODULE 9** : Visualisation & Requêtes | ✅ Production | Complété |
 | **Transversal** : Métadonnées (Heurist) | ✅ Opérationnel | Complété |
 | **Parallèle** : Décret de Gratien | ✅ Opérationnel | Complété |
 
@@ -240,4 +268,4 @@ Pour mettre à jour cette documentation :
 
 ---
 
-*Dernière mise à jour : 12 décembre 2025*
+*Dernière mise à jour : 26 décembre 2025*

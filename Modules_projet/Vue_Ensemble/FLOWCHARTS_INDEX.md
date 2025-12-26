@@ -10,6 +10,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### 📌 [flowchart-pipeline-complet-integre.mmd](./flowchart-pipeline-complet-integre.mmd)
 **SCHÉMA PRINCIPAL - Pipeline Complet Intégré**
+**Image PNG:** [flowchart-pipeline-complet-integre.png](./flowchart-pipeline-complet-integre.png)
 **Niveau de détail:** ⭐⭐⭐ (Complet et synthétique)
 **Usage recommandé:** Comprendre l'ensemble du projet
 
@@ -38,6 +39,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 1 - Téléchargement Images
 **Fichier:** `Modules_projet/Module_1/flowchart-module1.mmd`
+**Image PNG:** [`flowchart-module1.png`](../Module_1/flowchart-module1.png)
 **Détail:** ⭐⭐⭐⭐
 
 **Contenu:**
@@ -47,6 +49,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 2 - OCR & Reconnaissance
 **Fichier:** `Modules_projet/Module_2/flowchart-module2.mmd`
+**Image PNG:** [`flowchart-module2.png`](../Module_2/flowchart-module2.png)
 **Détail:** ⭐⭐⭐⭐⭐
 
 **Contenu:**
@@ -58,6 +61,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 3 - Segmentation & Structuration
 **Fichier:** `Modules_projet/Module_3/flowchart-module3.mmd`
+**Image PNG:** [`flowchart-module3.png`](../Module_3/flowchart-module3.png)
 **Détail:** ⭐⭐⭐⭐
 
 **Contenu:**
@@ -69,6 +73,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 4 - Corrections & Validation
 **Fichier:** `Modules_projet/Module_4/flowchart-module4.mmd`
+**Image PNG:** [`flowchart-module4.png`](../Module_4/flowchart-module4.png)
 **Détail:** ⭐⭐⭐⭐
 
 **Contenu:**
@@ -79,6 +84,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 5 - Nettoyage Post-eScriptorium
 **Fichier:** `Modules_projet/Module_5/flowchart-module5.mmd`
+**Image PNG:** [`flowchart-module5.png`](../Module_5/flowchart-module5.png)
 **Détail:** ⭐⭐⭐⭐⭐
 
 **Contenu:**
@@ -92,6 +98,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 6 - PAGEtopage (Enrichissement Linguistique)
 **Fichier:** `Modules_projet/Module_6_PAGEtopage/flowchart-module6-pagetopage.mmd`
+**Image PNG:** [`flowchart-module6-pagetopage.png`](../Module_6_PAGEtopage/flowchart-module6-pagetopage.png)
 **Détail:** ⭐⭐⭐⭐⭐
 **Statut:** 🚧 En développement
 
@@ -110,6 +117,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 7 - NoSketch-Engine
 **Fichier:** `Modules_projet/Module_7_NoSketch_Engine/flowchart-module7-nosketch.mmd`
+**Image PNG:** [`flowchart-module7-nosketch.png`](../Module_7_NoSketch_Engine/flowchart-module7-nosketch.png)
 **Détail:** ⭐⭐⭐⭐
 
 **Contenu:**
@@ -122,6 +130,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 8 - Diffusion Données Textuelles
 **Fichier:** `Modules_projet/Module_8_Diffusion_Donnees/flowchart-module8-diffusion.mmd`
+**Image PNG:** [`flowchart-module8-diffusion.png`](../Module_8_Diffusion_Donnees/flowchart-module8-diffusion.png)
 **Détail:** ⭐⭐⭐⭐
 
 **Contenu:**
@@ -133,6 +142,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE 9 - Visualisation et Générateur de Requêtes
 **Fichier:** `Modules_projet/Module_9_Visualisation_Requetes/flowchart-module9-visualisation.mmd`
+**Image PNG:** [`flowchart-module9-visualisation.png`](../Module_9_Visualisation_Requetes/flowchart-module9-visualisation.png)
 **Détail:** ⭐⭐⭐⭐⭐
 **Statut:** ✅ Production
 
@@ -154,6 +164,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE MÉTADONNÉES (Transversal)
 **Fichier:** `Modules_projet/Module_Metadonnees/flowchart-metadonnees.mmd`
+**Image PNG:** [`flowchart-metadonnees.png`](../Module_Metadonnees/flowchart-metadonnees.png)
 **Détail:** ⭐⭐⭐⭐
 
 **Contenu:**
@@ -169,6 +180,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ### MODULE DÉCRET DE GRATIEN (Pipeline Parallèle)
 **Fichier:** `Modules_projet/Decret_Gratien/flowchart-decret-gratien.mmd`
+**Image PNG:** [`flowchart-decret-gratien.png`](../Decret_Gratien/flowchart-decret-gratien.png)
 **Détail:** ⭐⭐⭐⭐
 
 **Contenu:**
@@ -208,9 +220,10 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ## 🔄 Dernière Mise à Jour
 
-**Date:** 12 décembre 2025
+**Date:** 26 décembre 2025
 
 **Changements récents:**
+- ✅ Ajout des images PNG pour tous les schémas (génération haute qualité)
 - ✅ Ajout Module 9 : Visualisation et Générateur de Requêtes (canon-law-toolkit)
 - ✅ Refonte Module 5 : Oxygène XML Editor
 - ✅ Migration Module 6 : CLTK → TreeTagger

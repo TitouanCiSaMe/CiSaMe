@@ -7,6 +7,8 @@ Ce dossier contient le schéma global et la documentation du projet CiSaMe.
 ### 🆕 **flowchart-pipeline-complet-integre.mmd**
 **Schéma complet intégré de tout le projet**
 
+![Pipeline Complet Intégré](./flowchart-pipeline-complet-integre.png)
+
 Le schéma le plus à jour et complet, montrant :
 - ✅ **Modules 1 à 9** : Pipeline principal complet et intégré
 - 🟣 **Module Métadonnées** : Transversal (Heurist → config.yaml → MODULE 6)
@@ -184,9 +186,10 @@ mmdc -i flowchart-pipeline-complet-integre.mmd -o pipeline.svg
 
 ## 🔄 Dernière mise à jour
 
-**Date** : 12 décembre 2025
+**Date** : 26 décembre 2025
 
 **Modifications récentes :**
+- ✅ Ajout des images PNG pour tous les schémas (génération haute qualité)
 - ✅ Module 9 : Ajout Visualisation et Générateur de Requêtes (canon-law-toolkit)
 - ✅ Module 5 : Refonte complète avec Oxygène XML Editor
 - ✅ Module 6 : Migration CLTK → TreeTagger, 4 formats (scholarly/clean/diplomatic/annotated) + étape 4 ré-enrichissement optionnelle
