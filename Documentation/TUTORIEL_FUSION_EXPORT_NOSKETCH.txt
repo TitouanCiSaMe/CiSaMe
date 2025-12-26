@@ -292,7 +292,7 @@ Problème : "python: command not found"
 
 Solution :
 
-    python3 Documentation/Fusion_txt_NoSketch.py
+    python3 PAGEtopage/fusion_vertical.py -i /chemin/vers/fichiers -o Corpus.txt
 
 Sur certains systèmes, il faut utiliser python3 au lieu de python.
 

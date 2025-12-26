@@ -10,7 +10,7 @@ Le MODULE 2 détaille les différentes méthodes techniques pour télécharger l
 
 **Entrée** : URLs et sources identifiées (MODULE 1)
 **Sortie** : Images haute résolution stockées sur Seafile
-**Script principal** : `download_images.py` (à la racine du repository)
+**Script principal** : `Modules_projet/Module_1/download_images.py`
 
 ---
 
@@ -41,7 +41,7 @@ Le MODULE 2 détaille les différentes méthodes techniques pour télécharger l
 - BVMM (bvmm.irht.cnrs.fr)
 - EMMSM Université de Caen
 
-**Script** : `download_images.py` (racine du repo)
+**Script** : `Modules_projet/Module_1/download_images.py`
 
 ```python
 # Configuration dans le script
@@ -193,7 +193,7 @@ Le script `download_images.py` inclut un délai configurable pour respecter les 
 
 ## Outils et technologies
 
-**Script principal** : `download_images.py`
+**Script principal** : `Modules_projet/Module_1/download_images.py`
 
 **Bibliothèques Python** :
 - `requests` : Requêtes HTTP
@@ -225,13 +225,14 @@ Le script `download_images.py` inclut un délai configurable pour respecter les 
 
 ```
 /
-├── download_images.py                    # Script principal IIIF
-├── Documentation/
-│   └── README_MANUSCRIPT_DOWNLOADER.md   # Documentation du script
-└── Modules_projet/
-    └── Module_2/
-        ├── flowchart-module2.mmd         # Schéma du workflow
-        └── MODULE2_DOCUMENTATION.md      # Cette documentation
+├── Modules_projet/
+│   ├── Module_1/
+│   │   └── download_images.py            # Script principal IIIF
+│   └── Module_2/
+│       ├── flowchart-module2.mmd         # Schéma du workflow
+│       └── MODULE2_DOCUMENTATION.md      # Cette documentation
+└── Documentation/
+    └── README_MANUSCRIPT_DOWNLOADER.md   # Documentation du script
 ```
 
 ---

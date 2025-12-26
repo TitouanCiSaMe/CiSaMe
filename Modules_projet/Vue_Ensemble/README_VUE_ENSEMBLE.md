@@ -123,7 +123,7 @@ Corrections manuelles et validation :
   - Comparaison de 2 corpus (5 dimensions)
   - Export : CSV, JSON, PNG
 - Technologies : React 18.2, Vite 5.0, Recharts, D3.js
-- Repository : [canon-law-toolkit](https://gitlab.com/cisame/canon-law-toolkit)
+- Repository : [canon-law-toolkit](https://github.com/TitouanCiSaMe/canon-law-toolkit)
 
 ### Module Métadonnées (Transversal)
 **Heurist** : Base de données bibliographiques

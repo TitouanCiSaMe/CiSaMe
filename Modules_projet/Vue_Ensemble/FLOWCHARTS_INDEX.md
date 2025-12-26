@@ -150,7 +150,7 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 - **Technologies** : React 18.2, Vite 5.0, Recharts, D3.js, react-i18next
 - **Export** : CSV, JSON, PNG
 - **Tests** : 157/184 ✅ (85%)
-- **Repository** : [canon-law-toolkit](https://gitlab.com/cisame/canon-law-toolkit)
+- **Repository** : [canon-law-toolkit](https://github.com/TitouanCiSaMe/canon-law-toolkit)
 
 ### MODULE MÉTADONNÉES (Transversal)
 **Fichier:** `Modules_projet/Module_Metadonnees/flowchart-metadonnees.mmd`

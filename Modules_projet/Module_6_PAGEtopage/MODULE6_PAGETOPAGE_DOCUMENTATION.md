@@ -252,7 +252,7 @@ Le Module 5 génère les XML PAGE nettoyés qui servent d'entrée à PAGEtopage.
 **Sortie vers NoSketch** :
 
 Les fichiers verticaux générés par PAGEtopage sont ensuite :
-1. Fusionnés avec `Fusion_txt_NoSketch.py`
+1. Fusionnés avec `pagetopage fusion` (ou directement `PAGEtopage/fusion_vertical.py`)
 2. Importés dans NoSketch-Engine pour consultation
 
 ---
@@ -307,7 +307,7 @@ Les fichiers verticaux générés par PAGEtopage sont ensuite :
 
 **Outils connexes** :
 - Heurist : Source des métadonnées
-- Fusion_txt_NoSketch.py : Export vers NoSketch
+- `pagetopage fusion` (PAGEtopage/fusion_vertical.py) : Export vers NoSketch
 
 ---
 
@@ -450,7 +450,7 @@ Les métadonnées doivent être **copiées manuellement** depuis Heurist dans co
         ↓
 8. (Optionnel) PAGEtopage ÉTAPE 4 → Ré-enrichissement
         ↓
-9. Fusion_txt_NoSketch.py → Préparation NoSketch
+9. `pagetopage fusion` → Préparation NoSketch
         ↓
 10. Import NoSketch-Engine → Consultation finale
 ```
