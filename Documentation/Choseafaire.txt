@@ -1,0 +1,9 @@
+- ENtrainner un modèle sur des éditions avec des lettres en indices. 
+- Faciliter la chaîne de traitement pour une prochaine fois, histoire de centraliser quand on fait une modification. 
+Implémenter les lignes dans LatinAnalyser dans le rendu doc comme ça linge = page = aussi vérification de l'ordre des lignes.
+Petit Tuto pour remplacer les métadonnées avec Chercher/Remplacer 
+Changer le nom du corpus + au niveau des exports avoir CISAME dans le nom. 
+
+Comparaison de jeux de données au lieu de corpus donc remplacer corpus par jeux de données et Veuillez charger de 2 jeux de données pour activer la comparaison.
+enlevé le logo balance 
+Dans import, enlevé la case pour importer des métadonnées, ne laissez que l'import de jeu de donné.
