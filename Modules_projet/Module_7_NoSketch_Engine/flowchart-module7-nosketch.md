@@ -1,0 +1,169 @@
+# Module7 Nosketch
+
+> **Note**: Ce diagramme est également disponible en format image PNG dans le même dossier.
+
+```mermaid
+flowchart TD
+    %% ========================================
+    %% MODULE 7 - NOSKETCH ENGINE
+    %% ========================================
+
+    START([📊 MODULE 7<br/>NoSketch Engine<br/>Concordancier et exploration corpus])
+
+    %% ========================================
+    %% ENTRÉE
+    %% ========================================
+    INPUT[📥 Entrée:<br/>Fichiers corpus_vertical.txt<br/>depuis MODULE 6<br/>Format: Mot / POS / Lemme]
+
+    START --> INPUT
+
+    %% ========================================
+    %% INSTANCE TEST - INSTALLATION
+    %% ========================================
+    subgraph INSTALL_FLOW [🔧 Installation Instance Test]
+        INSTALL_TITLE[Prérequis:<br/>Instance Test locale]
+        INSTALL_TUTO[📚 Suivre le tuto<br/>e_NDP_TAL/nosketch<br/>sur le git du projet]
+        INSTALL_CONFIG[⚙️ Créer fichier<br/>de configuration<br/>dans dossier registry]
+        INSTALL_STRUCTURE["📁 Créer structure:<br/>corpora/[nom_corpus]/vertical/"]
+        INSTALL_RESULT[✅ Instance Test<br/>fonctionnelle]
+
+        INSTALL_TITLE --> INSTALL_TUTO
+        INSTALL_TUTO --> INSTALL_CONFIG
+        INSTALL_CONFIG --> INSTALL_STRUCTURE
+        INSTALL_STRUCTURE --> INSTALL_RESULT
+    end
+
+    INPUT --> INSTALL_TITLE
+
+    %% ========================================
+    %% PRÉPARATION CORPUS
+    %% ========================================
+    subgraph CORPUS_FLOW [📦 Préparation du Corpus]
+        CORPUS_FUSION[🔗 Fusion des fichiers<br/>verticaux lemmatisés<br/>via PAGEtopage/fusion_vertical.py]
+        CORPUS_OUTPUT[📄 Corpus.txt<br/>unifié]
+        CORPUS_COPIE["📋 Copier Corpus.txt<br/>dans le projet local<br/>corpora/[nom_corpus]/vertical/"]
+        CORPUS_COMPILE[⚙️ Compilation<br/>du corpus]
+
+        CORPUS_FUSION --> CORPUS_OUTPUT
+        CORPUS_OUTPUT --> CORPUS_COPIE
+        CORPUS_COPIE --> CORPUS_COMPILE
+    end
+
+    INSTALL_RESULT --> CORPUS_FUSION
+
+    %% ========================================
+    %% VÉRIFICATION
+    %% ========================================
+    VERIFICATION[🔍 Vérification viabilité<br/>sur Instance Test]
+    DECISION{Corpus<br/>viable ?}
+
+    CORPUS_COMPILE --> VERIFICATION
+    VERIFICATION --> DECISION
+
+    %% ========================================
+    %% BRANCHE ERREUR
+    %% ========================================
+    ERREUR[❌ Corpus non viable<br/>Erreurs détectées]
+    CORRECTION[✍️ Correction<br/>des données source]
+
+    DECISION -->|Non| ERREUR
+    ERREUR --> CORRECTION
+    CORRECTION -->|Retour| INPUT
+
+    %% ========================================
+    %% DÉPLOIEMENT SERVEUR
+    %% ========================================
+    subgraph DEPLOY_FLOW [🚀 Déploiement Serveur]
+        DEPLOY_SHELL[🔌 Connexion Shell<br/>au serveur HPC]
+        DEPLOY_SCP[📤 Export via scp<br/>vers le serveur]
+        DEPLOY_COMPILE[⚙️ Compilation<br/>make compile]
+        DEPLOY_RUN[▶️ Exécution<br/>make run]
+        DEPLOY_TEST[🧪 Tests<br/>fonctionnels]
+        DEPLOY_RESULT[✅ NoSketch Engine<br/>en production]
+
+        DEPLOY_SHELL --> DEPLOY_SCP
+        DEPLOY_SCP --> DEPLOY_COMPILE
+        DEPLOY_COMPILE --> DEPLOY_RUN
+        DEPLOY_RUN --> DEPLOY_TEST
+        DEPLOY_TEST --> DEPLOY_RESULT
+    end
+
+    DECISION -->|Oui| DEPLOY_SHELL
+
+    %% ========================================
+    %% SORTIE
+    %% ========================================
+    OUTPUT([📤 SORTIE MODULE 7<br/>Concordancier accessible<br/>Exploration linguistique du corpus])
+
+    DEPLOY_RESULT --> OUTPUT
+
+    %% ========================================
+    %% ANNOTATIONS
+    %% ========================================
+    note1[💡 Instance Test:<br/>Installation locale obligatoire<br/>Permet validation avant<br/>déploiement serveur]
+    note2[💡 Fusion:<br/>Tous les textes verticaux<br/>regroupés en un seul Corpus.txt<br/>Script Python automatisé]
+    note3[💡 Format Vertical:<br/>1 ligne = 1 token<br/>Colonnes: Mot / POS / Lemme<br/>Séparateur: tabulation]
+    note4[💡 NoSketch Engine:<br/>Concordancier puissant<br/>Recherche CQL avancée<br/>Analyses statistiques]
+    note5[💡 Serveur HPC:<br/>Déploiement production<br/>Accès web sécurisé<br/>Performance optimale]
+
+    INSTALL_TUTO -.-> note1
+    CORPUS_FUSION -.-> note2
+    INPUT -.-> note3
+    DEPLOY_RUN -.-> note4
+    DEPLOY_SHELL -.-> note5
+
+    %% ========================================
+    %% STATISTIQUES
+    %% ========================================
+    subgraph STATS [📊 Statistiques Indicatives]
+        S1[Taille corpus: Variable selon projet]
+        S2[Format: TXT vertical tabulé]
+        S3[Compilation: 5-30 min selon taille]
+        S4[Accès: Interface web]
+    end
+
+    %% ========================================
+    %% OUTILS
+    %% ========================================
+    subgraph TOOLS [🛠️ Outils Utilisés]
+        T1[NoSketch Engine: Concordancier]
+        T2[Python: PAGEtopage/fusion_vertical.py]
+        T3[scp: Transfert fichiers]
+        T4[Shell: Administration serveur]
+    end
+
+    %% ========================================
+    %% STYLES
+    %% ========================================
+    classDef startEnd fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff
+    classDef input fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    classDef install fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef corpus fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef verification fill:#ffeb3b,stroke:#f57f17,stroke-width:2px
+    classDef decision fill:#ffeb3b,stroke:#f57f17,stroke-width:3px
+    classDef erreur fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    classDef deploy fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    classDef result fill:#a5d6a7,stroke:#2e7d32,stroke-width:2px
+    classDef note fill:#fff9c4,stroke:#f57f17,stroke-width:1px,stroke-dasharray: 5 5
+    classDef title fill:#e0e0e0,stroke:#757575,stroke-width:2px
+
+    class START,OUTPUT startEnd
+    class INPUT input
+    class INSTALL_TITLE,INSTALL_TUTO,INSTALL_CONFIG,INSTALL_STRUCTURE,INSTALL_RESULT install
+    class CORPUS_FUSION,CORPUS_OUTPUT,CORPUS_COPIE,CORPUS_COMPILE corpus
+    class VERIFICATION verification
+    class DECISION decision
+    class ERREUR,CORRECTION erreur
+    class DEPLOY_SHELL,DEPLOY_SCP,DEPLOY_COMPILE,DEPLOY_RUN,DEPLOY_TEST,DEPLOY_RESULT deploy
+    class note1,note2,note3,note4,note5 note
+
+    style INSTALL_FLOW fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style CORPUS_FLOW fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    style DEPLOY_FLOW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style STATS fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 3 3
+    style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
+
+```
+
+---
+*Généré automatiquement depuis `flowchart-module7-nosketch.mmd`*

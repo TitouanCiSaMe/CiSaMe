@@ -1,0 +1,233 @@
+# Module9 Visualisation
+
+> **Note**: Ce diagramme est également disponible en format image PNG dans le même dossier.
+
+```mermaid
+flowchart TD
+    %% ========================================
+    %% MODULE 9 - VISUALISATION ET GÉNÉRATEUR DE REQUÊTES
+    %% ========================================
+
+    START([📊 MODULE 9<br/>Canon-Law-Toolkit<br/>Analyse du Corpus NoSketch-Engine])
+
+    %% ========================================
+    %% DÉCISION PRINCIPALE
+    %% ========================================
+    DECISION{Quel<br/>module ?}
+
+    START --> DECISION
+
+    %% ========================================
+    %% BRANCHE 1 : QUERY GENERATOR
+    %% ========================================
+    subgraph QUERY_GEN [🔍 Query Generator - Générateur de Requêtes CQL]
+        QG_START[Générateur de<br/>requêtes CQL]
+
+        subgraph QG_TYPES [Types de Recherche]
+            QG_PROXIMITY[📍 Proximité<br/>Recherche mots à distance<br/>configurable 1-20 tokens]
+            QG_VARIATIONS["🔄 Variations<br/>Orthographe médiévale:<br/>• ae/e (caelum → celum)<br/>• v/u (servus → seruus)<br/>• j/i (justitia → iustitia)<br/>• ti/ci (gratia → gracia)<br/>96 variantes possibles"]
+            QG_SEMANTIC[🧠 Sémantique<br/>Recherche conceptuelle<br/>avancée]
+            QG_COMBINED["📍🔄 Proximité + Variations<br/>Combinaison des deux approches"]
+        end
+
+        QG_CONFIG["⚙️ Configuration:<br/>• Distance entre mots<br/>• Types de variations<br/>• Options lemmatisation"]
+
+        QG_GENERATE[⚡ Génération requête CQL<br/>Prévisualisation en temps réel]
+
+        subgraph QG_EXPORT [Export]
+            QG_COPY[📋 Copier requête<br/>Coller dans NoSketch]
+            QG_DIRECT[🚀 Lancer directement<br/>sur NoSketch Engine]
+        end
+
+        QG_START --> QG_PROXIMITY
+        QG_START --> QG_VARIATIONS
+        QG_START --> QG_SEMANTIC
+        QG_START --> QG_COMBINED
+
+        QG_PROXIMITY --> QG_CONFIG
+        QG_VARIATIONS --> QG_CONFIG
+        QG_SEMANTIC --> QG_CONFIG
+        QG_COMBINED --> QG_CONFIG
+
+        QG_CONFIG --> QG_GENERATE
+        QG_GENERATE --> QG_COPY
+        QG_GENERATE --> QG_DIRECT
+    end
+
+    DECISION -->|Query Generator| QG_START
+
+    %% ========================================
+    %% BRANCHE 2 : CONCORDANCE ANALYZER - 1 CORPUS
+    %% ========================================
+    subgraph CONCORD_SINGLE [📊 Concordance Analyzer - Analyse Simple]
+        subgraph CS_PREPARE [🔄 Préparation Export NoSketch]
+            CS_SEARCH["🔍 Recherche sur NoSketch-Engine<br/>Lancement requête CQL"]
+
+            CS_RESULTS["📋 Résultats de recherche<br/>Concordances KWIC affichées"]
+
+            CS_SELECT["✅ Sélection des résultats<br/>Résultats voulus ou à analyser"]
+
+            CS_METADATA["📝 Enrichissement métadonnées:<br/>☑️ Cocher ID Édition (Edi-XX)<br/>☑️ Cocher n° de pages"]
+
+            CS_EXPORT_PREP["💾 Export CSV enrichi:<br/>• Maximum de contexte<br/>• Tokens AVANT le KWIC<br/>• Tokens APRÈS le KWIC<br/>• Export NoSketch normé"]
+
+            CS_SEARCH --> CS_RESULTS
+            CS_RESULTS --> CS_SELECT
+            CS_SELECT --> CS_METADATA
+            CS_METADATA --> CS_EXPORT_PREP
+        end
+
+        CS_UPLOAD["📥 Upload fichiers préparés:<br/>• Métadonnées CSV (Edi-XX)<br/>• Export NoSketch Engine normé<br/>avec contexte KWIC étendu"]
+
+        CS_PERSIST["💾 Persistance automatique:<br/>Données sauvegardées<br/>Restauration au rechargement"]
+
+        CS_EXPORT_PREP --> CS_UPLOAD
+
+        CS_ENRICH["🔗 Enrichissement automatique:<br/>• Matching références Edi-XX<br/>• Parsing structure complexe<br/>• Fallback robuste<br/>• Taux de correspondance"]
+
+        CS_ANALYZE["📈 9 Vues d'analyse spécialisées:<br/>• Vue d'ensemble + stats globales<br/>• Domaines juridiques<br/>• Auteurs<br/>• Périodes<br/>• Lieux<br/>• Timeline interactive<br/>• Analyse terminologique<br/>• Nuage de mots KWIC<br/>• Graphiques (Bar, Temporal, Gantt)"]
+
+        CS_FILTERS["🎚️ Filtres avancés:<br/>• Recherche textuelle<br/>• Auteur<br/>• Domaine juridique<br/>• Période<br/>• Lieu<br/>• Combinaisons multiples"]
+
+        CS_EXPORT["💾 Export multi-formats:<br/>• CSV (concordances filtrées)<br/>• JSON (analytics complètes)<br/>• PNG (graphiques)"]
+
+        CS_UPLOAD --> CS_PERSIST
+        CS_PERSIST --> CS_ENRICH
+        CS_ENRICH --> CS_ANALYZE
+        CS_ANALYZE --> CS_FILTERS
+        CS_FILTERS --> CS_EXPORT
+    end
+
+    DECISION -->|Concordance Analyzer<br/>1 corpus| CS_SEARCH
+
+    %% ========================================
+    %% BRANCHE 3 : CONCORDANCE ANALYZER - COMPARAISON 2 CORPUS
+    %% ========================================
+    subgraph CONCORD_COMPARE [🔀 Concordance Analyzer - Comparaison]
+        subgraph CC_PREPARE [🔄 Préparation Exports 2 Corpus]
+            CC_SEARCH["🔍🔍 Recherches sur NoSketch-Engine<br/>Corpus A + Corpus B"]
+
+            CC_RESULTS["📋 Résultats de recherche<br/>Concordances des 2 corpus"]
+
+            CC_SELECT["✅ Sélection des résultats<br/>Pour chaque corpus"]
+
+            CC_METADATA["📝 Enrichissement métadonnées:<br/>☑️ Cocher ID Édition (Edi-XX)<br/>☑️ Cocher n° de pages<br/>Pour corpus A et B"]
+
+            CC_EXPORT_PREP["💾 Exports CSV enrichis:<br/>• Maximum de contexte KWIC<br/>• Tokens AVANT/APRÈS<br/>• Exports NoSketch normés"]
+
+            CC_SEARCH --> CC_RESULTS
+            CC_RESULTS --> CC_SELECT
+            CC_SELECT --> CC_METADATA
+            CC_METADATA --> CC_EXPORT_PREP
+        end
+
+        CC_UPLOAD["📥📥 Upload 2 fichiers préparés:<br/>• Corpus A (référence) + métadonnées<br/>• Corpus B (comparaison) + métadonnées<br/>Exports NoSketch normés avec contexte"]
+
+        CC_ENRICH["🔗 Enrichissement des 2 corpus<br/>Matching automatique Edi-XX"]
+
+        CC_EXPORT_PREP --> CC_UPLOAD
+
+        CC_COMPARE["⚖️ Analyse comparative:<br/>• Volumes (tailles corpus)<br/>• Auteurs (répartitions)<br/>• Domaines juridiques<br/>• Temporalité (évolutions)<br/>• Terminologie (KWIC)<br/>• Charts comparatifs parallèles"]
+
+        CC_FILTERS["🎚️ Filtres indépendants<br/>pour chaque corpus"]
+
+        CC_EXPORT["💾 Export analyses comparatives:<br/>• CSV (données comparées)<br/>• JSON (analytics complètes)<br/>• PNG (graphiques parallèles)"]
+
+        CC_UPLOAD --> CC_ENRICH
+        CC_ENRICH --> CC_COMPARE
+        CC_COMPARE --> CC_FILTERS
+        CC_FILTERS --> CC_EXPORT
+    end
+
+    DECISION -->|Concordance Analyzer<br/>Comparaison 2 corpus| CC_SEARCH
+
+    %% ========================================
+    %% SORTIE
+    %% ========================================
+    OUTPUT([📤 SORTIE MODULE 9<br/>Requêtes CQL + Analyses<br/>Visualisations exportées])
+
+    QG_COPY --> OUTPUT
+    QG_DIRECT --> OUTPUT
+    CS_EXPORT --> OUTPUT
+    CC_EXPORT --> OUTPUT
+
+    %% ========================================
+    %% ANNOTATIONS
+    %% ========================================
+    note1["💡 CQL:<br/>Corpus Query Language<br/>Langage standard NoSketch<br/>Validation temps réel"]
+    note2["💡 Métadonnées Edi-XX:<br/>Identifiants collections<br/>canoniques médiévales<br/>Pré-chargement automatique"]
+    note3["💡 Interface multilingue:<br/>Français / Anglais<br/>react-i18next<br/>Traductions complètes"]
+    note4["💡 Visualisations:<br/>Recharts + D3.js<br/>Interactives et exportables<br/>Timeline Gantt"]
+    note5["💡 Technologies:<br/>React 18.2, Vite 5.0<br/>CSS Modules<br/>Vitest + React Testing Library"]
+
+    QG_GENERATE -.-> note1
+    CS_ENRICH -.-> note2
+    CS_ANALYZE -.-> note3
+    CS_EXPORT -.-> note4
+    START -.-> note5
+
+    %% ========================================
+    %% STATISTIQUES
+    %% ========================================
+    subgraph STATS [📊 Caractéristiques]
+        S1[4 types de requêtes CQL]
+        S2[9 vues d'analyse spécialisées]
+        S3[Comparaison de 2 corpus]
+        S4[3 formats export: CSV, JSON, PNG]
+        S5[Persistance automatique données]
+        S6[Interface FR/EN]
+    end
+
+    %% ========================================
+    %% OUTILS
+    %% ========================================
+    subgraph TOOLS [🛠️ Stack Technique]
+        T1[React 18.2 + Vite 5.0]
+        T2[Recharts + D3.js]
+        T3[react-i18next]
+        T4[CSS Modules]
+        T5[Vitest + RTL]
+        T6[NoSketch Engine API]
+    end
+
+    %% ========================================
+    %% STYLES
+    %% ========================================
+    classDef startEnd fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff
+    classDef decision fill:#ffeb3b,stroke:#f57f17,stroke-width:3px
+    classDef queryGen fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef queryType fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    classDef config fill:#b2dfdb,stroke:#00796b,stroke-width:2px
+    classDef concordSingle fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef concordCompare fill:#ffecb3,stroke:#ff6f00,stroke-width:2px
+    classDef prepare fill:#ffe0b2,stroke:#ef6c00,stroke-width:2px
+    classDef process fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    classDef export fill:#a5d6a7,stroke:#2e7d32,stroke-width:2px
+    classDef note fill:#fff9c4,stroke:#f57f17,stroke-width:1px,stroke-dasharray: 5 5
+
+    class START,OUTPUT startEnd
+    class DECISION decision
+    class QG_START,QG_GENERATE queryGen
+    class QG_PROXIMITY,QG_VARIATIONS,QG_SEMANTIC,QG_COMBINED queryType
+    class QG_CONFIG,CS_FILTERS,CC_FILTERS config
+    class CS_UPLOAD,CS_PERSIST,CS_ENRICH,CS_ANALYZE concordSingle
+    class CC_UPLOAD,CC_ENRICH,CC_COMPARE concordCompare
+    class CS_SEARCH,CS_RESULTS,CS_SELECT,CS_METADATA,CS_EXPORT_PREP prepare
+    class CC_SEARCH,CC_RESULTS,CC_SELECT,CC_METADATA,CC_EXPORT_PREP prepare
+    class QG_COPY,QG_DIRECT,CS_EXPORT,CC_EXPORT export
+    class note1,note2,note3,note4,note5 note
+
+    style QUERY_GEN fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style QG_TYPES fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style QG_EXPORT fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style CONCORD_SINGLE fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    style CS_PREPARE fill:#ffe0b2,stroke:#ef6c00,stroke-width:2px,stroke-dasharray: 3 3
+    style CONCORD_COMPARE fill:#ffe0b2,stroke:#ff6f00,stroke-width:2px
+    style CC_PREPARE fill:#ffccbc,stroke:#d84315,stroke-width:2px,stroke-dasharray: 3 3
+    style STATS fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 3 3
+    style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
+
+```
+
+---
+*Généré automatiquement depuis `flowchart-module9-visualisation.mmd`*
