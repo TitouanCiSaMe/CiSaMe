@@ -7,7 +7,7 @@ Le MODULE 9 est une plateforme d'outils web pour l'analyse du droit canon médi�
 1. **Query Generator** : Générateur de requêtes CQL pour NoSketch Engine
 2. **Concordance Analyzer** : Analyse approfondie de concordances avec enrichissement métadonnées
 
-**Repository** : [TitouanCiSaMe/canon-law-toolkit](https://gitlab.com/cisame/canon-law-toolkit)
+**Repository** : [TitouanCiSaMe/canon-law-toolkit](https://github.com/TitouanCiSaMe/canon-law-toolkit)
 
 ---
 
@@ -472,14 +472,14 @@ Pour Netlify, créer `public/_redirects` :
 
 ## 📚 Documentation complète
 
-**Repository** : [gitlab.com/cisame/canon-law-toolkit](https://gitlab.com/cisame/canon-law-toolkit)
+**Repository** : [github.com/TitouanCiSaMe/canon-law-toolkit](https://github.com/TitouanCiSaMe/canon-law-toolkit)
 
 **Documentation modules :**
-- [Query Generator README](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/src/modules/query-generator/README.md)
-- [Components Documentation](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/src/modules/query-generator/docs/COMPONENTS.md)
-- [User Guide](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/src/modules/query-generator/docs/USER_GUIDE.md)
-- [QUICKSTART.md](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/QUICKSTART.md)
-- [ARCHITECTURE.md](https://gitlab.com/cisame/canon-law-toolkit/-/blob/main/ARCHITECTURE.md)
+- [Query Generator README](https://github.com/TitouanCiSaMe/canon-law-toolkit/blob/main/src/modules/query-generator/README.md)
+- [Components Documentation](https://github.com/TitouanCiSaMe/canon-law-toolkit/blob/main/src/modules/query-generator/docs/COMPONENTS.md)
+- [User Guide](https://github.com/TitouanCiSaMe/canon-law-toolkit/blob/main/src/modules/query-generator/docs/USER_GUIDE.md)
+- [QUICKSTART.md](https://github.com/TitouanCiSaMe/canon-law-toolkit/blob/main/QUICKSTART.md)
+- [ARCHITECTURE.md](https://github.com/TitouanCiSaMe/canon-law-toolkit/blob/main/ARCHITECTURE.md)
 
 ---
 
@@ -488,7 +488,7 @@ Pour Netlify, créer `public/_redirects` :
 **Projet** : CiSaMe - Circulation des Savoirs médiévaux
 **Université** : Strasbourg
 **Développeur** : Titouan
-**GitLab** : [gitlab.com/cisame](https://gitlab.com/cisame)
+**GitHub** : [github.com/TitouanCiSaMe](https://github.com/TitouanCiSaMe)
 
 ---
 
@@ -513,7 +513,7 @@ Pour Netlify, créer `public/_redirects` :
 - `flowchart-module9-visualisation.mmd` : Schéma du module de visualisation et générateur de requêtes
 
 **Repository** :
-- GitLab : https://gitlab.com/cisame/canon-law-toolkit
+- GitHub : https://github.com/TitouanCiSaMe/canon-law-toolkit
 
 **Documentation** :
 - README principal du toolkit

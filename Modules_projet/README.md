@@ -25,7 +25,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
   - `flowchart-module2.mmd` : Schéma du workflow de téléchargement
   - `MODULE2_DOCUMENTATION.md` : Documentation complète du module
 - **Description** : Différentes méthodes d'acquisition d'images (IIIF, PDF, Hexadécimale, Tuiles, Manuel)
-- **Script principal** : `download_images.py` (racine du repo)
+- **Script principal** : `Modules_projet/Module_1/download_images.py`
 
 #### [`Module_3/`](./Module_3/)
 **Récupération d'éditions de manuscrits**
@@ -77,7 +77,7 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
   - `MODULE_NOSKETCH_ENGINE_DOCUMENTATION.md` : Documentation complète du pipeline
 - **Description** : Création de corpus interrogeables à partir des fichiers verticaux (.vertical.txt) produits par MODULE 6
 - **Workflow** : Fusion → Test → Export → Compilation → Mise en service
-- **Outils** : Fusion_txt_NoSketch.py, SCP, compilation serveur
+- **Outils** : `pagetopage fusion` (PAGEtopage/fusion_vertical.py), SCP, compilation serveur
 - **Fonctionnalités** : Concordances, collocations, recherche par lemme/forme/POS
 
 #### [`Module_8_Diffusion_Donnees/`](./Module_8_Diffusion_Donnees/)

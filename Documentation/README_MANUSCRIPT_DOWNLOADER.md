@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 ### Configuration de base
 
-1. **Éditez le script** `download_images.py` (à la racine du projet) et modifiez la section CONFIGURATION :
+1. **Éditez le script** `Modules_projet/Module_1/download_images.py` et modifiez la section CONFIGURATION :
 
 ```python
 MANIFEST_PATH = "/chemin/vers/votre/manifest.json"

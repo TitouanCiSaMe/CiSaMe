@@ -34,7 +34,7 @@ flowchart TD
     %% PRÉPARATION CORPUS
     %% ========================================
     subgraph CORPUS_FLOW [📦 Préparation du Corpus]
-        CORPUS_FUSION[🔗 Fusion des fichiers<br/>verticaux lemmatisés<br/>via Fusion_txt_NoSketch.py]
+        CORPUS_FUSION[🔗 Fusion des fichiers<br/>verticaux lemmatisés<br/>via PAGEtopage/fusion_vertical.py]
         CORPUS_OUTPUT[📄 Corpus.txt<br/>unifié]
         CORPUS_COPIE["📋 Copier Corpus.txt<br/>dans le projet local<br/>corpora/[nom_corpus]/vertical/"]
         CORPUS_COMPILE[⚙️ Compilation<br/>du corpus]
@@ -122,7 +122,7 @@ flowchart TD
     %% ========================================
     subgraph TOOLS [🛠️ Outils Utilisés]
         T1[NoSketch Engine: Concordancier]
-        T2[Python: Script Fusion_txt_NoSketch.py]
+        T2[Python: PAGEtopage/fusion_vertical.py]
         T3[scp: Transfert fichiers]
         T4[Shell: Administration serveur]
     end

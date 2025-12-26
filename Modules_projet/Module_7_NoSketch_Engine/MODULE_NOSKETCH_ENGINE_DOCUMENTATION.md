@@ -193,7 +193,7 @@ En cas de corpus non viable détecté lors de la vérification :
 1. **Ne pas** forcer l'export vers le serveur
 2. **Retourner** aux données verticales sources (MODULE 6)
 3. **Corriger** les erreurs de format/encodage/annotations
-4. **Refusionner** avec `Fusion_txt_NoSketch.py`
+4. **Refusionner** avec `pagetopage fusion` (PAGEtopage/fusion_vertical.py)
 5. **Retester** sur l'instance locale
 
 ### 📊 Nomenclature des fichiers
@@ -260,7 +260,7 @@ Fichiers .vertical.txt
 (texte_edition_1.vertical.txt,
  texte_edition_2.vertical.txt, ...)
         ↓
-Fusion_txt_NoSketch.py
+pagetopage fusion (PAGEtopage/fusion_vertical.py)
         ↓
 Corpus.txt (local)
         ↓
@@ -342,7 +342,7 @@ Ces statistiques sont accessibles via l'interface web NoSketch-Engine.
 ### Ajout de nouveaux textes
 1. Générer les nouveaux fichiers `.vertical.txt` via MODULE 6
 2. Ajouter au dossier source
-3. Refusionner avec `Fusion_txt_NoSketch.py`
+3. Refusionner avec `pagetopage fusion`
 4. Vérifier sur instance test
 5. Exporter vers production
 6. Recompiler le corpus
