@@ -41,6 +41,30 @@ Images → OCR/HTR → Segmentation → Corrections → Nettoyage XML
 
 ---
 
+## 🚀 Installation
+
+### Prérequis
+- **Python 3.10+** (requis)
+- **Git** (pour PyCollatinus)
+
+### Installation des dépendances
+
+```bash
+# Cloner le projet
+git clone <URL_DU_DEPOT>
+cd CiSaMe
+
+# Installer les dépendances principales
+pip install -r requirements.txt
+
+# (Optionnel) Installer les dépendances de développement
+pip install -r requirements-dev.txt
+```
+
+**📚 Guide complet :** Voir [Documentation/DEPENDENCIES.md](Documentation/DEPENDENCIES.md) pour l'installation détaillée incluant PyCollatinus.
+
+---
+
 ## 🚀 Démarrage rapide
 
 ### MODULE 1 : Télécharger des images
@@ -106,6 +130,8 @@ CiSaMe/
 
 | Document | Contenu |
 |----------|---------|
+| **[Documentation/DEPENDENCIES.md](Documentation/DEPENDENCIES.md)** | 📦 Guide installation dépendances (Python, PyCollatinus, TreeTagger) |
+| **[Documentation/DEPENDENCY_AUDIT_REPORT.md](Documentation/DEPENDENCY_AUDIT_REPORT.md)** | 🔒 Audit sécurité et recommandations dépendances |
 | **[Modules_projet/README.md](Modules_projet/README.md)** | Vue d'ensemble des 9 modules |
 | **[Modules_projet/Vue_Ensemble/](Modules_projet/Vue_Ensemble/)** | Schéma global intégré du projet |
 | **[PAGEtopage/README.md](PAGEtopage/README.md)** | Guide enrichissement linguistique (MODULE 6) |
