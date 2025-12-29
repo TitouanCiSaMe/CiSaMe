@@ -1,0 +1,25 @@
+# Dépendances de développement CiSaMe
+# Installation: pip install -r requirements-dev.txt
+
+# Dépendances principales (héritées)
+-r requirements.txt
+
+# === Framework de tests ===
+pytest==9.0.2
+pytest-cov==6.0.0
+
+# === Formatage et qualité de code ===
+black==25.1.0
+flake8==8.0.0
+
+# === Type checking ===
+mypy==1.15.0
+
+# === Audit de sécurité ===
+pip-audit==2.10.0
+
+# === Documentation ===
+# Sphinx et plugins pour génération de docs
+# (décommenter si nécessaire)
+# sphinx>=7.0.0
+# sphinx-rtd-theme>=2.0.0

@@ -1,0 +1,24 @@
+# Dépendances CiSaMe - Projet de recherche numérique
+# Manuscrits juridiques médiévaux - Université de Strasbourg
+# Installation: pip install -r requirements.txt
+
+# === Génération de documents Word (latin_analyzer) ===
+python-docx==1.2.0
+
+# === Support XML parsing ===
+lxml==6.0.2
+
+# === Translittération et nettoyage de texte ===
+unidecode==1.4.0
+
+# === Configuration YAML (PAGEtopage) ===
+pyyaml==6.0.3
+
+# === Lemmatisation TreeTagger (PAGEtopage) ===
+treetaggerwrapper==2.3
+
+# === Note importante ===
+# PyCollatinus n'est PAS installé via pip car le package PyPI est cassé
+# Installation manuelle requise depuis GitHub:
+# git clone https://github.com/PonteIneptique/collatinus-python
+# Voir DEPENDENCIES.md pour instructions détaillées
