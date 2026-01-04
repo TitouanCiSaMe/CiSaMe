@@ -128,7 +128,7 @@ ssh user@nosketch-server.domain
 
 #### 5.2 Transfert via SCP
 ```bash
-scp Corpus.txt user@nosketch-server:/path/to/nosketch/data/
+scp Corpus.txt debian@fip-185-155-93-80.iaas.unistra.fr:/path/to/nosketch/data/
 ```
 
 **Caractéristiques** :
