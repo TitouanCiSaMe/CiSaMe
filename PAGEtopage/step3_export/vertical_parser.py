@@ -270,6 +270,49 @@ class VerticalParser:
         for page in corpus.pages:
             yield page
 
+    def parse_folder(
+        self,
+        folder_path: str | Path,
+        pattern: str = "*.vertical.txt"
+    ) -> AnnotatedCorpus:
+        """
+        Parse tous les fichiers verticaux d'un dossier
+
+        Args:
+            folder_path: Chemin vers le dossier
+            pattern: Pattern glob pour les fichiers (défaut: *.vertical.txt)
+
+        Returns:
+            AnnotatedCorpus contenant toutes les pages de tous les fichiers
+        """
+        folder_path = Path(folder_path)
+
+        if not folder_path.exists():
+            raise FileNotFoundError(f"Dossier non trouvé: {folder_path}")
+
+        if not folder_path.is_dir():
+            raise NotADirectoryError(f"N'est pas un dossier: {folder_path}")
+
+        all_pages = []
+        files = sorted(folder_path.glob(pattern))
+
+        if not files:
+            logger.warning(f"Aucun fichier trouvé avec le pattern '{pattern}' dans {folder_path}")
+            return AnnotatedCorpus(pages=[])
+
+        logger.info(f"Parsing de {len(files)} fichiers depuis {folder_path}")
+
+        for file_path in files:
+            try:
+                corpus = self.parse_file(file_path)
+                all_pages.extend(corpus.pages)
+                logger.debug(f"Parsé {len(corpus.pages)} pages depuis {file_path.name}")
+            except Exception as e:
+                logger.error(f"Erreur lors du parsing de {file_path}: {e}")
+
+        logger.info(f"Total: {len(all_pages)} pages parsées depuis {len(files)} fichiers")
+        return AnnotatedCorpus(pages=all_pages)
+
     @property
     def parsed_count(self) -> int:
         """Nombre de pages parsées"""
