@@ -65,6 +65,14 @@ Informations de connexion et commandes NoSketch-Engine
 - Commandes SCP pour export
 - Module 7 : Déploiement NoSketch
 
+#### **Scripts Nakala** → [`/Nakala/`](../Nakala/)
+Scripts Python pour l'export vers Nakala (MODULE 8)
+- `validate_export.py` : Validation cohérence des données
+- `prepare_nakala_export.py` : Préparation structure Libre/Non_libre
+- `upload_nakala.py` : Upload via Heimdall
+- `add_nakala_links.py` : Enrichissement URLs verticaux
+- Documentation complète : [`Nakala/README.md`](../Nakala/README.md)
+
 ### Données de Référence
 
 #### **liste_manuscrits.csv**
@@ -119,6 +127,7 @@ CiSaMe/
 │   ├── Decret_Gratien/         # Pipeline parallèle
 │   └── Vue_Ensemble/           # Schéma global
 ├── PAGEtopage/             # Code MODULE 6
+├── Nakala/                 # Scripts MODULE 8 (export Nakala/Seafile)
 ├── latin_analyzer/         # Code MODULE 5B (futur)
 ├── canon-law-toolkit/      # ⚠️ MODULE 9 (En développement - dossier vide)
 └── download_images.py      # Script MODULE 1

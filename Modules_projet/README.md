@@ -84,11 +84,16 @@ Le projet CiSaMe vise à constituer un corpus numérique de manuscrits juridique
 **Diffusion finale des données textuelles**
 - **Statut** : ✅ Opérationnel
 - **Contenu** :
-  - `module_donnees_textuelles.mermaid` : Schéma de décision de diffusion
+  - `flowchart-module8-diffusion.md` : Schéma du workflow avec scripts
   - `MODULE_DONNEES_TEXTUELLES_DOCUMENTATION.md` : Documentation complète
-- **Description** : Gestion de la diffusion finale des corpus enrichis (avec/sans images, libre/restreint)
+- **Description** : Gestion de la diffusion finale des corpus enrichis (libre/restreint)
+- **Scripts** : Disponibles dans [`/Nakala/`](../Nakala/) :
+  - `validate_export.py` : Validation cohérence des données
+  - `prepare_nakala_export.py` : Préparation structure Libre/Non_libre
+  - `upload_nakala.py` : Upload via Heimdall
+  - `add_nakala_links.py` : Enrichissement URLs dans verticaux
 - **Destinations** :
-  - **Nakala** : Données libres (Algo Hécate + connecteur Nakala)
+  - **Nakala** : Données libres (upload via Heimdall, DOI)
   - **Seafile** : Données restreintes (cloud universitaire)
 
 ### 🔸 Modules transversaux
@@ -206,9 +211,8 @@ interrogeable publiques/privées
 - **Pas d'automatisation** : Transfert manuel des métadonnées
 
 ### Données libres vs restreintes
-- **Libres avec images** → Nakala (via Algo Hécate)
-- **Libres sans images** → Nakala (texte seul)
-- **Restreintes** → Seafile (privé université)
+- **Libres** → Nakala (via scripts `/Nakala/` + Heimdall, DOI attribué)
+- **Restreintes** → Seafile (cloud privé université)
 
 ## 🚀 Statut global du projet
 
@@ -240,4 +244,4 @@ Pour mettre à jour cette documentation :
 
 ---
 
-*Dernière mise à jour : 12 décembre 2025*
+*Dernière mise à jour : Janvier 2026*

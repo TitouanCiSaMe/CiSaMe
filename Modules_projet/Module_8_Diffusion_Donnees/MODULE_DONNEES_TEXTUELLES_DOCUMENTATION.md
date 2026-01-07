@@ -1,304 +1,314 @@
-# 📦 MODULE - Données Textuelles : Gestion de la Diffusion
+# 📦 MODULE 8 - Diffusion des Données : Export Nakala
 
-**Documentation du module de gestion de la diffusion finale des corpus**
+**Documentation du module de préparation et diffusion des corpus sur Nakala**
 
 ---
 
 ## 📋 Vue d'ensemble
 
-Ce module gère la **diffusion finale** des données textuelles enrichies, en fonction des droits de diffusion et de la présence ou non des images.
+Ce module gère la **diffusion finale** des données textuelles enrichies vers :
+- **Nakala** : Plateforme ouverte pour les corpus libres de droits (DOI, archivage pérenne)
+- **Seafile** : Stockage privé pour les corpus à droits restreints
 
-**Objectif** : Décider où publier/stocker les corpus finaux
-**Critères** : Droits (libre/restreint) + Présence d'images
-**Destinations** : Nakala (plateforme ouverte) ou Seafile (stockage privé)
-
----
-
-## 🔄 Logique de décision
-
-### **2 branches parallèles**
-
-Le module traite deux cas de figure en parallèle :
-
-1. **Avec images** : Corpus + images des manuscrits/éditions
-2. **Sans images** : Corpus textuel uniquement
-
-Pour chaque cas, décision selon les **droits de diffusion** :
-- ✅ **Libre de droit** → Export sur **Nakala**
-- ❌ **Pas libre de droit** → Reste sur **Seafile**
+**Entrées** : Sorties de PAGEtopage (MODULE 6) + Fiches de métadonnées
+**Sorties** : Corpus publiés sur Nakala avec DOI / Corpus archivés sur Seafile
 
 ---
 
-## 📊 Workflow détaillé
+## 🔄 Workflow complet
 
 ```
-Données textuelles
-    ↓
-    ├─→ AVEC IMAGES
-    │       ↓
-    │   Libre de droit ?
-    │       ├─→ OUI → Nakala (via algo Hécate + connecteur)
-    │       └─→ NON → Seafile (stockage privé)
-    │
-    └─→ SANS IMAGES
-            ↓
-        Libre de droit ?
-            ├─→ OUI → Nakala (via algo Hécate + connecteur)
-            └─→ NON → Seafile (stockage privé)
+┌─────────────────────────────────────────────────────────────────────┐
+│                        ENTRÉES (depuis MODULE 6)                     │
+├─────────────────────────────────────────────────────────────────────┤
+│  • Fiches .docx (métadonnées + Edi-XX + Libre de droits)            │
+│  • Fichiers verticaux .txt (corpus annotés)                          │
+│  • Dossiers textes/ (pages + pages_index.json)                       │
+└─────────────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│     ÉTAPE 1 : VALIDATION                                            │
+│     Script : validate_export.py                                      │
+│     → Vérifie cohérence fiche ↔ vertical ↔ textes                   │
+│     → Génère rapport de validation                                   │
+└─────────────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│     ÉTAPE 2 : PRÉPARATION STRUCTURE                                 │
+│     Script : prepare_nakala_export.py                                │
+│     → Associe les données par Edi-XX                                 │
+│     → Sépare Libre_de_droits / Non_libre_de_droits                  │
+│     → Convertit fiches .docx → .pdf                                  │
+└─────────────────────────────────────────────────────────────────────┘
+          │
+          ├──────────────────────────────────────┐
+          ▼                                      ▼
+┌──────────────────────────┐      ┌──────────────────────────┐
+│   LIBRE DE DROITS        │      │   NON LIBRE DE DROITS    │
+├──────────────────────────┤      ├──────────────────────────┤
+│     ÉTAPE 3A : UPLOAD    │      │     ÉTAPE 3B : ARCHIVE   │
+│     Script : upload_     │      │     → Copie manuelle     │
+│     nakala.py (Heimdall) │      │       vers Seafile       │
+│     → Upload API Nakala  │      │     → Accès restreint    │
+│     → Attribution DOI    │      │                          │
+│     → Génère cisame.xml  │      │                          │
+└──────────────────────────┘      └──────────────────────────┘
+          │                                      │
+          ▼                                      │
+┌──────────────────────────┐                     │
+│     ÉTAPE 4 : ENRICHIR   │                     │
+│     Script : add_nakala_ │                     │
+│     links.py             │                     │
+│     → Ajoute URLs Nakala │                     │
+│       dans verticaux     │                     │
+└──────────────────────────┘                     │
+          │                                      │
+          ▼                                      ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         SORTIES                                      │
+├─────────────────────────────────────────────────────────────────────┤
+│  • Nakala : Corpus publics avec DOI (→ MODULE 7 NoSketch-Engine)    │
+│  • Seafile : Corpus privés pour usage recherche interne             │
+│  • Verticaux enrichis : Attributs link="" et fiche="" pour MODULE 7 │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📁 Contenu des packages
+## 📂 Scripts disponibles
 
-### **Package "Avec images"**
+### Scripts principaux
 
-Contient :
-- `Conversion.log` : Log du traitement
-- `images_mapping.txt` : Correspondance texte ↔ images
-- `pages_index.json` : Index des pages avec métadonnées
-- **Chaque page** : Fichiers texte individuels
-- `texte_complet.txt` : Fichier unique avec tout le texte
-- **Images de chaque page** : Fichiers image (TIF/JPG)
+| Script | Rôle | Entrée | Sortie |
+|--------|------|--------|--------|
+| `validate_export.py` | Valide la cohérence des données | Fiches + Verticaux + Textes | Rapport de validation |
+| `prepare_nakala_export.py` | Crée la structure d'export | Fiches + Verticaux + Textes | Structure Libre/Non_libre |
+| `upload_nakala.py` | Upload via Heimdall | Structure préparée | DOI + cisame.xml |
+| `add_nakala_links.py` | Enrichit les verticaux | cisame.xml | Verticaux avec URLs |
 
-**Taille** : Variable selon corpus (plusieurs GB possibles)
+### Scripts utilitaires
 
-### **Package "Sans images"**
-
-Contient :
-- `Conversion.log` : Log du traitement
-- `images_mapping.txt` : Correspondance (sans les images réelles)
-- `pages_index.json` : Index des pages avec métadonnées
-- **Chaque page** : Fichiers texte individuels
-- `texte_complet.txt` : Fichier unique avec tout le texte
-
-**Taille** : Beaucoup plus légère (quelques MB)
+| Script | Rôle | Quand l'utiliser |
+|--------|------|------------------|
+| `convert_fiches_to_pdf.py` | Convertit .docx → .pdf | Si conversion séparée nécessaire |
+| `clean_dates.py` | Nettoie dates vides | Si API refuse les dates "" |
+| `flatten_textes.py` | Aplatit sous-dossiers | Si structure incorrecte |
+| `match_fiches_editions.py` | Matching fiches ↔ CSV | Si fiches sans Edi-XX (rare) |
 
 ---
 
-## 🌐 Nakala : Plateforme de diffusion ouverte
+## 📖 Guide pas à pas
+
+### Étape 1 : Validation
+
+```bash
+cd Nakala/
+python validate_export.py \
+    --fiches ../Fiches_Editions_Metadonnee/ \
+    --verticaux ../Verticaux/ \
+    --textes ../Textes/
+```
+
+**Vérifie :**
+- Présence des 3 sources pour chaque Edi-XX
+- Validité des pages_index.json
+- Champs obligatoires (source, author, type)
+
+### Étape 2 : Préparation
+
+```bash
+python prepare_nakala_export.py \
+    --fiches ../Fiches_Editions_Metadonnee/ \
+    --verticaux ../Verticaux/ \
+    --textes ../Textes/ \
+    --output ./input/CiSaMe/
+```
+
+**Crée :**
+```
+input/CiSaMe/
+├── Libre_de_droits/
+│   └── Oeuvre_Edi-XX/
+│       ├── pages_index.json
+│       ├── vertical.txt
+│       ├── fiche.pdf
+│       └── page_*.txt
+└── Non_libre_de_droits/
+    └── ...
+```
+
+### Étape 3A : Upload Nakala (libres de droits)
+
+```bash
+# Configurer API_KEY et GROUP_KEY dans upload_nakala.py
+python upload_nakala.py
+```
+
+**Génère :** `output/cisame.xml` avec DOI et métadonnées
+
+### Étape 3B : Archive Seafile (droits restreints)
+
+```bash
+# Copie manuelle vers Seafile
+cp -r input/CiSaMe/Non_libre_de_droits/* /chemin/vers/Seafile/
+```
+
+### Étape 4 : Enrichissement URLs
+
+```bash
+python add_nakala_links.py output/cisame.xml
+```
+
+**Ajoute dans les verticaux :**
+```xml
+<doc link="https://nakala.fr/DOI#hash" fiche="https://nakala.fr/DOI#hash2" ...>
+```
+
+---
+
+## 🌐 Nakala : Plateforme de diffusion
 
 ### Qu'est-ce que Nakala ?
 
-**Nakala** est un espace de stockage et de diffusion pour la recherche scientifique.
+**Nakala** est l'entrepôt de données de recherche de Huma-Num (CNRS/EHESS).
 
-**Caractéristiques** :
-- Plateforme institutionnelle française
-- Dédiée aux données de recherche
-- Accès ouvert (open access)
-- Pérenne et référencée
-- DOI attribués aux corpus
+**Caractéristiques :**
+- Archivage pérenne des données de recherche
+- Attribution de DOI pour citation
+- Accès ouvert (Open Access)
+- Respect des principes FAIR
 
-**Usage dans le projet** :
-- Publication des corpus **libres de droit**
-- Visibilité internationale
-- Respect des principes FAIR (Findable, Accessible, Interoperable, Reusable)
-- Citation académique facilitée
+### Métadonnées exportées
 
-### Export vers Nakala
-
-**Outil** : Algo Hécate + connecteur Nakala
-
-**Processus** :
-1. Préparation du package (textes + images si applicable)
-2. Génération métadonnées Nakala-compatibles
-3. **Algo Hécate** : Script d'export automatisé
-4. **Connecteur Nakala** : Upload vers la plateforme
-5. Attribution d'un DOI
-6. Publication en ligne
-
-**Métadonnées exportées** :
-- Titre du corpus
-- Auteur(s)
-- Date
-- Type de droit
-- Langue
-- Description
-- Institution (Université de Strasbourg / ARCHE)
+| Champ source | Métadonnée Nakala |
+|--------------|-------------------|
+| `source` (pages_index.json) | `dc:title` |
+| `author` | `nakala:creator` |
+| `type` | `dc:references` |
+| `date` | `nakala:created` |
+| - | `dc:license` = "etalab-2.0" |
+| - | `dc:publisher` = "Université de Strasbourg" |
 
 ---
 
 ## 💾 Seafile : Stockage privé
 
-### Qu'est-ce que Seafile ?
+### Organisation recommandée
 
-**Seafile** est le cloud universitaire de l'Université de Strasbourg.
-
-**Caractéristiques** :
-- Stockage sécurisé
-- Accès restreint (équipe projet)
-- Sauvegarde automatique
-- Synchronisation
-- Partage contrôlé
-
-**Usage dans le projet** :
-- Stockage des corpus **pas libres de droit**
-- Accès interne uniquement
-- Travail collaboratif de l'équipe
-- Conservation avant publication éventuelle
-
-### Stockage sur Seafile
-
-**Organisation** :
 ```
-Seafile/
-└── CiSaMe/
-    └── Corpus/
-        ├── Avec_images/
-        │   ├── Pas_libre/
-        │   │   ├── [Manuscrit_1]/
-        │   │   └── [Manuscrit_2]/
-        │   └── Libre/  (avant export Nakala)
-        │
-        └── Sans_images/
-            ├── Pas_libre/
-            └── Libre/  (avant export Nakala)
+Seafile/CiSaMe/
+└── Corpus_Restreints/
+    ├── Droit_canonique/
+    │   └── Oeuvre_Edi-XX/
+    └── Droit_romain/
+        └── Oeuvre_Edi-YY/
 ```
+
+### Accès
+
+- Équipe CiSaMe uniquement
+- Authentification universitaire
+- Partage contrôlé (liens temporaires)
 
 ---
 
 ## ⚖️ Gestion des droits
 
-### Détermination du statut "Libre de droit"
+### Critères de classification
 
-**Critères** :
-1. **Manuscrits médiévaux** : Toujours libres (domaine public)
-2. **Éditions anciennes** (avant 1900) : Généralement libres
-3. **Éditions récentes** (après 1900) :
-   - Libre si : +70 ans après décès auteur/éditeur
-   - Pas libre si : droits actifs
+| Type | Critère | Destination |
+|------|---------|-------------|
+| **Libre** | Manuscrits médiévaux (domaine public) | Nakala |
+| **Libre** | Éditions avant 1900 | Nakala |
+| **Libre** | Auteur décédé > 70 ans | Nakala |
+| **Restreint** | Droits d'auteur actifs | Seafile |
+| **Secret** | Éditions non publiées | Seafile |
 
-**Référence** : Module 3 (Récupération d'éditions) documente déjà la catégorisation :
-- 15e-début 20e siècle → Libre de droit (~60%)
-- Jamais officiellement sorties → Secret (~10%)
-- 20e-21e siècle → Très restreint (~30%)
+### Détection automatique
 
-### Cas particuliers
-
-**"Secret"** : Éditions jamais officiellement sorties
-- Thèses non publiées
-- Travaux inédits
-- Pas de diffusion publique autorisée
-- → Stockage Seafile uniquement
-
-**"Très restreint"** : Droits d'auteur actifs
-- Usage recherche uniquement
-- Convention nécessaire
-- → Stockage Seafile uniquement
-
----
-
-## ✅ Critères de décision
-
-### Checklist avant diffusion
-
-**Pour chaque corpus** :
-
-1. ☐ Vérifier statut droits dans Heurist
-2. ☐ Confirmer présence/absence images
-3. ☐ Vérifier complétude du package
-4. ☐ Si libre → Préparer métadonnées Nakala
-5. ☐ Lancer export (Hécate ou Seafile)
-6. ☐ Vérifier succès de l'opération
-7. ☐ Logger dans base de suivi
-
----
-
-## 📝 Workflow complet
-
+Le script `prepare_nakala_export.py` détecte le statut via :
 ```
-1. Corpus finalisé (Module 6 ou Décret)
-        ↓
-2. Consultation statut droits (Heurist)
-        ↓
-3. Détermination branche (Avec/Sans images)
-        ↓
-4. SI Libre de droit :
-   a. Préparation package
-   b. Génération métadonnées
-   c. Algo Hécate → Upload Nakala
-   d. Vérification DOI attribué
-   e. Publication
-        ↓
-5. SI Pas libre :
-   a. Organisation dossier Seafile
-   b. Upload sur cloud privé
-   c. Documentation accès restreint
-        ↓
-6. Logging et archivage
+Libre de droits : Oui
+```
+dans les fiches .docx
+
+---
+
+## 📊 Statistiques indicatives
+
+| Catégorie | Pourcentage |
+|-----------|-------------|
+| Libre de droits → Nakala | ~30% |
+| Droits restreints → Seafile | ~68% |
+| Secret → Seafile | ~2% |
+
+---
+
+## ⚠️ Dépendances
+
+```bash
+pip install python-docx requests tqdm heimdall
 ```
 
----
-
-## 🔒 Sécurité et confidentialité
-
-### Données libres sur Nakala
-
-**Accès** : Public mondial
-**Licence** : À définir (Creative Commons recommandé)
-**Citation** : Via DOI
-**Durabilité** : Garantie par Nakala
-
-### Données restreintes sur Seafile
-
-**Accès** : Équipe CiSaMe uniquement
-**Authentification** : Comptes universitaires
-**Sauvegarde** : Automatique quotidienne
-**Partage** : Contrôlé (liens temporaires possibles)
+- **python-docx** : Lecture fiches .docx
+- **requests** : API Nakala
+- **heimdall** : Upload Nakala
+- **LibreOffice** : Conversion PDF
 
 ---
 
-## 📊 Schéma récapitulatif
+## 📁 Emplacement des scripts
+
+Tous les scripts sont dans le dossier `/Nakala/` à la racine du projet :
 
 ```
-                    Données textuelles
-                           ↓
-        ┌─────────────────┴─────────────────┐
-        ↓                                    ↓
-    AVEC IMAGES                         SANS IMAGES
-        ↓                                    ↓
-    Libre ?                             Libre ?
-    ↓     ↓                             ↓     ↓
-   OUI   NON                           OUI   NON
-    ↓     ↓                             ↓     ↓
-  Nakala Seafile                      Nakala Seafile
-  (DOI)  (Privé)                      (DOI)  (Privé)
+CiSaMe/
+├── Nakala/
+│   ├── README.md                    ← Documentation complète
+│   ├── validate_export.py           ← Validation
+│   ├── prepare_nakala_export.py     ← Préparation
+│   ├── upload_nakala.py             ← Upload Heimdall
+│   ├── add_nakala_links.py          ← Enrichissement URLs
+│   ├── convert_fiches_to_pdf.py     ← Conversion PDF
+│   ├── clean_dates.py               ← Nettoyage dates
+│   └── flatten_textes.py            ← Aplatissement dossiers
+└── Modules_projet/
+    └── Module_8_Diffusion_Donnees/  ← Cette documentation
 ```
-
----
-
-## 📚 Fichiers et ressources
-
-**Schémas** :
-- `flowchart-module8-diffusion.mmd` : Schéma de décision de diffusion
-
-**Scripts** :
-- `algo_hecate.py` : Export vers Nakala
-- Connecteur Nakala : API REST
-
-**Documentation Nakala** :
-- Site officiel : https://www.nakala.fr/
-- API documentation : https://api.nakala.fr/doc
 
 ---
 
 ## ✅ État actuel
 
-**MODULE Données Textuelles** : ✅ **Opérationnel**
+**MODULE 8 - Diffusion** : ✅ **Opérationnel**
 
-- Logique de décision claire : ✅
-- Algo Hécate fonctionnel : ✅
-- Connecteur Nakala : ✅
-- Organisation Seafile : ✅
-
-**Prêt pour diffusion** des corpus finalisés.
+- Scripts de validation : ✅
+- Scripts de préparation : ✅
+- Upload Heimdall/Nakala : ✅
+- Enrichissement URLs : ✅
+- Documentation : ✅
 
 ---
 
-## 🎯 Prochaines étapes
+## 🔗 Liens avec les autres modules
 
-1. Finalisation des premiers corpus
-2. Tests d'export Nakala
-3. Attribution DOI
-4. Communication publications
-5. Suivi citations académiques
+| Module | Lien |
+|--------|------|
+| **MODULE 6 (PAGEtopage)** | Fournit les verticaux + textes + pages_index.json |
+| **MODULE 7 (NoSketch-Engine)** | Reçoit les verticaux enrichis avec URLs Nakala |
+| **Module Métadonnées (Heurist)** | Source des métadonnées bibliographiques |
+
+---
+
+## 📚 Ressources
+
+- **Documentation complète** : `/Nakala/README.md`
+- **Nakala** : https://www.nakala.fr/
+- **API Nakala** : https://api.nakala.fr/doc
+- **Heimdall** : https://gitlab.huma-num.fr/huma-num/heimdall
+
+---
+
+*Dernière mise à jour : Janvier 2025*
