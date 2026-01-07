@@ -218,13 +218,17 @@ Cette commande :
 #### Étape 3 : Export en fichiers texte
 
 ```bash
+# Depuis un fichier vertical unique
 python -m PAGEtopage export --input ./corpus.vertical.txt --output ./pages/ --format scholarly
+
+# Ou depuis un dossier contenant plusieurs fichiers verticaux
+python -m PAGEtopage export --input ./dossier_vertical/ --output ./pages/ --format scholarly
 ```
 
 Cette commande :
-- Lit le corpus vertical
+- Lit le(s) corpus vertical(aux) - fichier unique ou tous les `*.vertical.txt` d'un dossier
 - Crée un fichier texte par page
-- Génère les fichiers d'index
+- Génère les fichiers d'index (dont `pages_index.json` compatible Nakala/Heimdall)
 
 #### Étape 4 (optionnelle) : Ré-enrichissement après correction
 
@@ -333,7 +337,11 @@ dicit	VER	dico
 Pour changer de format, modifiez `export: format:` dans `config.yaml` ou utilisez l'option `--format` :
 
 ```bash
+# Fichier unique
 python -m PAGEtopage export --input ./corpus.vertical.txt --output ./pages/ --format scholarly
+
+# Dossier (exporte tous les *.vertical.txt)
+python -m PAGEtopage export --input ./dossier/ --output ./pages/ --format scholarly
 ```
 
 ---

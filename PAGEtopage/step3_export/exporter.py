@@ -60,14 +60,17 @@ class TextExporter:
     def export(
         self,
         input_path: str | Path,
-        output_folder: str | Path
+        output_folder: str | Path,
+        pattern: str = "*.vertical.txt"
     ) -> Dict[str, str]:
         """
-        Exporte un fichier vertical
+        Exporte un fichier vertical ou tous les fichiers d'un dossier
 
         Args:
-            input_path: Chemin vers le fichier vertical
+            input_path: Chemin vers le fichier vertical ou un dossier
             output_folder: Dossier de sortie
+            pattern: Pattern glob pour les fichiers si input_path est un dossier
+                     (défaut: *.vertical.txt)
 
         Returns:
             Mapping {folio: chemin_fichier_sortie}
@@ -75,8 +78,12 @@ class TextExporter:
         input_path = Path(input_path)
         output_folder = Path(output_folder)
 
-        # Parse le fichier vertical
-        corpus = self.parser.parse_file(input_path)
+        # Parse le(s) fichier(s) vertical(aux)
+        if input_path.is_dir():
+            logger.info(f"Export depuis dossier: {input_path}")
+            corpus = self.parser.parse_folder(input_path, pattern)
+        else:
+            corpus = self.parser.parse_file(input_path)
 
         return self.export_pages(corpus.pages, output_folder)
 
@@ -236,16 +243,18 @@ def export_vertical_to_text(
     input_path: str | Path,
     output_folder: str | Path,
     format_type: str = "clean",
-    config: Optional[Config] = None
+    config: Optional[Config] = None,
+    pattern: str = "*.vertical.txt"
 ) -> Dict[str, str]:
     """
-    Fonction utilitaire pour exporter un fichier vertical
+    Fonction utilitaire pour exporter un fichier vertical ou un dossier
 
     Args:
-        input_path: Chemin vers le fichier vertical
+        input_path: Chemin vers le fichier vertical ou un dossier
         output_folder: Dossier de sortie
         format_type: Format de sortie
         config: Configuration optionnelle
+        pattern: Pattern glob pour les fichiers si input_path est un dossier
 
     Returns:
         Mapping {folio: chemin_fichier}
@@ -255,4 +264,4 @@ def export_vertical_to_text(
         config.export.format = format_type
 
     exporter = TextExporter(config)
-    return exporter.export(input_path, output_folder)
+    return exporter.export(input_path, output_folder, pattern)
