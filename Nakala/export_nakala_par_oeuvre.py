@@ -239,16 +239,45 @@ def scan_sources(fiches_dir, verticaux_dir, textes_dir, verbose=True):
             item_path = os.path.join(textes_dir, item)
             if os.path.isdir(item_path):
                 debug_stats['textes_total'] += 1
-                
-                # Le nom du dossier devrait correspondre au nom du fichier vertical
+
+                # Le nom du dossier peut être:
+                # - Exactement le nom du fichier vertical (ancien format)
+                # - nom_fichier_Edi-XX (nouveau format avec edition_id)
+
+                # Essai 1: Match exact
                 if item in index:
                     index[item]['textes'] = item_path
                     debug_stats['textes_matches'] += 1
+                    continue
+
+                # Essai 2: Enlever le suffixe _Edi-XX pour matcher
+                # Format: nom_fichier_Edi-XX -> nom_fichier
+                match_edi = re.match(r'^(.+)_(Edi-\d+)$', item)
+                if match_edi:
+                    base_name = match_edi.group(1)
+                    edi_id = match_edi.group(2)
+
+                    if base_name in index:
+                        # Vérifier que l'Edi-ID correspond
+                        if index[base_name]['id'] == edi_id:
+                            index[base_name]['textes'] = item_path
+                            debug_stats['textes_matches'] += 1
+                            continue
+
+                    # Essai avec match partiel du nom de base
+                    for key in index.keys():
+                        if key == base_name or key.startswith(base_name) or base_name.startswith(key):
+                            if index[key]['id'] == edi_id:
+                                index[key]['textes'] = item_path
+                                debug_stats['textes_matches'] += 1
+                                break
+                    else:
+                        debug_stats['textes_sans_match'].append(item)
                 else:
-                    # Essayer sans extension ou avec variations
+                    # Essai 3: Match partiel (ancien comportement)
                     matched = False
                     for key in index.keys():
-                        if key == item or key.startswith(item) or item.startswith(key):
+                        if key.startswith(item) or item.startswith(key):
                             index[key]['textes'] = item_path
                             debug_stats['textes_matches'] += 1
                             matched = True
