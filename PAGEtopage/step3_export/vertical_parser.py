@@ -273,14 +273,14 @@ class VerticalParser:
     def parse_folder(
         self,
         folder_path: str | Path,
-        pattern: str = "*.vertical.txt"
+        pattern: str = "*.txt"
     ) -> AnnotatedCorpus:
         """
         Parse tous les fichiers verticaux d'un dossier
 
         Args:
             folder_path: Chemin vers le dossier
-            pattern: Pattern glob pour les fichiers (défaut: *.vertical.txt)
+            pattern: Pattern glob pour les fichiers (défaut: *.txt)
 
         Returns:
             AnnotatedCorpus contenant toutes les pages de tous les fichiers
