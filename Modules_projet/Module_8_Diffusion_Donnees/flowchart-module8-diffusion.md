@@ -1,197 +1,236 @@
-# Module8 Diffusion
+# Module 8 - Diffusion Nakala
 
-> **Note**: Ce diagramme est également disponible en format image PNG dans le même dossier.
+> **Note**: Ce diagramme montre le workflow complet avec les scripts du dossier `/Nakala/`
 
 ```mermaid
 flowchart TD
     %% ========================================
-    %% MODULE 8 - DIFFUSION DES DONNÉES
+    %% MODULE 8 - DIFFUSION DES DONNÉES NAKALA
     %% ========================================
 
-    START([📤 MODULE 8<br/>Diffusion des Données Textuelles])
+    START([📤 MODULE 8<br/>Diffusion Nakala])
 
     %% ========================================
-    %% ENTRÉE
+    %% ENTRÉES
     %% ========================================
-    INPUT[📥 Entrée:<br/>Données textuelles<br/>depuis MODULE 6<br/>Format structuré]
-
-    START --> INPUT
-
-    %% ========================================
-    %% DÉCISION TYPE DE PACKAGE
-    %% ========================================
-    DECISION_TYPE{Type de<br/>package ?}
-
-    INPUT --> DECISION_TYPE
-
-    %% ========================================
-    %% BRANCHE AVEC IMAGES
-    %% ========================================
-    subgraph AVEC_IMAGES_FLOW [📷 Package Avec Images]
-        AVEC_TITLE[Package complet<br/>Texte + Images]
-        AVEC_CONTENU[📋 Contenu:<br/>• Conversion.log<br/>• images_mapping.txt<br/>• pages_index.json<br/>• Pages individuelles<br/>• texte_complet.txt<br/>• Images de chaque page]
-        AVEC_DECISION{Droits de<br/>diffusion ?}
-
-        AVEC_TITLE --> AVEC_CONTENU
-        AVEC_CONTENU --> AVEC_DECISION
+    subgraph INPUTS [📥 ENTRÉES depuis MODULE 6]
+        I1[📄 Fiches .docx<br/>Edi-XX + Libre de droits]
+        I2[📝 Verticaux .txt<br/>Corpus annotés]
+        I3[📁 Textes/<br/>pages_index.json + pages]
     end
 
-    DECISION_TYPE -->|Avec images| AVEC_TITLE
+    START --> INPUTS
 
     %% ========================================
-    %% BRANCHE SANS IMAGES
+    %% ÉTAPE 1 : VALIDATION
     %% ========================================
-    subgraph SANS_IMAGES_FLOW [📄 Package Sans Images]
-        SANS_TITLE[Package texte seul]
-        SANS_CONTENU[📋 Contenu:<br/>• Conversion.log<br/>• images_mapping.txt<br/>• pages_index.json<br/>• Pages individuelles<br/>• texte_complet.txt]
-        SANS_DECISION{Droits de<br/>diffusion ?}
+    subgraph STEP1 [🔍 ÉTAPE 1 : Validation]
+        V1[🐍 validate_export.py]
+        V2[Vérifie cohérence<br/>Fiche ↔ Vertical ↔ Textes]
+        V3[📋 Rapport de validation<br/>Complets / Exportables / Manquants]
 
-        SANS_TITLE --> SANS_CONTENU
-        SANS_CONTENU --> SANS_DECISION
+        V1 --> V2 --> V3
     end
 
-    DECISION_TYPE -->|Sans images| SANS_TITLE
+    INPUTS --> STEP1
 
     %% ========================================
-    %% DIFFUSION AVEC IMAGES - LIBRE
+    %% ÉTAPE 2 : PRÉPARATION
     %% ========================================
-    subgraph AVEC_LIBRE_FLOW [✅ Avec Images - Libre de Droit]
-        AVEC_LIBRE[Édition<br/>Libre de droit]
-        AVEC_NAKALA_PREP[🔧 Préparation<br/>métadonnées Nakala]
-        AVEC_NAKALA_CONNECT[🔗 Connecteur Nakala<br/>Upload automatisé]
-        AVEC_NAKALA_RESULT[☁️ Publication sur Nakala<br/>DOI attribué<br/>Accès public]
+    subgraph STEP2 [📦 ÉTAPE 2 : Préparation Structure]
+        P1[🐍 prepare_nakala_export.py]
+        P2[Association par Edi-XX]
+        P3[Conversion .docx → .pdf<br/>via LibreOffice]
+        P4[Création structure<br/>Libre / Non_libre]
 
-        AVEC_LIBRE --> AVEC_NAKALA_PREP
-        AVEC_NAKALA_PREP --> AVEC_NAKALA_CONNECT
-        AVEC_NAKALA_CONNECT --> AVEC_NAKALA_RESULT
+        P1 --> P2 --> P3 --> P4
     end
 
-    AVEC_DECISION -->|Libre| AVEC_LIBRE
+    STEP1 --> STEP2
 
     %% ========================================
-    %% DIFFUSION AVEC IMAGES - RESTREINT
+    %% DÉCISION DROITS
     %% ========================================
-    subgraph AVEC_RESTREINT_FLOW [🔒 Avec Images - Droits Restreints]
-        AVEC_RESTREINT[Édition<br/>Pas libre de droit]
-        AVEC_SEAFILE[☁️ Stockage Seafile<br/>Accès restreint<br/>Usage recherche uniquement]
+    DECISION{Libre de<br/>droits ?}
 
-        AVEC_RESTREINT --> AVEC_SEAFILE
+    STEP2 --> DECISION
+
+    %% ========================================
+    %% BRANCHE LIBRE - NAKALA
+    %% ========================================
+    subgraph NAKALA_FLOW [✅ Libre de droits → Nakala]
+        N1[📁 Libre_de_droits/<br/>Oeuvre_Edi-XX/]
+        N2[🐍 upload_nakala.py<br/>via Heimdall]
+        N3[☁️ Upload API Nakala]
+        N4[🔗 Attribution DOI]
+        N5[📄 Génère cisame.xml]
+
+        N1 --> N2 --> N3 --> N4 --> N5
     end
 
-    AVEC_DECISION -->|Restreint| AVEC_RESTREINT
+    DECISION -->|Oui| N1
 
     %% ========================================
-    %% DIFFUSION SANS IMAGES - LIBRE
+    %% BRANCHE RESTREINTE - SEAFILE
     %% ========================================
-    subgraph SANS_LIBRE_FLOW [✅ Sans Images - Libre de Droit]
-        SANS_LIBRE[Édition<br/>Libre de droit]
-        SANS_NAKALA_PREP[🔧 Préparation<br/>métadonnées Nakala]
-        SANS_NAKALA_CONNECT[🔗 Connecteur Nakala<br/>Upload automatisé]
-        SANS_NAKALA_RESULT[☁️ Publication sur Nakala<br/>DOI attribué<br/>Accès public]
+    subgraph SEAFILE_FLOW [🔒 Droits restreints → Seafile]
+        S1[📁 Non_libre_de_droits/<br/>Oeuvre_Edi-XX/]
+        S2[📤 Copie manuelle<br/>vers Seafile]
+        S3[☁️ Stockage privé<br/>Accès restreint]
 
-        SANS_LIBRE --> SANS_NAKALA_PREP
-        SANS_NAKALA_PREP --> SANS_NAKALA_CONNECT
-        SANS_NAKALA_CONNECT --> SANS_NAKALA_RESULT
+        S1 --> S2 --> S3
     end
 
-    SANS_DECISION -->|Libre| SANS_LIBRE
+    DECISION -->|Non| S1
 
     %% ========================================
-    %% DIFFUSION SANS IMAGES - RESTREINT
+    %% ÉTAPE 4 : ENRICHISSEMENT
     %% ========================================
-    subgraph SANS_RESTREINT_FLOW [🔒 Sans Images - Droits Restreints]
-        SANS_RESTREINT[Édition<br/>Pas libre de droit]
-        SANS_SEAFILE[☁️ Stockage Seafile<br/>Accès restreint<br/>Usage recherche uniquement]
+    subgraph STEP4 [🔗 ÉTAPE 4 : Enrichissement URLs]
+        E1[🐍 add_nakala_links.py]
+        E2[Parse cisame.xml]
+        E3[Récupère hash SHA1<br/>via API Nakala]
+        E4[Ajoute link= et fiche=<br/>dans verticaux]
 
-        SANS_RESTREINT --> SANS_SEAFILE
+        E1 --> E2 --> E3 --> E4
     end
 
-    SANS_DECISION -->|Restreint| SANS_RESTREINT
+    N5 --> STEP4
 
     %% ========================================
-    %% CONVERGENCE
+    %% SORTIES
     %% ========================================
-    CONVERGENCE[📦 Données diffusées<br/>selon droits applicables]
+    subgraph OUTPUTS [📤 SORTIES]
+        O1[☁️ Nakala<br/>Corpus publics + DOI]
+        O2[☁️ Seafile<br/>Corpus privés]
+        O3[📝 Verticaux enrichis<br/>→ MODULE 7 NoSketch]
+    end
 
-    AVEC_NAKALA_RESULT --> CONVERGENCE
-    AVEC_SEAFILE --> CONVERGENCE
-    SANS_NAKALA_RESULT --> CONVERGENCE
-    SANS_SEAFILE --> CONVERGENCE
+    STEP4 --> O1
+    STEP4 --> O3
+    S3 --> O2
 
-    OUTPUT([📤 SORTIE MODULE 8<br/>Corpus accessible<br/>Valorisation recherche])
+    OUTPUT([📤 FIN MODULE 8<br/>Données diffusées])
 
-    CONVERGENCE --> OUTPUT
+    O1 --> OUTPUT
+    O2 --> OUTPUT
+    O3 --> OUTPUT
+
+    %% ========================================
+    %% SCRIPTS UTILITAIRES
+    %% ========================================
+    subgraph UTILS [🛠️ Scripts Utilitaires]
+        U1[convert_fiches_to_pdf.py<br/>Conversion PDF séparée]
+        U2[clean_dates.py<br/>Nettoie dates vides]
+        U3[flatten_textes.py<br/>Aplatit sous-dossiers]
+        U4[match_fiches_editions.py<br/>Matching si pas Edi-XX]
+    end
 
     %% ========================================
     %% ANNOTATIONS
     %% ========================================
-    note1[💡 Avec/Sans Images:<br/>Choix selon droits<br/>et objectif de diffusion<br/>Images augmentent valeur]
-    note2[💡 Nakala:<br/>Plateforme Huma-Num<br/>Archivage pérenne<br/>DOI et métadonnées]
-    note3[💡 Connecteur Nakala:<br/>Upload automatisé via API<br/>Gestion métadonnées<br/>Attribution DOI]
-    note4[💡 Seafile:<br/>Stockage cloud sécurisé<br/>Accès contrôlé<br/>Usage recherche interne]
-    note5[💡 Droits:<br/>Libre: Domaine public<br/>Restreint: Droits d'auteur<br/>Décision selon MODULE 3]
+    note1[💡 pages_index.json<br/>Métadonnées lues<br/>par Heimdall]
+    note2[💡 Heimdall<br/>Bibliothèque Python<br/>pour API Nakala]
+    note3[💡 DOI<br/>Identifiant pérenne<br/>pour citation]
+    note4[💡 link= fiche=<br/>Utilisés par<br/>NoSketch-Engine]
 
-    DECISION_TYPE -.-> note1
-    AVEC_NAKALA_RESULT -.-> note2
-    AVEC_NAKALA_CONNECT -.-> note3
-    AVEC_SEAFILE -.-> note4
-    AVEC_DECISION -.-> note5
-
-    %% ========================================
-    %% STATISTIQUES
-    %% ========================================
-    subgraph STATS [📊 Statistiques Indicatives]
-        S1[~30% éditions libres → Nakala]
-        S2[~68% éditions restreintes → Seafile]
-        S3[~2% éditions secrètes → Seafile]
-        S4[Format: JSON + TXT structuré]
-    end
-
-    %% ========================================
-    %% OUTILS
-    %% ========================================
-    subgraph TOOLS [🛠️ Outils Utilisés]
-        T1[Connecteur Nakala: API Huma-Num]
-        T2[Seafile: Cloud universitaire]
-        T3[Python: Scripts automatisation]
-    end
+    I3 -.-> note1
+    N2 -.-> note2
+    N4 -.-> note3
+    E4 -.-> note4
 
     %% ========================================
     %% STYLES
     %% ========================================
     classDef startEnd fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff
     classDef input fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    classDef script fill:#fff3e0,stroke:#e65100,stroke-width:2px
     classDef decision fill:#ffeb3b,stroke:#f57f17,stroke-width:3px
-    classDef avec fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef sans fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef libre fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
-    classDef restreint fill:#ffcdd2,stroke:#c62828,stroke-width:2px
-    classDef nakala fill:#a5d6a7,stroke:#2e7d32,stroke-width:2px
-    classDef seafile fill:#fff9c4,stroke:#f57f17,stroke-width:2px
-    classDef convergence fill:#bbdefb,stroke:#1976d2,stroke-width:3px
+    classDef nakala fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    classDef seafile fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    classDef output fill:#bbdefb,stroke:#1976d2,stroke-width:2px
     classDef note fill:#fff9c4,stroke:#f57f17,stroke-width:1px,stroke-dasharray: 5 5
-    classDef title fill:#e0e0e0,stroke:#757575,stroke-width:2px
+    classDef utils fill:#f5f5f5,stroke:#616161,stroke-width:1px,stroke-dasharray: 3 3
 
     class START,OUTPUT startEnd
-    class INPUT input
-    class DECISION_TYPE,AVEC_DECISION,SANS_DECISION decision
-    class AVEC_TITLE,AVEC_CONTENU avec
-    class SANS_TITLE,SANS_CONTENU sans
-    class AVEC_LIBRE,AVEC_NAKALA_PREP,AVEC_NAKALA_CONNECT,AVEC_NAKALA_RESULT,SANS_LIBRE,SANS_NAKALA_PREP,SANS_NAKALA_CONNECT,SANS_NAKALA_RESULT libre
-    class AVEC_RESTREINT,AVEC_SEAFILE,SANS_RESTREINT,SANS_SEAFILE restreint
-    class CONVERGENCE convergence
-    class note1,note2,note3,note4,note5 note
+    class I1,I2,I3 input
+    class V1,P1,N2,E1 script
+    class DECISION decision
+    class N1,N3,N4,N5,O1 nakala
+    class S1,S2,S3,O2 seafile
+    class O3 output
+    class note1,note2,note3,note4 note
+    class U1,U2,U3,U4 utils
 
-    style AVEC_IMAGES_FLOW fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style SANS_IMAGES_FLOW fill:#fff8e1,stroke:#f57f17,stroke-width:2px
-    style AVEC_LIBRE_FLOW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    style AVEC_RESTREINT_FLOW fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style SANS_LIBRE_FLOW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    style SANS_RESTREINT_FLOW fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style STATS fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 3 3
-    style TOOLS fill:#e0f2f1,stroke:#00796b,stroke-width:2px,stroke-dasharray: 3 3
+    style INPUTS fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style STEP1 fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    style STEP2 fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style NAKALA_FLOW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style SEAFILE_FLOW fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style STEP4 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style OUTPUTS fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px
+    style UTILS fill:#fafafa,stroke:#9e9e9e,stroke-width:1px,stroke-dasharray: 3 3
 
 ```
 
 ---
-*Généré automatiquement depuis `flowchart-module8-diffusion.mmd`*
+
+## 📊 Explication du graphique
+
+### Flux principal
+
+1. **ENTRÉES** : Le module reçoit 3 types de données depuis MODULE 6 (PAGEtopage) :
+   - Fiches .docx contenant les métadonnées et l'identifiant Edi-XX
+   - Fichiers verticaux annotés (lemmes, POS)
+   - Dossiers textes avec pages_index.json
+
+2. **ÉTAPE 1 - Validation** : Le script `validate_export.py` vérifie la cohérence :
+   - Chaque Edi-XX a-t-il ses 3 sources ?
+   - Les pages_index.json sont-ils valides ?
+   - Les champs obligatoires sont-ils présents ?
+
+3. **ÉTAPE 2 - Préparation** : Le script `prepare_nakala_export.py` :
+   - Associe les données par Edi-XX
+   - Convertit les fiches .docx → .pdf
+   - Crée la structure Libre_de_droits / Non_libre_de_droits
+
+4. **DÉCISION** : Séparation selon le statut des droits (lu depuis les fiches)
+
+5. **BRANCHE NAKALA** (libre de droits) :
+   - Upload via Heimdall
+   - Attribution de DOI
+   - Génération de cisame.xml
+
+6. **BRANCHE SEAFILE** (droits restreints) :
+   - Copie manuelle vers le cloud privé
+   - Accès restreint à l'équipe
+
+7. **ÉTAPE 4 - Enrichissement** : Le script `add_nakala_links.py` :
+   - Parse cisame.xml pour récupérer les DOI
+   - Interroge l'API Nakala pour les hash
+   - Ajoute les attributs `link=` et `fiche=` dans les verticaux
+
+8. **SORTIES** :
+   - Corpus publics sur Nakala avec DOI
+   - Corpus privés sur Seafile
+   - Verticaux enrichis pour MODULE 7 (NoSketch-Engine)
+
+### Scripts utilitaires
+
+Les scripts en pointillés sont utilisés ponctuellement :
+- `convert_fiches_to_pdf.py` : Si conversion séparée nécessaire
+- `clean_dates.py` : Si l'API refuse les dates vides
+- `flatten_textes.py` : Si la structure des dossiers est incorrecte
+- `match_fiches_editions.py` : Si les fiches n'ont pas encore d'Edi-XX
+
+### Annotations
+
+Les notes en jaune expliquent les concepts clés :
+- **pages_index.json** : Fichier lu par Heimdall pour les métadonnées
+- **Heimdall** : Bibliothèque Python pour interagir avec l'API Nakala
+- **DOI** : Identifiant pérenne pour citation académique
+- **link= fiche=** : Attributs utilisés par NoSketch-Engine pour afficher les liens
+
+---
+
+*Généré pour le projet CiSaMe - Janvier 2025*
