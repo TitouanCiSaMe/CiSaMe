@@ -81,11 +81,70 @@ class TextExporter:
         # Parse le(s) fichier(s) vertical(aux)
         if input_path.is_dir():
             logger.info(f"Export depuis dossier: {input_path}")
-            corpus = self.parser.parse_folder(input_path, pattern)
+            return self._export_folder(input_path, output_folder, pattern)
         else:
             corpus = self.parser.parse_file(input_path)
+            return self.export_pages(corpus.pages, output_folder)
 
-        return self.export_pages(corpus.pages, output_folder)
+    def _export_folder(
+        self,
+        input_folder: Path,
+        output_folder: Path,
+        pattern: str
+    ) -> Dict[str, str]:
+        """
+        Exporte chaque fichier vertical dans un sous-dossier séparé
+
+        Args:
+            input_folder: Dossier contenant les fichiers verticaux
+            output_folder: Dossier de sortie principal
+            pattern: Pattern glob pour les fichiers
+
+        Returns:
+            Mapping {folio: chemin_fichier_sortie}
+        """
+        files = sorted(input_folder.glob(pattern))
+
+        if not files:
+            logger.warning(f"Aucun fichier trouvé avec le pattern '{pattern}' dans {input_folder}")
+            return {}
+
+        logger.info(f"Export de {len(files)} fichiers verticaux depuis {input_folder}")
+
+        all_page_files: Dict[str, str] = {}
+
+        for file_path in files:
+            try:
+                corpus = self.parser.parse_file(file_path)
+
+                if not corpus.pages:
+                    logger.warning(f"Aucune page dans {file_path.name}")
+                    continue
+
+                # Récupère l'edition_id depuis les métadonnées de la première page
+                edition_id = corpus.pages[0].metadata.corpus_metadata.get("edition_id", "")
+
+                # Crée le nom du sous-dossier: nom_fichier_edition_id
+                file_stem = file_path.stem
+                if edition_id:
+                    subfolder_name = f"{file_stem}_{edition_id}"
+                else:
+                    subfolder_name = file_stem
+
+                subfolder = output_folder / subfolder_name
+                logger.info(f"Export {file_path.name} → {subfolder_name}/")
+
+                # Exporte les pages dans le sous-dossier
+                page_files = self.export_pages(corpus.pages, subfolder)
+
+                # Ajoute au mapping global avec le chemin relatif
+                for folio, filename in page_files.items():
+                    all_page_files[folio] = f"{subfolder_name}/{filename}"
+
+            except Exception as e:
+                logger.error(f"Erreur lors de l'export de {file_path}: {e}")
+
+        return all_page_files
 
     def export_pages(
         self,
