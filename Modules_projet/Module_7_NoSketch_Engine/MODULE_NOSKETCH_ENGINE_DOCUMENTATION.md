@@ -280,10 +280,12 @@ Corpus interrogeable
 - **Format** : `.vertical.txt` avec annotations linguistiques
 - **Contenu** : Forme, POS, Lemme pour chaque token
 
-### En parallèle : MODULE Données Textuelles
-- **Rôle différent** : Diffusion des textes bruts
-- **Pas de lien direct** : Workflows indépendants
-- **Destinations différentes** : NoSketch vs Nakala/Seafile
+### En parallèle puis convergent : MODULE 8 (Diffusion Nakala)
+- **Scripts** : Disponibles dans `/Nakala/`
+- **Lien avec MODULE 7** : Le script `add_nakala_links.py` enrichit les fichiers verticaux
+  avec les attributs `link=` (URL page Nakala) et `fiche=` (URL fiche PDF)
+- **Workflow** : Après upload Nakala, les verticaux sont enrichis puis recompilés
+- **Destinations** : Nakala (libre) / Seafile (restreint)
 
 ### En parallèle : MODULE Métadonnées
 - **Consultation** : Métadonnées Heurist pour contexte

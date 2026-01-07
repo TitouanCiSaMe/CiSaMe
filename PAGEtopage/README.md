@@ -278,6 +278,34 @@ python fusion_vertical.py --help
 
 ---
 
+## Export vers Nakala (MODULE 8)
+
+Les sorties de PAGEtopage sont utilisées par le MODULE 8 pour l'export vers Nakala :
+
+**Fichiers utilisés :**
+- `pages_index.json` : Métadonnées lues par Heimdall pour l'upload Nakala
+- Fichiers `.vertical.txt` : Corpus annotés
+- Fichiers pages `page_*.txt` : Textes par page
+
+**Scripts dans `/Nakala/` :**
+```bash
+# 1. Valider la cohérence des données
+python Nakala/validate_export.py --fiches ... --verticaux ... --textes ...
+
+# 2. Préparer la structure pour Heimdall
+python Nakala/prepare_nakala_export.py --fiches ... --verticaux ... --textes ... --output ./input/CiSaMe/
+
+# 3. Uploader sur Nakala
+python Nakala/upload_nakala.py
+
+# 4. Enrichir les verticaux avec les URLs Nakala
+python Nakala/add_nakala_links.py cisame.xml
+```
+
+> **Voir** : Documentation complète dans `/Nakala/README.md`
+
+---
+
 ## Les formats de sortie
 
 ### Format "scholarly" (recommandé)

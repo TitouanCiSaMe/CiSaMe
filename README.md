@@ -113,11 +113,16 @@ CiSaMe/
 │   ├── Module_5/                # Nettoyage Oxygène XML (XPath + Regex)
 │   ├── Module_6_PAGEtopage/     # Enrichissement linguistique
 │   ├── Module_7_NoSketch_Engine/# Concordancier web
-│   ├── Module_8_Diffusion_Donnees/ # Nakala (libre) / Seafile (restreint)
+│   ├── Module_8_Diffusion_Donnees/ # Documentation workflow Nakala/Seafile
 │   ├── Module_9_Visualisation_Requetes/ # Query Generator + Analyzer
 │   ├── Module_Metadonnees/      # Base Heurist (5768 records, transversal)
 │   ├── Decret_Gratien/          # Pipeline parallèle (4149 fichiers)
 │   └── Vue_Ensemble/            # Schéma global intégré
+├── Nakala/                      # MODULE 8 : Scripts export Nakala
+│   ├── validate_export.py       #   - Validation cohérence données
+│   ├── prepare_nakala_export.py #   - Préparation structure Libre/Non_libre
+│   ├── upload_nakala.py         #   - Upload via Heimdall
+│   └── add_nakala_links.py      #   - Enrichissement URLs verticaux
 └── Documentation/               # Guides techniques et scripts
     ├── Fine_tuning_*.sh         # Scripts HPC entraînement Kraken
     ├── liste_manuscrits.csv     # Corpus 317 manuscrits
@@ -135,6 +140,7 @@ CiSaMe/
 | **[Modules_projet/README.md](Modules_projet/README.md)** | Vue d'ensemble des 9 modules |
 | **[Modules_projet/Vue_Ensemble/](Modules_projet/Vue_Ensemble/)** | Schéma global intégré du projet |
 | **[PAGEtopage/README.md](PAGEtopage/README.md)** | Guide enrichissement linguistique (MODULE 6) |
+| **[Nakala/README.md](Nakala/README.md)** | Guide export Nakala/Seafile (MODULE 8) |
 | **[latin_analyzer/README.md](latin_analyzer/README.md)** | Validation automatique textes latins |
 | **[Modeles/README.md](Modeles/README.md)** | Modèles Kraken segmentation/transcription |
 | **[Documentation/README.md](Documentation/README.md)** | Guides techniques et scripts HPC |
@@ -171,7 +177,7 @@ CiSaMe/
 | **MODULE 5** | ✅ Opérationnel | Nettoyage Oxygène XML (XPath + Regex) |
 | **MODULE 6** | ✅ Opérationnel | PAGEtopage (enrichissement TreeTagger) |
 | **MODULE 7** | ✅ Opérationnel | NoSketch-Engine (concordancier) |
-| **MODULE 8** | ✅ Opérationnel | Diffusion Nakala/Seafile |
+| **MODULE 8** | ✅ Opérationnel | Diffusion Nakala/Seafile (scripts `/Nakala/`) |
 | **MODULE 9** | ✅ Opérationnel | Canon-Law-Toolkit (plateforme web d'analyse) |
 | **Transversal** | ✅ Opérationnel | Module Métadonnées (Heurist) |
 | **Parallèle** | ✅ Opérationnel | Décret de Gratien (pipeline spécifique) |
@@ -240,7 +246,7 @@ Visualisation
 4. **Enrichir** (MODULE 6) : `python -m PAGEtopage run --input ./xml/ --output ./output/ --config config.yaml`
 5. **Diffuser** :
    - NoSketch-Engine (MODULE 7) : Fusion + compilation corpus
-   - Nakala/Seafile (MODULE 8) : Archives scientifiques
+   - Nakala/Seafile (MODULE 8) : `python Nakala/prepare_nakala_export.py` puis `upload_nakala.py`
 6. **Analyser** (MODULE 9) : Query Generator + visualisations
 
 ---
@@ -342,4 +348,4 @@ npm run dev
 
 ---
 
-*Dernière mise à jour : Décembre 2025*
+*Dernière mise à jour : Janvier 2026*

@@ -104,12 +104,17 @@ Corrections manuelles et validation :
 - Sortie : Corpus CiSaMe interrogeable en ligne
 
 ### MODULE 8 - Diffusion Données Textuelles
-**Archives publiques/privées**
-- Décision : Avec/Sans images × Libre/Restreint
+**Archives publiques/privées** - Scripts dans `/Nakala/`
+- Workflow : Validation → Préparation → Upload → Enrichissement URLs
+- Scripts principaux :
+  - `validate_export.py` : Validation cohérence
+  - `prepare_nakala_export.py` : Structure Libre/Non_libre
+  - `upload_nakala.py` : Upload via Heimdall
+  - `add_nakala_links.py` : Enrichissement URLs verticaux
 - Destinations :
-  - **Nakala** : Données libres (via Connecteur Nakala)
+  - **Nakala** : Données libres (DOI, archivage pérenne)
   - **Seafile** : Données restreintes (cloud universitaire)
-- Sortie : Archives scientifiques accessibles
+- Sortie : Archives scientifiques + verticaux enrichis pour MODULE 7
 
 ### MODULE 9 - Visualisation et Générateur de Requêtes
 **Canon-Law-Toolkit** : Plateforme web d'analyse
@@ -184,19 +189,21 @@ mmdc -i flowchart-pipeline-complet-integre.mmd -o pipeline.svg
 
 ## 🔄 Dernière mise à jour
 
-**Date** : 12 décembre 2025
+**Date** : Janvier 2026
 
 **Modifications récentes :**
+- ✅ Module 8 : Refonte complète avec scripts dans `/Nakala/` :
+  - `validate_export.py` : Validation cohérence données
+  - `prepare_nakala_export.py` : Préparation structure Libre/Non_libre
+  - `upload_nakala.py` : Upload via Heimdall
+  - `add_nakala_links.py` : Enrichissement URLs verticaux
 - ✅ Module 9 : Ajout Visualisation et Générateur de Requêtes (canon-law-toolkit)
 - ✅ Module 5 : Refonte complète avec Oxygène XML Editor
-- ✅ Module 6 : Migration CLTK → TreeTagger, 4 formats (scholarly/clean/diplomatic/annotated) + étape 4 ré-enrichissement optionnelle
+- ✅ Module 6 : Migration CLTK → TreeTagger, 4 formats (scholarly/clean/diplomatic/annotated)
 - ✅ Module 7 : Reformatage complet NoSketch Engine
-- ✅ Module 8 : Remplacement Algo Hécate → Connecteur Nakala uniquement
 - ✅ Module Métadonnées : Reformatage complet (~150 éditions)
 - ✅ Décret de Gratien : Restructuration complète
 - ✅ Vue Ensemble : Mise à jour avec toutes les corrections
-- ✅ Suppression des schémas obsolètes
-- ✅ Corrections parsing Mermaid pour affichage GitHub
 
 ---
 

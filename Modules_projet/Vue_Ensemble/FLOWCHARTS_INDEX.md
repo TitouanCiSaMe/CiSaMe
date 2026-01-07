@@ -121,15 +121,18 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 - Sortie : Concordancier web accessible
 
 ### MODULE 8 - Diffusion Données Textuelles
-**Fichier:** `Modules_projet/Module_8_Diffusion_Donnees/flowchart-module8-diffusion.mmd`
-**Détail:** ⭐⭐⭐⭐
+**Fichier:** `Modules_projet/Module_8_Diffusion_Donnees/flowchart-module8-diffusion.md`
+**Scripts:** `/Nakala/` (validate, prepare, upload, add_links)
+**Détail:** ⭐⭐⭐⭐⭐
 
 **Contenu:**
-- Décision : Avec/Sans images
-- Décision : Libre/Restreint
-- **Nakala** : Données libres (Connecteur Nakala, DOI)
+- Workflow en 4 étapes avec scripts Python
+- Étape 1 : `validate_export.py` - Validation cohérence
+- Étape 2 : `prepare_nakala_export.py` - Structure Libre/Non_libre
+- Étape 3 : `upload_nakala.py` - Upload via Heimdall
+- Étape 4 : `add_nakala_links.py` - Enrichissement URLs
+- **Nakala** : Données libres (DOI, archivage pérenne)
 - **Seafile** : Données restreintes (accès contrôlé)
-- Contenu des packages (images, textes, métadonnées)
 
 ### MODULE 9 - Visualisation et Générateur de Requêtes
 **Fichier:** `Modules_projet/Module_9_Visualisation_Requetes/flowchart-module9-visualisation.mmd`
@@ -208,17 +211,16 @@ Ce document référence tous les schémas Mermaid du projet CiSaMe, organisés p
 
 ## 🔄 Dernière Mise à Jour
 
-**Date:** 12 décembre 2025
+**Date:** Janvier 2026
 
 **Changements récents:**
+- ✅ Refonte Module 8 : Scripts dans `/Nakala/` avec workflow complet
 - ✅ Ajout Module 9 : Visualisation et Générateur de Requêtes (canon-law-toolkit)
 - ✅ Refonte Module 5 : Oxygène XML Editor
 - ✅ Migration Module 6 : CLTK → TreeTagger
-- ✅ Reformatage Modules 7, 8, Métadonnées
+- ✅ Reformatage Modules 7, Métadonnées
 - ✅ Restructuration Décret de Gratien
 - ✅ Mise à jour Vue Ensemble
-- ✅ Suppression schémas obsolètes
-- ✅ Corrections parsing Mermaid pour GitHub
 
 ---
 
