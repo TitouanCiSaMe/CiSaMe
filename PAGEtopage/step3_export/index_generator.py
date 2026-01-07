@@ -72,6 +72,8 @@ class IndexGenerator:
 
         for page in pages:
             meta = page.metadata
+            corpus_meta = meta.corpus_metadata
+
             page_entry = {
                 "folio": meta.folio,
                 "page_number": meta.page_number,
@@ -82,8 +84,18 @@ class IndexGenerator:
                 "output_file": page_files.get(meta.folio, ""),
             }
 
-            # Ajoute les métadonnées du corpus
-            page_entry.update(meta.corpus_metadata)
+            # Ajoute les métadonnées du corpus au niveau racine
+            page_entry.update(corpus_meta)
+
+            # Ajoute la structure 'metadata' pour compatibilité Nakala/Heimdall
+            # Note: 'source' dans metadata correspond au titre (champ 'title' du corpus)
+            # car l'algo Nakala utilise metadata['source'] pour créer le titre
+            page_entry["metadata"] = {
+                "source": corpus_meta.get("title", ""),
+                "author": corpus_meta.get("author", ""),
+                "type": corpus_meta.get("type", ""),
+                "date": corpus_meta.get("date", ""),
+            }
 
             index["pages"].append(page_entry)
 

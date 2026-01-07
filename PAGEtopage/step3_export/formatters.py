@@ -250,12 +250,13 @@ class ScholarlyFormatter(TextFormatter):
     Exemple:
         ================================================================================
         PAGE 79
-        Source: manuscript_page_109.xml
+        Folio: manuscript_page_109.xml
         Image: manuscript_page_109.jpg
         Titre courant: DISTINCTIO OCTOGESIMA
-        Œuvre: Summa 'Induent sancti'
+        Source: Summa 'Induent sancti'
         Auteur: Anonyme
         Date: 1194
+        Œuvre: Paris BnF MS lat. 3909
         ================================================================================
         catum susceperit biennio in lectoratu erit, et sequenti quinquennio...
     """
@@ -298,8 +299,8 @@ class ScholarlyFormatter(TextFormatter):
         # Numéro de page
         lines.append(f"PAGE {page.metadata.page_number}")
 
-        # Source (nom du fichier XML)
-        lines.append(f"Source: {page.metadata.folio}")
+        # Folio (nom du fichier XML)
+        lines.append(f"Folio: {page.metadata.folio}")
 
         # Image (déduit du nom du fichier XML)
         from pathlib import Path
@@ -316,11 +317,11 @@ class ScholarlyFormatter(TextFormatter):
         # Ordre préféré des métadonnées
         metadata_labels = {
             "edition_id": "Edition ID",
-            "title": "Œuvre",
+            "title": "Source",
             "author": "Auteur",
             "date": "Date",
             "language": "Langue",
-            "source": "Provenance",
+            "source": "Œuvre",
             "type": "Type",
             "lieu": "Lieu",
             "ville": "Ville",

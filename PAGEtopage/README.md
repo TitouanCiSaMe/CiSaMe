@@ -283,15 +283,15 @@ Format académique avec en-tête détaillé et texte en lignes continues :
 ```
 ================================================================================
 PAGE 79
-Source: Fraher_Induent_sancti_proofs_SK_poor.pdf_page_109.xml
+Folio: Fraher_Induent_sancti_proofs_SK_poor.pdf_page_109.xml
 Image: Fraher_Induent_sancti_proofs_SK_poor.pdf_page_109.jpg
 Titre courant: DISTINCTIO OCTOGESIMA
 Edition ID: Edi-7
-Œuvre: Summa 'Induent sancti'
+Source: Summa 'Induent sancti'
 Auteur: Anonyme
 Date: 1194
 Langue: Latin
-Provenance: Paris BnF MS lat. 3909
+Œuvre: Paris BnF MS lat. 3909
 Type: Droit canonique
 Lieu: France
 Ville: Paris

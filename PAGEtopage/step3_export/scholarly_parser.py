@@ -25,12 +25,13 @@ class ScholarlyParser:
     Format attendu:
         ================================================================================
         PAGE 79
-        Source: manuscript.xml
+        Folio: manuscript.xml
         Image: manuscript.jpg
         Titre courant: DISTINCTIO OCTOGESIMA
-        Œuvre: Summa 'Induent sancti'
+        Source: Summa 'Induent sancti'
         Auteur: Anonyme
         Date: 1194
+        Œuvre: Paris BnF MS lat. 3909
         ================================================================================
         [texte de la page...]
 
@@ -45,15 +46,15 @@ class ScholarlyParser:
     # Patterns pour extraire les métadonnées
     METADATA_PATTERNS = {
         'page_number': re.compile(r'^PAGE\s+(\d+)\s*$', re.IGNORECASE),
-        'folio': re.compile(r'^Source:\s*(.+?)\s*$', re.IGNORECASE),
+        'folio': re.compile(r'^Folio:\s*(.+?)\s*$', re.IGNORECASE),
         'image': re.compile(r'^Image:\s*(.+?)\s*$', re.IGNORECASE),
         'running_title': re.compile(r'^Titre courant:\s*(.+?)\s*$', re.IGNORECASE),
         'edition_id': re.compile(r'^Edition ID:\s*(.+?)\s*$', re.IGNORECASE),
-        'title': re.compile(r'^Œuvre:\s*(.+?)\s*$', re.IGNORECASE),
+        'title': re.compile(r'^Source:\s*(.+?)\s*$', re.IGNORECASE),
         'author': re.compile(r'^Auteur:\s*(.+?)\s*$', re.IGNORECASE),
         'date': re.compile(r'^Date:\s*(.+?)\s*$', re.IGNORECASE),
         'language': re.compile(r'^Langue:\s*(.+?)\s*$', re.IGNORECASE),
-        'source': re.compile(r'^Provenance:\s*(.+?)\s*$', re.IGNORECASE),
+        'source': re.compile(r'^Œuvre:\s*(.+?)\s*$', re.IGNORECASE),
         'type': re.compile(r'^Type:\s*(.+?)\s*$', re.IGNORECASE),
         'lieu': re.compile(r'^Lieu:\s*(.+?)\s*$', re.IGNORECASE),
         'ville': re.compile(r'^Ville:\s*(.+?)\s*$', re.IGNORECASE),
