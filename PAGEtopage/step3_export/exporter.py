@@ -61,7 +61,7 @@ class TextExporter:
         self,
         input_path: str | Path,
         output_folder: str | Path,
-        pattern: str = "*.vertical.txt"
+        pattern: str = "*.txt"
     ) -> Dict[str, str]:
         """
         Exporte un fichier vertical ou tous les fichiers d'un dossier
@@ -70,7 +70,7 @@ class TextExporter:
             input_path: Chemin vers le fichier vertical ou un dossier
             output_folder: Dossier de sortie
             pattern: Pattern glob pour les fichiers si input_path est un dossier
-                     (défaut: *.vertical.txt)
+                     (défaut: *.txt)
 
         Returns:
             Mapping {folio: chemin_fichier_sortie}
@@ -244,7 +244,7 @@ def export_vertical_to_text(
     output_folder: str | Path,
     format_type: str = "clean",
     config: Optional[Config] = None,
-    pattern: str = "*.vertical.txt"
+    pattern: str = "*.txt"
 ) -> Dict[str, str]:
     """
     Fonction utilitaire pour exporter un fichier vertical ou un dossier
