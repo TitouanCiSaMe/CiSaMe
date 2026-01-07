@@ -95,6 +95,7 @@ class IndexGenerator:
                 "author": corpus_meta.get("author", ""),
                 "type": corpus_meta.get("type", ""),
                 "date": corpus_meta.get("date", ""),
+                "edition_id": corpus_meta.get("edition_id", ""),
             }
 
             index["pages"].append(page_entry)
