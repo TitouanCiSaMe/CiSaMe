@@ -21,8 +21,6 @@ class IndexGenerator:
 
     Produit:
     - pages_index.json : Index de toutes les pages
-    - images_mapping.txt : Correspondance page → image
-    - corpus_stats.json : Statistiques du corpus
     """
 
     def __init__(self, output_folder: Path):
@@ -46,8 +44,6 @@ class IndexGenerator:
             page_files: Mapping {folio: chemin_fichier_sortie}
         """
         self.generate_pages_index(pages, page_files)
-        self.generate_images_mapping(pages, page_files)
-        self.generate_corpus_stats(pages)
 
     def generate_pages_index(
         self,
@@ -105,102 +101,6 @@ class IndexGenerator:
             json.dump(index, f, ensure_ascii=False, indent=2)
 
         logger.info(f"Index des pages généré: {output_path}")
-        return output_path
-
-    def generate_images_mapping(
-        self,
-        pages: List[AnnotatedPage],
-        page_files: Dict[str, str]
-    ) -> Path:
-        """
-        Génère le mapping images → pages
-
-        Args:
-            pages: Liste des pages
-            page_files: Mapping folio → fichier
-
-        Returns:
-            Chemin du fichier créé
-        """
-        output_path = self.output_folder / "images_mapping.txt"
-
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write("# Mapping: image_source → page_output\n")
-            f.write(f"# Generated: {datetime.now().isoformat()}\n")
-            f.write("#" + "=" * 60 + "\n\n")
-
-            for page in pages:
-                folio = page.metadata.folio
-                output_file = page_files.get(folio, "N/A")
-
-                # Nom d'image (remplace .xml par .jpg/.png)
-                image_name = folio.replace(".xml", ".jpg")
-
-                f.write(f"{image_name}\t→\t{output_file}\n")
-
-        logger.info(f"Mapping images généré: {output_path}")
-        return output_path
-
-    def generate_corpus_stats(self, pages: List[AnnotatedPage]) -> Path:
-        """
-        Génère les statistiques du corpus
-
-        Args:
-            pages: Liste des pages
-
-        Returns:
-            Chemin du fichier créé
-        """
-        total_sentences = 0
-        total_tokens = 0
-        pos_counts: Dict[str, int] = {}
-        lemma_counts: Dict[str, int] = {}
-        empty_pages = 0
-
-        for page in pages:
-            if page.is_empty:
-                empty_pages += 1
-                continue
-
-            total_sentences += len(page.sentences)
-
-            for sentence in page.sentences:
-                total_tokens += len(sentence.tokens)
-
-                for token in sentence.tokens:
-                    # Compte les POS
-                    pos_counts[token.pos] = pos_counts.get(token.pos, 0) + 1
-
-                    # Compte les lemmes (top 100)
-                    if token.pos != "PUNCT":
-                        lemma_counts[token.lemma] = lemma_counts.get(token.lemma, 0) + 1
-
-        # Top 100 lemmes
-        top_lemmas = sorted(
-            lemma_counts.items(),
-            key=lambda x: x[1],
-            reverse=True
-        )[:100]
-
-        stats = {
-            "generated_at": datetime.now().isoformat(),
-            "corpus_statistics": {
-                "total_pages": len(pages),
-                "empty_pages": empty_pages,
-                "total_sentences": total_sentences,
-                "total_tokens": total_tokens,
-                "avg_sentences_per_page": round(total_sentences / max(len(pages) - empty_pages, 1), 2),
-                "avg_tokens_per_sentence": round(total_tokens / max(total_sentences, 1), 2),
-            },
-            "pos_distribution": dict(sorted(pos_counts.items(), key=lambda x: x[1], reverse=True)),
-            "top_100_lemmas": [{"lemma": l, "count": c} for l, c in top_lemmas],
-        }
-
-        output_path = self.output_folder / "corpus_stats.json"
-        with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(stats, f, ensure_ascii=False, indent=2)
-
-        logger.info(f"Statistiques du corpus générées: {output_path}")
         return output_path
 
 
