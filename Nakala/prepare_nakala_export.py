@@ -42,6 +42,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
+from nakala_utils import edi_sort_key, match_textes_to_oeuvres as _match_textes
 
 try:
     from docx import Document
@@ -446,7 +447,7 @@ class NakalaExportPreparer:
         non_libre_dir.mkdir(parents=True, exist_ok=True)
 
         for oeuvre_key, oeuvre in sorted(self.oeuvres.items(),
-                                          key=lambda x: (int(x[1].edi_id.split('-')[1]), x[0])):
+                                          key=lambda x: (edi_sort_key(x[1].edi_id), x[0])):
 
             # Vérifier si on peut exporter (vertical ET textes avec pages_index requis)
             if not oeuvre.textes or not oeuvre.textes.has_pages_index:
@@ -477,11 +478,13 @@ class NakalaExportPreparer:
                 # 2. Copier le dossier textes (contenu)
                 if oeuvre.textes:
                     src_dir = Path(oeuvre.textes.path)
+                    files_copied = 0
                     for src_file in src_dir.iterdir():
                         if src_file.is_file():
                             dst = export_path / src_file.name
                             shutil.copy2(src_file, dst)
-                    self.log(f"    ✓ {len(list(src_dir.glob('*')))} fichiers textes")
+                            files_copied += 1
+                    self.log(f"    ✓ {files_copied} fichiers textes")
 
                 # 3. Convertir et copier la fiche
                 if oeuvre.fiche:
@@ -553,13 +556,13 @@ class NakalaExportPreparer:
 
             if libres:
                 lines.append(f"\n[LIBRE DE DROITS] ({len(libres)})")
-                for oeuvre in sorted(libres, key=lambda x: int(x.edi_id.split('-')[1])):
+                for oeuvre in sorted(libres, key=lambda x: edi_sort_key(x.edi_id)):
                     status = "✓" if not oeuvre.errors else f"⚠ {', '.join(oeuvre.errors)}"
                     lines.append(f"  {oeuvre.edi_id} - {oeuvre.nom_oeuvre[:50]} : {status}")
 
             if non_libres:
                 lines.append(f"\n[NON LIBRE DE DROITS] ({len(non_libres)})")
-                for oeuvre in sorted(non_libres, key=lambda x: int(x.edi_id.split('-')[1])):
+                for oeuvre in sorted(non_libres, key=lambda x: edi_sort_key(x.edi_id)):
                     status = "✓" if not oeuvre.errors else f"⚠ {', '.join(oeuvre.errors)}"
                     lines.append(f"  {oeuvre.edi_id} - {oeuvre.nom_oeuvre[:50]} : {status}")
 
@@ -569,7 +572,7 @@ class NakalaExportPreparer:
             lines.append(f"\n{'='*80}")
             lines.append(f"NON EXPORTÉS (données manquantes) ({len(not_exported)})")
             lines.append("=" * 80)
-            for oeuvre in sorted(not_exported, key=lambda x: int(x.edi_id.split('-')[1])):
+            for oeuvre in sorted(not_exported, key=lambda x: edi_sort_key(x.edi_id)):
                 lines.append(f"  {oeuvre.edi_id} - {oeuvre.nom_oeuvre[:50]}")
                 for error in oeuvre.errors:
                     lines.append(f"      → {error}")

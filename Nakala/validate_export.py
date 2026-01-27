@@ -26,6 +26,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional, Set
 from dataclasses import dataclass, field
+from nakala_utils import edi_sort_key
 
 try:
     from docx import Document
@@ -131,7 +132,7 @@ class ExportValidator:
         """Extrait les données d'un fichier vertical"""
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
-                content = f.read(5000)
+                content = f.read(10000)
 
             data = {
                 'path': str(filepath),
@@ -383,7 +384,7 @@ class ExportValidator:
             lines.append(f"\n{'='*80}")
             lines.append(f"ŒUVRES COMPLÈTES (prêtes pour export) - {len(complete_items)}")
             lines.append("=" * 80)
-            for result in sorted(complete_items, key=lambda x: (int(x.edi_id.split('-')[1]), x.oeuvre_key)):
+            for result in sorted(complete_items, key=lambda x: (edi_sort_key(x.edi_id), x.oeuvre_key)):
                 status = "[LIBRE]" if result.fiche_libre else "[NON LIBRE]"
                 lines.append(f"  ✓ {result.edi_id} - {result.nom_oeuvre} {status}")
 
@@ -393,7 +394,7 @@ class ExportValidator:
             lines.append(f"\n{'='*80}")
             lines.append(f"EXPORTABLES SANS FICHE (à compléter) - {len(exportable_no_fiche)}")
             lines.append("=" * 80)
-            for result in sorted(exportable_no_fiche, key=lambda x: (int(x.edi_id.split('-')[1]), x.oeuvre_key)):
+            for result in sorted(exportable_no_fiche, key=lambda x: (edi_sort_key(x.edi_id), x.oeuvre_key)):
                 lines.append(f"  ⚠ {result.edi_id} - {result.nom_oeuvre}")
 
         # Items non exportables
@@ -402,7 +403,7 @@ class ExportValidator:
             lines.append(f"\n{'='*80}")
             lines.append(f"NON EXPORTABLES (données manquantes) - {len(non_exportable)}")
             lines.append("=" * 80)
-            for result in sorted(non_exportable, key=lambda x: (int(x.edi_id.split('-')[1]), x.oeuvre_key)):
+            for result in sorted(non_exportable, key=lambda x: (edi_sort_key(x.edi_id), x.oeuvre_key)):
                 missing = []
                 if not result.has_vertical:
                     missing.append("vertical")

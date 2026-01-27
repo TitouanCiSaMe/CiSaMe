@@ -28,10 +28,14 @@ Auteur: Script pour le projet CiSaMe
 import os
 import re
 import glob
+import logging
 import shutil
 from datetime import datetime
 from collections import defaultdict
 from docx import Document
+from nakala_utils import edi_sort_key
+
+logger = logging.getLogger(__name__)
 
 
 def normalize_filename(name, max_length=80):
@@ -75,8 +79,8 @@ def extract_info_from_docx(filepath):
         # Chercher si libre de droits
         if re.search(r'Libre\s+de\s+droits\s*:\s*Oui', text, re.IGNORECASE):
             result['libre_de_droits'] = True
-    except Exception as e:
-        print(f"  Erreur lecture {filepath}: {e}")
+    except (IOError, OSError, ValueError) as e:
+        logger.warning("Erreur lecture %s : %s", filepath, e)
     
     return result
 
@@ -116,8 +120,8 @@ def extract_info_from_vertical(filepath):
                 
                 if result['id']:
                     break
-    except Exception as e:
-        print(f"  Erreur lecture {filepath}: {e}")
+    except (IOError, OSError, ValueError) as e:
+        logger.warning("Erreur lecture %s : %s", filepath, e)
     
     return result
 
@@ -145,8 +149,8 @@ def load_libres_de_droits(filepath):
             libres.add(f"Edi-{m}")
         
         print(f"  → {len(libres)} identifiants libres de droits chargés")
-    except Exception as e:
-        print(f"  Erreur chargement libres de droits: {e}")
+    except (IOError, OSError, ValueError) as e:
+        logger.warning("Erreur chargement libres de droits : %s", e)
     
     return libres
 
@@ -504,27 +508,20 @@ def write_log(log_entries, stats, debug_stats, output_path):
             for entry in exportes:
                 par_id[entry['id']].append(entry)
             
-            # Trier par numéro d'ID
-            def sort_key(id_str):
-                try:
-                    return int(id_str.split('-')[1])
-                except:
-                    return 0
-            
             # Libres de droits
             libres = [(id_, entries) for id_, entries in par_id.items() if entries[0]['libre_de_droits']]
             if libres:
                 f.write("\n[LIBRE DE DROITS]\n")
-                for id_, entries in sorted(libres, key=lambda x: sort_key(x[0])):
+                for id_, entries in sorted(libres, key=lambda x: edi_sort_key(x[0])):
                     for entry in entries:
                         status = "✓ COMPLET" if entry['has_fiche'] else "⚠ sans fiche"
                         f.write(f"  {entry['id']} - {entry['nom_oeuvre']} : {status}\n")
-            
+
             # Non libres
             non_libres = [(id_, entries) for id_, entries in par_id.items() if not entries[0]['libre_de_droits']]
             if non_libres:
                 f.write("\n[NON LIBRE DE DROITS]\n")
-                for id_, entries in sorted(non_libres, key=lambda x: sort_key(x[0])):
+                for id_, entries in sorted(non_libres, key=lambda x: edi_sort_key(x[0])):
                     for entry in entries:
                         status = "✓ COMPLET" if entry['has_fiche'] else "⚠ sans fiche"
                         f.write(f"  {entry['id']} - {entry['nom_oeuvre']} : {status}\n")

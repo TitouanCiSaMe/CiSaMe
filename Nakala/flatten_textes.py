@@ -83,9 +83,13 @@ def flatten_textes_folders(root_path: str, dry_run: bool = False):
                     base = item.stem
                     ext = item.suffix
                     counter = 1
-                    while dest.exists():
+                    max_counter = 10000
+                    while dest.exists() and counter < max_counter:
                         dest = parent_dir / f"{base}_{counter}{ext}"
                         counter += 1
+                    if counter >= max_counter:
+                        print(f"    Erreur: trop de conflits pour {item.name}")
+                        continue
 
                 fichiers_deplaces.append((item, dest))
                 print(f"  [DÉPLACEMENT] {item.name} -> {parent_dir.name}/")
@@ -160,7 +164,7 @@ def main(root_path: str, flatten: bool = False, dry_run: bool = False):
                 for d in dossiers_supprimes:
                     log.write(f"  {d}\n")
 
-        print(f"\n✓ Log enregistré : {log_path}")
+        print(f"\nLog enregistre : {log_path}")
 
     # Résumé
     print(f"\n{'=== RÉSUMÉ (DRY RUN) ===' if dry_run else '=== RÉSUMÉ ==='}")

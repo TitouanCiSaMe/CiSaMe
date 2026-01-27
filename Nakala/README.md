@@ -77,15 +77,15 @@ Ce dossier contient tous les scripts nécessaires pour :
 | **validate_export.py** | Valide la cohérence des données | `python validate_export.py -f fiches/ -v verticaux/ -t textes/` |
 | **prepare_nakala_export.py** | Prépare la structure pour Heimdall | `python prepare_nakala_export.py -f fiches/ -v verticaux/ -t textes/ -o output/` |
 | **upload_nakala.py** | Upload sur Nakala via Heimdall | `python upload_nakala.py` |
-| **add_nakala_links.py** | Enrichit les verticaux avec URLs | `python add_nakala_links.py cisame.xml` |
+| **add_nakala_links.py** | Enrichit les verticaux avec URLs | `NAKALA_API_KEY=... python add_nakala_links.py cisame.xml` |
 
 ### Scripts utilitaires (usage ponctuel)
 
 | Script | Description | Usage |
 |--------|-------------|-------|
-| **convert_fiches_to_pdf.py** | Convertit .docx → .pdf | `python convert_fiches_to_pdf.py chemin/` |
-| **clean_dates.py** | Nettoie dates vides dans JSON | `python clean_dates.py chemin/` |
-| **flatten_textes.py** | Aplatit sous-dossiers textes/ | `python flatten_textes.py chemin/` |
+| **convert_fiches_to_pdf.py** | Convertit .docx → .pdf | `python convert_fiches_to_pdf.py chemin/ [--delete-docx] [--dry-run]` |
+| **clean_dates.py** | Nettoie dates vides dans JSON | `python clean_dates.py chemin/ [--dry-run] [--recursive]` |
+| **flatten_textes.py** | Aplatit sous-dossiers textes/ | `python flatten_textes.py chemin/ [--dry-run]` |
 | **match_fiches_editions.py** | Matching flou fiches ↔ CSV | ⚠️ Obsolète si fiches ont déjà Edi-XX |
 | **export_nakala_par_edition.py** | Export groupé par ID | ⚠️ Remplacé par prepare_nakala_export.py |
 | **export_nakala_par_oeuvre.py** | Export séparé par œuvre | ⚠️ Remplacé par prepare_nakala_export.py |
@@ -219,17 +219,34 @@ python ../../../Nakala/upload_nakala.py
 
 **Objectif** : Ajouter les liens Nakala dans les fichiers verticaux
 
+**Prérequis :**
 ```bash
-python add_nakala_links.py cisame.xml [--test] [--dry-run]
+# Clé API obligatoire (variable d'environnement)
+export NAKALA_API_KEY='votre-clé-api-nakala'
+
+# Dépendance recommandée pour la sécurité XML
+pip install defusedxml
+```
+
+```bash
+python add_nakala_links.py cisame.xml [--test] [--dry-run] [--verbose]
 ```
 
 **Options :**
 - `--test` : Utilise l'API de test Nakala
 - `--dry-run` : Simule sans modifier les fichiers
+- `--verbose` / `-v` : Active les logs de debug
+
+**Sécurité et robustesse :**
+- La clé API est lue depuis la variable d'environnement `NAKALA_API_KEY` (jamais en dur dans le code)
+- Le parsing XML utilise `defusedxml` si disponible (protection contre les attaques XXE)
+- Les appels HTTP ont un timeout de 30s et un retry automatique (3 tentatives) sur les erreurs serveur
+- Les URLs sont échappées avant insertion dans les attributs XML
+- Un rapport de synthèse détaillé est affiché en fin d'exécution
 
 **Ce que le script fait :**
 1. Parse `cisame.xml` pour extraire les DOI
-2. Récupère les hash SHA1 des fichiers via l'API Nakala
+2. Récupère les hash SHA1 des fichiers via l'API Nakala (avec retry automatique)
 3. Construit les URLs pour chaque page
 4. Modifie les balises `<doc>` dans les verticaux :
 
@@ -257,13 +274,20 @@ Ces attributs sont utilisés par NoSketch-Engine (MODULE 7) pour afficher :
 **Quand l'utiliser :** Si vous devez convertir des fiches séparément
 
 ```bash
-python convert_fiches_to_pdf.py ./dossier_fiches/ [--delete-docx]
+python convert_fiches_to_pdf.py ./dossier_fiches/ [--delete-docx] [--dry-run] [--verbose]
 ```
 
 **Options :**
-- `--delete-docx` : Supprime les .docx après conversion
+- `--delete-docx` : Supprime les .docx après conversion réussie
+- `--dry-run` / `-n` : Simule sans convertir
+- `--verbose` / `-v` : Active les logs de debug
 
-**Prérequis :** LibreOffice installé (`soffice` dans le PATH)
+**Prérequis :** LibreOffice installé (`soffice` dans le PATH). Le script vérifie automatiquement la disponibilité de `soffice` au démarrage.
+
+**Robustesse :**
+- Timeout de 120s par conversion (évite les blocages de LibreOffice)
+- Try-except sur la suppression des .docx
+- Rapport de synthèse en fin d'exécution (succès, erreurs)
 
 ---
 
@@ -272,12 +296,22 @@ python convert_fiches_to_pdf.py ./dossier_fiches/ [--delete-docx]
 **Quand l'utiliser :** Si l'API Nakala refuse des dates vides
 
 ```bash
-python clean_dates.py ./input/CiSaMe/
+python clean_dates.py ./input/CiSaMe/ [--dry-run] [--recursive] [--verbose]
 ```
+
+**Options :**
+- `--dry-run` / `-n` : Simule sans modifier les fichiers
+- `--recursive` / `-r` : Parcourt récursivement les sous-dossiers (par défaut : un seul niveau)
+- `--verbose` / `-v` : Active les logs de debug
 
 **Ce que ça fait :**
 - Parcourt tous les `pages_index.json`
 - Remplace `"date": ""` par `"date": null`
+- Gère les deux formats de JSON (avec et sans clé `metadata`)
+
+**Robustesse :**
+- Try-except sur les lectures/écritures JSON
+- Gestion des fichiers JSON malformés (warning au lieu de crash)
 
 ---
 
@@ -294,6 +328,9 @@ python flatten_textes.py ./input/CiSaMe/ [--dry-run]
 - Déplace leur contenu vers le dossier parent
 - Supprime les fichiers de 0 octets
 - Génère un log des opérations
+
+**Robustesse :**
+- Limite de sécurité sur les conflits de noms de fichiers (max 10 000 tentatives)
 
 ---
 
@@ -313,8 +350,26 @@ python match_fiches_editions.py \
 - Matching flou entre fiches et base CSV (titre, auteur)
 - Ajoute "Identifiant édition : Edi-XX" à la fin des fiches
 - Ajoute "Libre de droits : Oui/Non"
+- Normalisation des accents via `unicodedata` (gestion complète des caractères Unicode)
+- Score de similarité plafonné à 1.0
 
 **Note :** Ce script n'est plus nécessaire si les fiches contiennent déjà les identifiants.
+
+---
+
+### nakala_utils.py (module partagé)
+
+**Ce fichier n'est pas un script exécutable.** C'est un module Python importé par les autres scripts du dossier. Il contient les fonctions communes :
+
+- `normalize_filename()` : Normalise un nom pour le système de fichiers
+- `normalize_text()` : Normalise le texte pour la comparaison (via `unicodedata`)
+- `extract_info_from_docx()` : Extrait Edi-XX et métadonnées d'une fiche .docx
+- `extract_info_from_vertical()` : Extrait Edi-XX d'un fichier vertical
+- `load_libres_de_droits()` : Charge la liste des identifiants libres de droits
+- `parse_edi_id_number()` : Parse un identifiant Edi-XX de manière sécurisée
+- `edi_sort_key()` : Clé de tri pour les identifiants Edi-XX
+- `match_textes_to_oeuvres()` : Matching des dossiers textes vers les oeuvres
+- `setup_logging()` : Configuration centralisée du logging
 
 ---
 
@@ -357,13 +412,14 @@ python match_fiches_editions.py \
 ## ⚠️ Dépendances
 
 ```bash
-pip install python-docx requests tqdm heimdall
+pip install python-docx requests tqdm heimdall defusedxml
 ```
 
 - **python-docx** : Lecture des fiches .docx
 - **requests** : API Nakala
 - **tqdm** : Barres de progression
 - **heimdall** : Upload Nakala
+- **defusedxml** : Parsing XML sécurisé (recommandé pour add_nakala_links.py)
 - **LibreOffice** : Conversion PDF (`soffice`)
 
 ---
@@ -393,4 +449,4 @@ pip install python-docx requests tqdm heimdall
 
 ---
 
-*Dernière mise à jour : Janvier 2025*
+*Dernière mise à jour : Janvier 2026*
