@@ -77,7 +77,7 @@ Ce dossier contient tous les scripts nécessaires pour :
 | **validate_export.py** | Valide la cohérence des données | `python validate_export.py -f fiches/ -v verticaux/ -t textes/` |
 | **prepare_nakala_export.py** | Prépare la structure pour Heimdall | `python prepare_nakala_export.py -f fiches/ -v verticaux/ -t textes/ -o output/` |
 | **upload_nakala.py** | Upload sur Nakala via Heimdall | `python upload_nakala.py` |
-| **add_nakala_links.py** | Enrichit les verticaux avec URLs | `python add_nakala_links.py cisame.xml` |
+| **add_nakala_links.py** | Enrichit les verticaux avec URLs | `NAKALA_API_KEY=... python add_nakala_links.py cisame.xml` |
 
 ### Scripts utilitaires (usage ponctuel)
 
@@ -219,17 +219,34 @@ python ../../../Nakala/upload_nakala.py
 
 **Objectif** : Ajouter les liens Nakala dans les fichiers verticaux
 
+**Prérequis :**
 ```bash
-python add_nakala_links.py cisame.xml [--test] [--dry-run]
+# Clé API obligatoire (variable d'environnement)
+export NAKALA_API_KEY='votre-clé-api-nakala'
+
+# Dépendance recommandée pour la sécurité XML
+pip install defusedxml
+```
+
+```bash
+python add_nakala_links.py cisame.xml [--test] [--dry-run] [--verbose]
 ```
 
 **Options :**
 - `--test` : Utilise l'API de test Nakala
 - `--dry-run` : Simule sans modifier les fichiers
+- `--verbose` / `-v` : Active les logs de debug
+
+**Sécurité et robustesse :**
+- La clé API est lue depuis la variable d'environnement `NAKALA_API_KEY` (jamais en dur dans le code)
+- Le parsing XML utilise `defusedxml` si disponible (protection contre les attaques XXE)
+- Les appels HTTP ont un timeout de 30s et un retry automatique (3 tentatives) sur les erreurs serveur
+- Les URLs sont échappées avant insertion dans les attributs XML
+- Un rapport de synthèse détaillé est affiché en fin d'exécution
 
 **Ce que le script fait :**
 1. Parse `cisame.xml` pour extraire les DOI
-2. Récupère les hash SHA1 des fichiers via l'API Nakala
+2. Récupère les hash SHA1 des fichiers via l'API Nakala (avec retry automatique)
 3. Construit les URLs pour chaque page
 4. Modifie les balises `<doc>` dans les verticaux :
 
@@ -357,13 +374,14 @@ python match_fiches_editions.py \
 ## ⚠️ Dépendances
 
 ```bash
-pip install python-docx requests tqdm heimdall
+pip install python-docx requests tqdm heimdall defusedxml
 ```
 
 - **python-docx** : Lecture des fiches .docx
 - **requests** : API Nakala
 - **tqdm** : Barres de progression
 - **heimdall** : Upload Nakala
+- **defusedxml** : Parsing XML sécurisé (recommandé pour add_nakala_links.py)
 - **LibreOffice** : Conversion PDF (`soffice`)
 
 ---
@@ -393,4 +411,4 @@ pip install python-docx requests tqdm heimdall
 
 ---
 
-*Dernière mise à jour : Janvier 2025*
+*Dernière mise à jour : Janvier 2026*
