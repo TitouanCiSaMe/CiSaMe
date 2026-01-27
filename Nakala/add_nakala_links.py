@@ -158,27 +158,27 @@ def add_links_to_vertical(vertical_path, page_mapping, fiche_mapping, dry_run=Fa
         new_tag = full_tag
         tag_modified = False
         
-        # Extraire source et page_number
-        source_match = re.search(r'source="([^"]*)"', full_tag)
+        # Extraire title et page_number
+        title_match = re.search(r'title="([^"]*)"', full_tag)
         page_match = re.search(r'page_number="(\d+)"', full_tag)
-        
-        if not source_match:
+
+        if not title_match:
             return full_tag
-        
-        source = source_match.group(1)
-        
+
+        title = title_match.group(1)
+
         # Ajouter link (page) si absent
         if 'link=' not in new_tag and page_match:
             page_num = int(page_match.group(1))
-            key = (source, page_num)
+            key = (title, page_num)
             if key in page_mapping:
                 url = page_mapping[key]
                 new_tag = new_tag.replace('<doc ', f'<doc link="{url}" ', 1)
                 tag_modified = True
-        
+
         # Ajouter fiche si absent
-        if 'fiche=' not in new_tag and source in fiche_mapping:
-            url = fiche_mapping[source]
+        if 'fiche=' not in new_tag and title in fiche_mapping:
+            url = fiche_mapping[title]
             new_tag = new_tag.replace('<doc ', f'<doc fiche="{url}" ', 1)
             tag_modified = True
         
