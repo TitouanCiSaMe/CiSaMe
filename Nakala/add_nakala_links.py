@@ -142,52 +142,49 @@ def build_page_url_mapping(items, api_key, api_url, nakala_url):
     return page_mapping, fiche_mapping
 
 
-def add_links_to_vertical(vertical_path, page_mapping, fiche_mapping, dry_run=False):
-    """Ajoute les attributs link et fiche dans un fichier vertical"""
-    
+def add_links_to_vertical(vertical_path, xml_title, page_mapping, fiche_mapping, dry_run=False):
+    """Ajoute les attributs link et fiche dans un fichier vertical.
+
+    xml_title: le titre de l'item dans le XML (utilisé comme clé de matching)
+    """
+
     with open(vertical_path, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     modified = False
     lines_modified = 0
-    
+
     def replace_doc(match):
         nonlocal modified, lines_modified
-        
+
         full_tag = match.group(0)
         new_tag = full_tag
         tag_modified = False
-        
-        # Extraire title et page_number
-        title_match = re.search(r'title="([^"]*)"', full_tag)
+
+        # Extraire page_number
         page_match = re.search(r'page_number="(\d+)"', full_tag)
-
-        if not title_match:
-            return full_tag
-
-        title = title_match.group(1)
 
         # Ajouter link (page) si absent
         if 'link=' not in new_tag and page_match:
             page_num = int(page_match.group(1))
-            key = (title, page_num)
+            key = (xml_title, page_num)
             if key in page_mapping:
                 url = page_mapping[key]
                 new_tag = new_tag.replace('<doc ', f'<doc link="{url}" ', 1)
                 tag_modified = True
 
         # Ajouter fiche si absent
-        if 'fiche=' not in new_tag and title in fiche_mapping:
-            url = fiche_mapping[title]
+        if 'fiche=' not in new_tag and xml_title in fiche_mapping:
+            url = fiche_mapping[xml_title]
             new_tag = new_tag.replace('<doc ', f'<doc fiche="{url}" ', 1)
             tag_modified = True
-        
+
         if tag_modified:
             modified = True
             lines_modified += 1
-        
+
         return new_tag
-    
+
     # Remplacer toutes les balises <doc ...>
     new_content = re.sub(r'<doc [^>]+>', replace_doc, content)
     
@@ -210,11 +207,12 @@ def process_vertical_files(items, page_mapping, fiche_mapping, dry_run=False):
     
     for item in items:
         vertical_path = item.get('vertical_path')
-        
+        xml_title = item.get('title')
+
         if not vertical_path or not os.path.isfile(vertical_path):
             continue
-        
-        total_modified += add_links_to_vertical(vertical_path, page_mapping, fiche_mapping, dry_run)
+
+        total_modified += add_links_to_vertical(vertical_path, xml_title, page_mapping, fiche_mapping, dry_run)
     
     return total_modified
 
