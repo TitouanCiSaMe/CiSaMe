@@ -15,33 +15,13 @@ import csv
 import re
 import sys
 import os
+import logging
 from pathlib import Path
 from difflib import SequenceMatcher
 from docx import Document
+from nakala_utils import normalize_text
 
-
-def normalize_text(text):
-    """Normalise le texte pour la comparaison : minuscules, sans accents, sans ponctuation."""
-    if not text:
-        return ""
-    # Remplacements d'accents courants
-    replacements = {
-        'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
-        'à': 'a', 'â': 'a', 'ä': 'a',
-        'ù': 'u', 'û': 'u', 'ü': 'u',
-        'ô': 'o', 'ö': 'o',
-        'î': 'i', 'ï': 'i',
-        'ç': 'c',
-        'œ': 'oe', 'æ': 'ae'
-    }
-    text = text.lower()
-    for old, new in replacements.items():
-        text = text.replace(old, new)
-    # Supprimer la ponctuation
-    text = re.sub(r'[^\w\s]', ' ', text)
-    # Normaliser les espaces
-    text = ' '.join(text.split())
-    return text
+logger = logging.getLogger(__name__)
 
 
 def load_libres_de_droits(filepath):
@@ -96,8 +76,15 @@ def extract_info_from_docx(filepath):
     """
     Extrait les informations clés d'une fiche docx.
     Retourne un dictionnaire avec les champs trouvés.
+
+    Raises:
+        IOError: Si le fichier ne peut pas être lu.
     """
-    doc = Document(filepath)
+    try:
+        doc = Document(filepath)
+    except Exception as e:
+        logger.warning("Impossible de lire %s : %s", filepath, e)
+        raise IOError(f"Impossible de lire {filepath}") from e
     text = '\n'.join([p.text for p in doc.paragraphs])
     
     info = {
@@ -277,10 +264,13 @@ def find_best_match(fiche_info, editions, threshold=0.7):
             best_match = edition
             match_method = method
     
-    # Vérifier si le score dépasse le seuil
+    # Plafonner le score a 1.0
+    best_score = min(best_score, 1.0)
+
+    # Verifier si le score depasse le seuil
     if best_score >= threshold:
         return best_match, best_score, match_method
-    
+
     return None, 0, None
 
 
