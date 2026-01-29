@@ -309,6 +309,8 @@ python clean_dates.py ./input/CiSaMe/ [--dry-run] [--recursive] [--verbose]
 - Remplace `"date": ""` par `"date": null`
 - Gère les deux formats de JSON (avec et sans clé `metadata`)
 
+**⚠️ Limitation connue :** Le remplacement par `"null"` (chaîne de caractères) ne corrige pas réellement le problème côté API. Cependant, le script reste utile en mode `--dry-run` pour **identifier les fichiers JSON qui contiennent des dates vides** et les mettre de côté pour traitement manuel.
+
 **Robustesse :**
 - Try-except sur les lectures/écritures JSON
 - Gestion des fichiers JSON malformés (warning au lieu de crash)
@@ -317,7 +319,11 @@ python clean_dates.py ./input/CiSaMe/ [--dry-run] [--recursive] [--verbose]
 
 ### flatten_textes.py
 
-**Quand l'utiliser :** Si la structure des dossiers textes a des sous-dossiers inutiles
+**Quand l'utiliser :** Si la structure des dossiers textes a des sous-dossiers inutiles, ou si vous obtenez l'erreur suivante lors de l'upload :
+```
+requests.exceptions.HTTPError: [500] https://apitest.nakala.fr/datas/uploads:
+Unable to upload an empty file.
+```
 
 ```bash
 python flatten_textes.py ./input/CiSaMe/ [--dry-run]
