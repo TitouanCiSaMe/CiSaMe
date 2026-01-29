@@ -306,10 +306,8 @@ python clean_dates.py ./input/CiSaMe/ [--dry-run] [--recursive] [--verbose]
 
 **Ce que ça fait :**
 - Parcourt tous les `pages_index.json`
-- Remplace `"date": ""` par `"date": null`
+- Supprime la clé `date` lorsqu'elle est vide (`""`)
 - Gère les deux formats de JSON (avec et sans clé `metadata`)
-
-**⚠️ Limitation connue :** Le remplacement par `"null"` (chaîne de caractères) ne corrige pas réellement le problème côté API. Cependant, le script reste utile en mode `--dry-run` pour **identifier les fichiers JSON qui contiennent des dates vides** et les mettre de côté pour traitement manuel.
 
 **Robustesse :**
 - Try-except sur les lectures/écritures JSON
