@@ -64,13 +64,13 @@ def clean_empty_dates(base_path, dry_run=False, recursive=False):
             for page in data.get('pages', []):
                 # Vérifie au niveau page (format sans 'metadata')
                 if 'date' in page and page['date'] == '':
-                    page['date'] = "null"
+                    del page['date']
                     modified = True
 
                 # Vérifie au niveau metadata (format avec 'metadata')
                 if 'metadata' in page and 'date' in page['metadata']:
                     if page['metadata']['date'] == '':
-                        page['metadata']['date'] = "null"
+                        del page['metadata']['date']
                         modified = True
 
             if modified:
