@@ -61,16 +61,10 @@ Ce dossier contient tous les scripts nécessaires pour :
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         SORTIES                                     │
 ├─────────────────────────────────────────────────────────────────────┤
-<<<<<<< claude/nakala-text-file-creation-y2wsQ
-│  Nakala : Corpus publics avec DOI                                    │
-│  Seafile : Corpus privés (droits restreints)                         │
-│  NoSketch-Engine : Verticaux enrichis avec URLs (MODULE 7)           │
-│  Corpus fusionné : Fichier unique pour NoSketch-Engine (si -o)       │
-=======
 │  Nakala : Corpus publics avec DOI                                   │
 │  Seafile : Corpus privés (droits restreints)                        │
 │  NoSketch-Engine : Verticaux enrichis avec URLs (MODULE 7)          │
->>>>>>> main
+│  Corpus fusionné : Fichier unique pour NoSketch-Engine (si -o)      │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
