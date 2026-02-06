@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <item eid="item">
+    <metadata pid="identifier" aid="doi">10.34847/nkl.abc123</metadata>
+    <metadata pid="title">Brachylogus</metadata>
+    <metadata pid="file">{vertical_path_1}</metadata>
+    <metadata pid="file">page_0001_brachylogus.txt</metadata>
+    <metadata pid="file">page_0002_brachylogus.txt</metadata>
+    <metadata pid="file">fiche.pdf</metadata>
+  </item>
+  <item eid="item">
+    <metadata pid="identifier" aid="doi">10.34847/nkl.def456</metadata>
+    <metadata pid="title">Summa Codicis</metadata>
+    <metadata pid="file">{vertical_path_2}</metadata>
+    <metadata pid="file">page_0001_summa.txt</metadata>
+    <metadata pid="file">fiche.pdf</metadata>
+  </item>
+</root>
