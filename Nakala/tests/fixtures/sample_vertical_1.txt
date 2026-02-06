@@ -1,0 +1,14 @@
+<doc edition_id="Edi-101" source="Brachylogus" page_number="1">
+<s>
+Dominus	NOM	dominus
+dicit	VER	dico
+.	PUNCT	.
+</s>
+</doc>
+<doc edition_id="Edi-101" source="Brachylogus" page_number="2">
+<s>
+Lex	NOM	lex
+est	VER	sum
+.	PUNCT	.
+</s>
+</doc>

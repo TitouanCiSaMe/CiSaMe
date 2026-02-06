@@ -1,0 +1,7 @@
+<doc edition_id="Edi-7" source="Summa Codicis" page_number="1">
+<s>
+Iustitia	NOM	iustitia
+est	VER	sum
+.	PUNCT	.
+</s>
+</doc>

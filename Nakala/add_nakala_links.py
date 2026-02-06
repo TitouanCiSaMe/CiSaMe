@@ -10,13 +10,18 @@ Ajoute deux attributs dans les balises <doc> :
 - link : lien vers la page sur Nakala (icône image)
 - fiche : lien vers la fiche.docx sur Nakala (icône audio)
 
+Optionnellement, fusionne tous les fichiers verticaux modifiés en un seul
+fichier texte (option --output), utile pour créer un corpus unique pour
+NoSketch-Engine.
+
 Usage:
-    ./add_nakala_links.py cisame.xml [--test] [--dry-run]
+    ./add_nakala_links.py cisame.xml [--test] [--dry-run] [--output corpus.txt]
 
 Options:
-    cisame.xml  Fichier XML généré par heimdall après l'upload
-    --test      Utilise l'API de test (apitest.nakala.fr) au lieu de la prod
-    --dry-run   Affiche les modifications sans écrire les fichiers
+    cisame.xml      Fichier XML généré par heimdall après l'upload
+    --test          Utilise l'API de test (apitest.nakala.fr) au lieu de la prod
+    --dry-run       Affiche les modifications sans écrire les fichiers
+    --output / -o   Fichier de sortie fusionnant tous les verticaux modifiés
 
 Variables d'environnement:
     NAKALA_API_KEY  Clé API Nakala (obligatoire)
@@ -413,11 +418,12 @@ def process_vertical_files(items, page_mapping, fiche_mapping, dry_run=False):
         dry_run: Si True, n'écrit pas les modifications.
 
     Returns:
-        Dict avec les statistiques de traitement.
+        Dict avec les statistiques de traitement et la liste des fichiers modifiés.
     """
     total_modified = 0
     files_processed = 0
     files_skipped = 0
+    modified_files = []
 
     for item in items:
         vertical_path = item.get('vertical_path')
@@ -445,14 +451,81 @@ def process_vertical_files(items, page_mapping, fiche_mapping, dry_run=False):
         total_modified += modified
         files_processed += 1
 
+        if modified > 0:
+            modified_files.append(vertical_path)
+
     return {
         'total_modified': total_modified,
         'files_processed': files_processed,
         'files_skipped': files_skipped,
+        'modified_files': modified_files,
     }
 
 
-def print_summary(items_count, vertical_count, api_stats, file_stats, dry_run=False):
+def create_merged_vertical(modified_files, output_path, dry_run=False):
+    """Fusionne les fichiers verticaux modifiés en un seul fichier texte.
+
+    Les fichiers sont triés par nom de fichier avant concaténation,
+    pour garantir un ordre reproductible.
+
+    Args:
+        modified_files: Liste des chemins vers les fichiers verticaux modifiés.
+        output_path: Chemin du fichier de sortie fusionné.
+        dry_run: Si True, n'écrit pas le fichier.
+
+    Returns:
+        Dict avec les statistiques de fusion (files_merged, total_size)
+        ou None si aucun fichier à fusionner.
+    """
+    if not modified_files:
+        logger.info("Aucun fichier vertical modifié à fusionner.")
+        return None
+
+    sorted_files = sorted(modified_files, key=lambda p: os.path.basename(p))
+
+    if dry_run:
+        logger.info(
+            "[DRY-RUN] Fusion de %d fichiers vers %s",
+            len(sorted_files), output_path
+        )
+        return {
+            'files_merged': len(sorted_files),
+            'total_size': 0,
+        }
+
+    total_size = 0
+    try:
+        with open(output_path, 'w', encoding='utf-8') as out:
+            for filepath in sorted_files:
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                        out.write(content)
+                        total_size += len(content)
+                        # Assurer un saut de ligne entre les fichiers
+                        if content and not content.endswith('\n'):
+                            out.write('\n')
+                except (IOError, OSError) as e:
+                    logger.error("Erreur de lecture lors de la fusion : %s : %s", filepath, e)
+                except UnicodeDecodeError as e:
+                    logger.error("Erreur d'encodage lors de la fusion : %s : %s", filepath, e)
+
+        logger.info(
+            "Fichier fusionné créé : %s (%d fichiers, %d caractères)",
+            output_path, len(sorted_files), total_size
+        )
+    except (IOError, OSError) as e:
+        logger.error("Impossible de créer le fichier fusionné %s : %s", output_path, e)
+        return None
+
+    return {
+        'files_merged': len(sorted_files),
+        'total_size': total_size,
+    }
+
+
+def print_summary(items_count, vertical_count, api_stats, file_stats,
+                   merge_stats=None, dry_run=False):
     """Affiche un rapport de synthèse en fin d'exécution."""
     sep = '=' * 60
     logger.info("")
@@ -468,6 +541,9 @@ def print_summary(items_count, vertical_count, api_stats, file_stats, dry_run=Fa
     logger.info("Fichiers traités            : %d", file_stats.get('files_processed', 0))
     logger.info("Fichiers ignorés            : %d", file_stats.get('files_skipped', 0))
     logger.info("Balises <doc> enrichies     : %d", file_stats.get('total_modified', 0))
+    if merge_stats:
+        logger.info("Fichiers fusionnés          : %d", merge_stats.get('files_merged', 0))
+        logger.info("Taille fichier fusionné     : %d car.", merge_stats.get('total_size', 0))
     if dry_run:
         logger.info("Mode                        : DRY-RUN (aucune écriture)")
     logger.info(sep)
@@ -488,6 +564,10 @@ def main():
     parser.add_argument(
         '--dry-run', action='store_true',
         help='Afficher sans modifier'
+    )
+    parser.add_argument(
+        '--output', '-o', type=str, default=None,
+        help='Fichier de sortie fusionnant tous les verticaux modifiés'
     )
     parser.add_argument(
         '--verbose', '-v', action='store_true',
@@ -515,10 +595,15 @@ def main():
     # Configuration
     api_url, nakala_url = get_api_urls(args.test)
 
+    has_merge_step = args.output is not None
+    total_steps = 4 if has_merge_step else 3
+
     logger.info("Enrichissement des fichiers vertical avec liens Nakala")
     logger.info("Fichier XML : %s", args.xml_file)
     logger.info("API : %s", api_url)
     logger.info("URLs Nakala : %s", nakala_url)
+    if has_merge_step:
+        logger.info("Fichier fusionné : %s", args.output)
     if args.dry_run:
         logger.info("Mode DRY-RUN : aucune modification ne sera écrite")
 
@@ -526,7 +611,7 @@ def main():
     session = create_http_session(api_key)
 
     # Étape 1: Parser le XML
-    logger.info("Etape 1/3 : Lecture du fichier XML...")
+    logger.info("Etape 1/%d : Lecture du fichier XML...", total_steps)
     items = parse_hera_xml(args.xml_file)
 
     if not items:
@@ -537,7 +622,7 @@ def main():
     logger.info("%d fichiers vertical.txt trouvés dans le XML", vertical_count)
 
     # Étape 2: Construire le mapping avec les hash de l'API
-    logger.info("Etape 2/3 : Construction du mapping...")
+    logger.info("Etape 2/%d : Construction du mapping...", total_steps)
     page_mapping, fiche_mapping, api_stats = build_page_url_mapping(
         items, session, api_url, nakala_url
     )
@@ -547,13 +632,25 @@ def main():
         sys.exit(1)
 
     # Étape 3: Modifier les fichiers vertical
-    logger.info("Etape 3/3 : Traitement des fichiers vertical.txt...")
+    logger.info("Etape 3/%d : Traitement des fichiers vertical.txt...", total_steps)
     file_stats = process_vertical_files(
         items, page_mapping, fiche_mapping, args.dry_run
     )
 
+    # Étape 4 (optionnelle): Fusionner les verticaux modifiés
+    merge_stats = None
+    if has_merge_step:
+        logger.info("Etape 4/%d : Fusion des fichiers verticaux modifiés...", total_steps)
+        modified_files = file_stats.get('modified_files', [])
+        merge_stats = create_merged_vertical(
+            modified_files, args.output, args.dry_run
+        )
+
     # Rapport de synthèse
-    print_summary(len(items), vertical_count, api_stats, file_stats, args.dry_run)
+    print_summary(
+        len(items), vertical_count, api_stats, file_stats,
+        merge_stats, args.dry_run
+    )
 
 
 if __name__ == '__main__':

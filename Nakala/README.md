@@ -54,15 +54,23 @@ Ce dossier contient tous les scripts nécessaires pour :
 │  ÉTAPE 4 : ENRICHISSEMENT URLs                                      │
 │  $ python add_nakala_links.py cisame.xml                            │
 │  → Ajoute link="" et fiche="" dans les <doc> des verticaux          │
+│  → Option -o : fusionne les verticaux modifiés en un fichier unique │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         SORTIES                                     │
 ├─────────────────────────────────────────────────────────────────────┤
+<<<<<<< claude/nakala-text-file-creation-y2wsQ
+│  Nakala : Corpus publics avec DOI                                    │
+│  Seafile : Corpus privés (droits restreints)                         │
+│  NoSketch-Engine : Verticaux enrichis avec URLs (MODULE 7)           │
+│  Corpus fusionné : Fichier unique pour NoSketch-Engine (si -o)       │
+=======
 │  Nakala : Corpus publics avec DOI                                   │
 │  Seafile : Corpus privés (droits restreints)                        │
 │  NoSketch-Engine : Verticaux enrichis avec URLs (MODULE 7)          │
+>>>>>>> main
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -77,7 +85,7 @@ Ce dossier contient tous les scripts nécessaires pour :
 | **validate_export.py** | Valide la cohérence des données | `python validate_export.py -f fiches/ -v verticaux/ -t textes/` |
 | **prepare_nakala_export.py** | Prépare la structure pour Heimdall | `python prepare_nakala_export.py -f fiches/ -v verticaux/ -t textes/ -o output/` |
 | **upload_nakala.py** | Upload sur Nakala via Heimdall | `python upload_nakala.py` |
-| **add_nakala_links.py** | Enrichit les verticaux avec URLs | `NAKALA_API_KEY=... python add_nakala_links.py cisame.xml` |
+| **add_nakala_links.py** | Enrichit les verticaux avec URLs + fusion optionnelle | `NAKALA_API_KEY=... python add_nakala_links.py cisame.xml [-o corpus.txt]` |
 
 ### Scripts utilitaires (usage ponctuel)
 
@@ -229,12 +237,13 @@ pip install defusedxml
 ```
 
 ```bash
-python add_nakala_links.py cisame.xml [--test] [--dry-run] [--verbose]
+python add_nakala_links.py cisame.xml [--test] [--dry-run] [--output corpus.txt] [--verbose]
 ```
 
 **Options :**
 - `--test` : Utilise l'API de test Nakala
 - `--dry-run` : Simule sans modifier les fichiers
+- `--output` / `-o` : Crée un fichier fusionnant tous les verticaux modifiés (utile pour NoSketch-Engine)
 - `--verbose` / `-v` : Active les logs de debug
 
 **Sécurité et robustesse :**
@@ -248,7 +257,10 @@ python add_nakala_links.py cisame.xml [--test] [--dry-run] [--verbose]
 1. Parse `cisame.xml` pour extraire les DOI
 2. Récupère les hash SHA1 des fichiers via l'API Nakala (avec retry automatique)
 3. Construit les URLs pour chaque page
-4. Modifie les balises `<doc>` dans les verticaux :
+4. Modifie les balises `<doc>` dans les verticaux
+5. *(si `--output`)* Fusionne tous les verticaux modifiés en un fichier unique, trié par nom de fichier
+
+**Modification des balises `<doc>` :**
 
 **Avant :**
 ```xml
@@ -447,10 +459,10 @@ pip install python-docx requests tqdm heimdall defusedxml
 ☐ 6. Configurer upload_nakala.py (API_KEY, GROUP_KEY, private, test)
 ☐ 7. Lancer l'upload sur Libre_de_droits/
 ☐ 8. Vérifier les DOI attribués
-☐ 9. Lancer add_nakala_links.py pour enrichir les verticaux
+☐ 9. Lancer add_nakala_links.py pour enrichir les verticaux (avec -o pour le corpus fusionné)
 ☐ 10. Copier Non_libre_de_droits/ vers Seafile
 ```
 
 ---
 
-*Dernière mise à jour : Janvier 2026*
+*Dernière mise à jour : Février 2026*
