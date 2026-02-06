@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 """
 Script de fusion de fichiers texte pour NoSketch-Engine
-Fusionne tous les fichiers d'un dossier en un seul fichier
+
+Fusionne tous les fichiers verticaux d'un dossier en un seul fichier corpus,
+prêt à être compilé par NoSketch-Engine (Manatee/Bonito).
+
+Algorithme :
+    1. Liste les fichiers du dossier correspondant à l'extension cible
+    2. Trie les fichiers par ordre alphabétique de nom
+    3. Concatène séquentiellement leur contenu dans un fichier unique
+    4. Insère un séparateur optionnel entre chaque fichier
+
+Les balises <doc> et <s> du format vertical sont préservées telles quelles.
 """
 import os
 import argparse

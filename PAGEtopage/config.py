@@ -12,7 +12,23 @@ import yaml
 
 @dataclass
 class CorpusMetadata:
-    """Métadonnées du corpus à inclure dans chaque <doc>"""
+    """
+    Métadonnées du corpus à inclure dans chaque balise <doc> du format vertical
+
+    Ces métadonnées sont injectées comme attributs XML dans les balises <doc>
+    et alimentées depuis le fichier config.yaml ou la base Heurist.
+
+    Attributs:
+        edition_id: Identifiant unique de l'édition (ex: "Edi-7")
+        title: Titre de l'oeuvre (ex: "Summa 'Induent sancti'")
+        language: Langue du texte (ex: "Latin", "Français")
+        author: Auteur ou "Anonyme"
+        source: Manuscrit source (ex: "Paris BnF MS lat. 3909")
+        type: Type juridique (ex: "Droit canonique", "Droit romain")
+        date: Date estimée de rédaction (ex: "1194")
+        lieu: Lieu de rédaction (ex: "France")
+        ville: Ville de conservation du manuscrit (ex: "Paris")
+    """
     edition_id: str = ""
     title: str = ""
     language: str = "Latin"
@@ -50,14 +66,35 @@ class CorpusMetadata:
 
 @dataclass
 class PaginationConfig:
-    """Configuration de la pagination"""
+    """
+    Configuration de la pagination
+
+    Attributs:
+        starting_page_number: Numéro de la première page (défaut: 1)
+        page_number_source: Source du numéro de page - "filename" pour extraction
+            depuis le nom de fichier XML, "zone" pour extraction depuis la
+            NumberingZone du XML PAGE
+    """
     starting_page_number: int = 1
     page_number_source: str = "filename"  # "filename" ou "zone"
 
 
 @dataclass
 class ExtractionConfig:
-    """Configuration de l'étape 1 : Extraction XML"""
+    """
+    Configuration de l'étape 1 : Extraction XML PAGE
+
+    Attributs:
+        column_mode: Mode de colonnes - "single" pour pages à une colonne,
+            "dual" pour pages à deux colonnes (les colonnes sont concaténées
+            dans l'ordre colonne 1 puis colonne 2)
+        merge_hyphenated: Si True, fusionne les mots coupés par un tiret en fin
+            de ligne (tirets reconnus : -, ⸗, ¬, =)
+        main_zone_type: Type de zone pour le texte principal dans le XML PAGE
+        running_title_zone_type: Type de zone pour le titre courant
+        numbering_zone_type: Type de zone pour le numéro de page
+        default_running_title: Titre courant par défaut si aucune zone trouvée
+    """
     column_mode: str = "single"  # "single" ou "dual"
     merge_hyphenated: bool = True
     main_zone_type: str = "MainZone"
@@ -68,7 +105,19 @@ class ExtractionConfig:
 
 @dataclass
 class EnrichmentConfig:
-    """Configuration de l'étape 2 : Enrichissement"""
+    """
+    Configuration de l'étape 2 : Enrichissement linguistique
+
+    Attributs:
+        lemmatizer: Backend de lemmatisation - "treetagger" (recommandé, ~1 min
+            pour 350 pages), "cltk" (précis mais lent, ~1h+), ou "simple"
+            (fallback sans dépendance, retourne le mot en minuscules)
+        language: Code langue pour le lemmatiseur (ex: "lat" pour latin)
+        sentence_delimiters: Liste des caractères de fin de phrase pour la
+            segmentation (défaut: [".", "?", "!"])
+        treetagger_path: Chemin vers l'installation TreeTagger. Si None,
+            TreeTagger est auto-détecté ou installé automatiquement
+    """
     lemmatizer: str = "treetagger"  # "treetagger" (recommandé), "cltk" (lent), ou "simple"
     language: str = "lat"  # Code langue
     sentence_delimiters: List[str] = field(default_factory=lambda: [".", "?", "!"])
@@ -77,7 +126,18 @@ class EnrichmentConfig:
 
 @dataclass
 class ExportConfig:
-    """Configuration de l'étape 3 : Export"""
+    """
+    Configuration de l'étape 3 : Export vers fichiers texte
+
+    Attributs:
+        format: Format de sortie - "clean" (texte brut), "diplomatic" (avec
+            POS inline), "annotated" (tabulaire word/POS/lemma), "scholarly"
+            (en-tête détaillé + texte continu)
+        generate_index: Si True, génère pages_index.json (compatible Heimdall/Nakala)
+        generate_combined: Si True, génère texte_complet.txt combinant toutes les pages
+        page_filename_pattern: Pattern de nommage des fichiers de sortie.
+            Placeholders : {number} (numéro de page), {folio} (nom du fichier XML)
+    """
     format: str = "clean"  # "clean", "diplomatic", "annotated"
     generate_index: bool = True
     generate_combined: bool = True
@@ -86,7 +146,14 @@ class ExportConfig:
 
 @dataclass
 class Config:
-    """Configuration complète du pipeline"""
+    """
+    Configuration complète du pipeline PAGEtopage
+
+    Regroupe les 5 sections de configuration correspondant aux étapes du pipeline :
+    corpus (métadonnées), pagination, extraction (étape 1), enrichissement (étape 2)
+    et export (étape 3). Peut être chargée depuis un fichier YAML ou construite
+    programmatiquement.
+    """
     corpus: CorpusMetadata = field(default_factory=CorpusMetadata)
     pagination: PaginationConfig = field(default_factory=PaginationConfig)
     extraction: ExtractionConfig = field(default_factory=ExtractionConfig)

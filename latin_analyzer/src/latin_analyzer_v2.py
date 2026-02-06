@@ -51,7 +51,35 @@ PATTERNS = {
 
 
 class LatinAnalyzer:
-    """Analyseur de textes latins avec détection intelligente des erreurs."""
+    """
+    Analyseur de textes latins médiévaux avec scoring multi-critères
+
+    Utilise deux sources lexicales complémentaires pour valider chaque mot :
+    - PyCollatinus : ~500 000 formes de latin classique (analyse morphologique)
+    - Dictionnaire Du Cange : ~99 000 entrées de latin médiéval
+
+    Algorithme de scoring (0-100 points, base = 50) :
+        - Critère 1 : Reconnu par PyCollatinus (latin classique) → +30 pts
+        - Critère 2 : Présent dans le dictionnaire Du Cange (médiéval) → +40 pts
+        - Critère 3 : Suffixe médiéval productif (-arius, -atio, -torium...) → +10 pts
+        - Critère 4 : Contexte ecclésiastique (mots voisins reconnus) → +5 pts
+        - Critère 5 : Variante orthographique médiévale (ae↔e, ti↔ci) → +10 pts
+
+    Seuils de colorisation :
+        - Score >= 75 → Noir (mot validé)
+        - Score 40-74 → Orange (à vérifier)
+        - Score < 40  → Rouge (erreur probable)
+
+    Pré-traitements appliqués :
+        - Normalisation u/v et i/j (variantes médiévales)
+        - Filtrage des chiffres romains avec point (xuiii., uii., etc.)
+        - Fusion des mots coupés par tiret en fin de ligne
+
+    Usage:
+        analyzer = LatinAnalyzer(ducange_dict_file="dictionnaire_ducange.txt")
+        results = analyzer.analyze_text_file("mon_texte.txt")
+        analyzer.generate_docx("resultat.docx", results)
+    """
 
     def __init__(self, ducange_dict_file=None):
         """
