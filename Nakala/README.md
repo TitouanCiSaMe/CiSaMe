@@ -18,19 +18,19 @@ Ce dossier contient tous les scripts nécessaires pour :
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                        ENTRÉES                                       │
+│                        ENTRÉES                                      │
 ├─────────────────────────────────────────────────────────────────────┤
-│  Fiches_Editions_Metadonnee/     ← Fiches .docx avec Edi-XX          │
-│  Verticaux/                       ← Fichiers .vertical.txt           │
-│  Textes/                          ← Dossiers avec pages_index.json   │
-│       └── (générés par PAGEtopage MODULE 6)                          │
+│  Fiches_Editions_Metadonnee/     ← Fiches .docx avec Edi-XX         │
+│  Verticaux/                       ← Fichiers .txt                   │
+│  Textes/                          ← Dossiers avec pages_index.json  │
+│       └── (générés par PAGEtopage MODULE 6)                         │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  ÉTAPE 1 : VALIDATION (optionnel mais recommandé)                   │
 │  $ python validate_export.py --fiches ... --verticaux ... --textes  │
-│  → Génère rapport de cohérence                                       │
+│  → Génère rapport de cohérence                                      │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
@@ -38,31 +38,31 @@ Ce dossier contient tous les scripts nécessaires pour :
 │  ÉTAPE 2 : PRÉPARATION STRUCTURE                                    │
 │  $ python prepare_nakala_export.py --fiches ... --verticaux ...     │
 │  → Crée input/CiSaMe/Libre_de_droits/ et Non_libre_de_droits/       │
-│  → Convertit fiches .docx → .pdf                                     │
+│  → Convertit fiches .docx → .pdf                                    │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  ÉTAPE 3 : UPLOAD NAKALA (via Heimdall)                             │
 │  $ python upload_nakala.py   (sur chaque dossier séparément)        │
-│  → Upload sur Nakala API                                             │
-│  → Génère cisame.xml                                                 │
+│  → Upload sur Nakala API                                            │
+│  → Génère cisame.xml                                                │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│  ÉTAPE 4 : ENRICHISSEMENT URLs                                       │
+│  ÉTAPE 4 : ENRICHISSEMENT URLs                                      │
 │  $ python add_nakala_links.py cisame.xml                            │
 │  → Ajoute link="" et fiche="" dans les <doc> des verticaux          │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                         SORTIES                                      │
+│                         SORTIES                                     │
 ├─────────────────────────────────────────────────────────────────────┤
-│  Nakala : Corpus publics avec DOI                                    │
-│  Seafile : Corpus privés (droits restreints)                         │
-│  NoSketch-Engine : Verticaux enrichis avec URLs (MODULE 7)           │
+│  Nakala : Corpus publics avec DOI                                   │
+│  Seafile : Corpus privés (droits restreints)                        │
+│  NoSketch-Engine : Verticaux enrichis avec URLs (MODULE 7)          │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
