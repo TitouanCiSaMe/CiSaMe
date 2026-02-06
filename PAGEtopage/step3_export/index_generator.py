@@ -19,8 +19,36 @@ class IndexGenerator:
     """
     Génère les fichiers d'index et métadonnées
 
-    Produit:
-    - pages_index.json : Index de toutes les pages
+    Produit :
+    - pages_index.json : Index de toutes les pages, compatible Heimdall/Nakala
+
+    Structure du JSON généré (pages_index.json) :
+        {
+            "generated_at": "2025-01-15T10:30:00",
+            "total_pages": 350,
+            "pages": [
+                {
+                    "folio": "0042.xml",
+                    "page_number": 42,
+                    "running_title": "DISTINCTIO OCTOGESIMA",
+                    "is_empty": false,
+                    "sentence_count": 5,
+                    "token_count": 120,
+                    "output_file": "page_0042_0042.txt",
+                    "edition_id": "Edi-7",
+                    "title": "Summa ...",
+                    "metadata": {
+                        "source": "...",
+                        "author": "...",
+                        "type": "Droit canonique",
+                        "date": "1194",
+                        "edition_id": "Edi-7"
+                    }
+                }
+            ]
+        }
+
+    Le champ "metadata" est requis par Heimdall pour l'upload vers Nakala.
     """
 
     def __init__(self, output_folder: Path):
