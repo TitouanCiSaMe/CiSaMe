@@ -85,8 +85,14 @@ Ce module gère la **diffusion finale** des données textuelles enrichies vers :
 |--------|------|--------|--------|
 | `validate_export.py` | Valide la cohérence des données | Fiches + Verticaux + Textes | Rapport de validation |
 | `prepare_nakala_export.py` | Crée la structure d'export | Fiches + Verticaux + Textes | Structure Libre/Non_libre |
-| `upload_nakala.py` | Upload via Heimdall | Structure préparée | DOI + cisame.xml |
+| `upload_nakala.py` | Upload via Heimdall (script externe, repo nakala-uploader) | Structure préparée | DOI + cisame.xml |
 | `add_nakala_links.py` | Enrichit les verticaux | cisame.xml | Verticaux avec URLs |
+
+### Module partagé
+
+| Module | Rôle |
+|--------|------|
+| `nakala_utils.py` | Fonctions communes (normalisation, extraction, tri Edi-XX, matching) |
 
 ### Scripts utilitaires
 
@@ -94,7 +100,8 @@ Ce module gère la **diffusion finale** des données textuelles enrichies vers :
 |--------|------|------------------|
 | `convert_fiches_to_pdf.py` | Convertit .docx → .pdf | Si conversion séparée nécessaire |
 | `clean_dates.py` | Nettoie dates vides | Si API refuse les dates "" |
-| `flatten_textes.py` | Aplatit sous-dossiers | Si structure incorrecte |
+| `flatten_textes.py` | Supprime fichiers vides + aplatit sous-dossiers (avec `--flatten`) | Si fichiers vides ou structure incorrecte |
+| `collect_verticals.sh` | Collecte les vertical.txt | Pour rassembler les verticaux dispersés |
 | `match_fiches_editions.py` | Matching fiches ↔ CSV | Si fiches sans Edi-XX (rare) |
 
 ---
@@ -187,7 +194,8 @@ python add_nakala_links.py output/cisame.xml
 | `source` (pages_index.json) | `dc:title` |
 | `author` | `nakala:creator` |
 | `type` | `dc:references` |
-| `date` | `nakala:created` |
+| `date` | `nakala:created` + `dc:date` |
+| - | `dc:type` = "text" |
 | - | `dc:license` = "etalab-2.0" |
 | - | `dc:publisher` = "Université de Strasbourg" |
 
@@ -249,13 +257,15 @@ dans les fiches .docx
 ## ⚠️ Dépendances
 
 ```bash
-pip install python-docx requests tqdm heimdall
+pip install python-docx requests tqdm heimdall defusedxml
 ```
 
 - **python-docx** : Lecture fiches .docx
 - **requests** : API Nakala
+- **tqdm** : Barres de progression
 - **heimdall** : Upload Nakala
-- **LibreOffice** : Conversion PDF
+- **defusedxml** : Parsing XML sécurisé (recommandé pour add_nakala_links.py)
+- **LibreOffice** : Conversion PDF (`soffice`)
 
 ---
 
@@ -267,16 +277,23 @@ Tous les scripts sont dans le dossier `/Nakala/` à la racine du projet :
 CiSaMe/
 ├── Nakala/
 │   ├── README.md                    ← Documentation complète
+│   ├── nakala_utils.py              ← Module partagé (fonctions communes)
 │   ├── validate_export.py           ← Validation
 │   ├── prepare_nakala_export.py     ← Préparation
-│   ├── upload_nakala.py             ← Upload Heimdall
 │   ├── add_nakala_links.py          ← Enrichissement URLs
 │   ├── convert_fiches_to_pdf.py     ← Conversion PDF
 │   ├── clean_dates.py               ← Nettoyage dates
-│   └── flatten_textes.py            ← Aplatissement dossiers
+│   ├── flatten_textes.py            ← Fichiers vides + aplatissement
+│   ├── collect_verticals.sh         ← Collecte des verticaux
+│   ├── match_fiches_editions.py     ← Matching fiches (obsolète)
+│   ├── export_nakala_par_edition.py ← Ancien export (remplacé)
+│   ├── export_nakala_par_oeuvre.py  ← Ancien export (remplacé)
+│   └── tests/                       ← Tests unitaires + fixtures
 └── Modules_projet/
     └── Module_8_Diffusion_Donnees/  ← Cette documentation
 ```
+
+> **Note** : Le script `upload_nakala.py` (Étape 3) fait partie du dépôt externe `nakala-uploader`.
 
 ---
 
@@ -311,4 +328,4 @@ CiSaMe/
 
 ---
 
-*Dernière mise à jour : Janvier 2025*
+*Dernière mise à jour : Février 2026*
