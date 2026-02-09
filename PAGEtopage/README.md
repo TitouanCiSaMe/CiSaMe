@@ -174,7 +174,7 @@ python -m PAGEtopage run --input ./xml_pages/ --output ./output/ --config config
 **Résultat :** Le dossier `output/` contiendra :
 ```
 output/
-├── corpus.vertical.txt     ← Corpus annoté complet
+├── corpus vertical.txt     ← Corpus annoté complet
 ├── pages/                  ← Un fichier texte par page
 │   ├── page_0001_0001.txt
 │   ├── page_0002_0002.txt
@@ -204,7 +204,7 @@ Cette commande :
 #### Étape 2 : Enrichissement (lemmatisation)
 
 ```bash
-python -m PAGEtopage enrich --input ./extracted.json --output ./corpus.vertical.txt
+python -m PAGEtopage enrich --input ./extracted.json --output ./corpus vertical.txt
 ```
 
 Cette commande :
@@ -219,7 +219,7 @@ Cette commande :
 
 ```bash
 # Depuis un fichier vertical unique
-python -m PAGEtopage export --input ./corpus.vertical.txt --output ./pages/ --format scholarly
+python -m PAGEtopage export --input ./corpus vertical.txt --output ./pages/ --format scholarly
 
 # Ou depuis un dossier contenant plusieurs fichiers verticaux
 python -m PAGEtopage export --input ./dossier_vertical/ --output ./pages/ --format scholarly
@@ -366,7 +366,7 @@ Pour changer de format, modifiez `export: format:` dans `config.yaml` ou utilise
 
 ```bash
 # Fichier unique
-python -m PAGEtopage export --input ./corpus.vertical.txt --output ./pages/ --format scholarly
+python -m PAGEtopage export --input ./corpus vertical.txt --output ./pages/ --format scholarly
 
 # Dossier (exporte tous les *.vertical.txt)
 python -m PAGEtopage export --input ./dossier/ --output ./pages/ --format scholarly
@@ -530,10 +530,10 @@ extraction:
 python -m PAGEtopage run --input ./xml_pages/ --output ./output/ --config config.yaml
 
 # Puis exportez dans chaque format
-python -m PAGEtopage export --input ./output/corpus.vertical.txt --output ./format_scholarly/ --format scholarly
-python -m PAGEtopage export --input ./output/corpus.vertical.txt --output ./format_clean/ --format clean
-python -m PAGEtopage export --input ./output/corpus.vertical.txt --output ./format_diplo/ --format diplomatic
-python -m PAGEtopage export --input ./output/corpus.vertical.txt --output ./format_annot/ --format annotated
+python -m PAGEtopage export --input ./output/corpus vertical.txt --output ./format_scholarly/ --format scholarly
+python -m PAGEtopage export --input ./output/corpus vertical.txt --output ./format_clean/ --format clean
+python -m PAGEtopage export --input ./output/corpus vertical.txt --output ./format_diplo/ --format diplomatic
+python -m PAGEtopage export --input ./output/corpus vertical.txt --output ./format_annot/ --format annotated
 ```
 
 ### Exemple 4 : Corriger des coquilles et regénérer le vertical
