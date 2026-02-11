@@ -4,7 +4,7 @@
 
 **PAGEtopage** est un outil qui transforme vos fichiers XML (issus de la transcription automatique HTR/OCR, par exemple avec Transkribus ou eScriptorium) en fichiers texte exploitables, avec annotations linguistiques (lemmes, parties du discours).
 
-### Le pipeline en 3 étapes (+ correction)
+### Le pipeline en 3 étapes (+ correction + DOCX)
 
 ```
 Fichiers XML PAGE     →     Format Vertical     →     Fichiers Texte
@@ -21,7 +21,16 @@ Fichiers XML PAGE     →     Format Vertical     →     Fichiers Texte
                                   |
                            ÉTAPE 4 (optionnelle)
                            re-enrich
+
+
+  DOCX latin_analyzer   →     Format Vertical
+   (texte colorisé)          (annoté/lemmatisé)
+
+                           ÉTAPE 5 (alternative)
+                           docx-to-vertical
 ```
+
+> **Étape 5** : Si vous avez déjà validé votre texte avec `latin_analyzer` et obtenu un fichier Word colorisé, vous pouvez le convertir directement en format vertical sans repasser par les XML. Voir la section [Étape 5](#étape-5--conversion-docx-vers-vertical-latin_analyzer) ci-dessous.
 
 ---
 
@@ -245,6 +254,83 @@ Cette commande :
 - Génère un nouveau fichier vertical avec vos corrections
 
 > **Note** : Cette fonctionnalité vous permet de corriger facilement les coquilles dans des fichiers texte lisibles, puis de regénérer automatiquement les annotations linguistiques.
+
+---
+
+## Étape 5 : Conversion DOCX vers vertical (latin_analyzer)
+
+Si vous avez validé votre texte avec `latin_analyzer` (qui produit un fichier Word colorisé), vous pouvez le convertir directement en format vertical **sans repasser par les fichiers XML**.
+
+### Pourquoi utiliser cette étape ?
+
+Le workflow habituel est : `XML → vertical` (étapes 1-2).
+Mais si vous avez déjà fait une validation avec `latin_analyzer`, votre texte a été vérifié et colorisé dans un DOCX. L'étape 5 permet de récupérer ce texte validé et de le convertir en vertical, en ajoutant la lemmatisation (TreeTagger).
+
+### Prérequis
+
+Un fichier `config.yaml` est **obligatoire** pour cette étape, car le DOCX ne contient pas les métadonnées du corpus (edition_id, author, etc.). C'est le `config.yaml` qui les fournit.
+
+### Commande
+
+```bash
+# Depuis un fichier DOCX unique
+python -m PAGEtopage docx-to-vertical --input resultat.docx --output corpus.vertical.txt --config config.yaml
+
+# Depuis un dossier de fichiers DOCX
+python -m PAGEtopage docx-to-vertical --input ./dossier_docx/ --output corpus.vertical.txt --config config.yaml
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--input` / `-i` | Fichier DOCX ou dossier de DOCX (obligatoire) |
+| `--output` / `-o` | Fichier vertical de sortie (obligatoire) |
+| `--config` / `-c` | Fichier config.yaml (obligatoire) |
+| `--lemmatizer` | Lemmatiseur : `treetagger` (défaut), `cltk`, ou `simple` |
+| `--pattern` | Pattern de fichiers si dossier (défaut : `*.docx`) |
+
+### Préservation des pages
+
+Si le DOCX a été généré par `latin_analyzer` v2.4.0 à partir d'un dossier XML, il contient des en-têtes de page (`──── Folio: X | Page: Y ────`). Le convertisseur les détecte automatiquement et crée un `<doc>` séparé pour chaque page dans le vertical.
+
+### Exemple complet
+
+```bash
+# 1. Créez un config.yaml avec les métadonnées
+cat > config.yaml << 'EOF'
+corpus:
+  edition_id: "Edi-7"
+  title: "Summa Induent sancti"
+  language: "Latin"
+  author: "Anonyme"
+  date: "1194"
+  type: "Droit canonique"
+
+enrichment:
+  lemmatizer: treetagger
+  language: lat
+EOF
+
+# 2. Convertissez le DOCX en vertical
+python -m PAGEtopage docx-to-vertical -i resultat_analyse.docx -o corpus.vertical.txt -c config.yaml
+```
+
+### Utilisation en Python
+
+```python
+from PAGEtopage.config import Config
+from PAGEtopage.step5_docx import DocxConverter
+
+config = Config.from_yaml("config.yaml")
+converter = DocxConverter(config)
+
+# Depuis un fichier
+pages = converter.convert_file("resultat.docx", "corpus.vertical.txt")
+
+# Depuis un dossier
+pages = converter.convert_folder("./docx/", "corpus.vertical.txt")
+```
 
 ---
 
@@ -569,6 +655,7 @@ python -m PAGEtopage extract --help
 python -m PAGEtopage enrich --help
 python -m PAGEtopage export --help
 python -m PAGEtopage re-enrich --help
+python -m PAGEtopage docx-to-vertical --help
 ```
 
 ### Générer un fichier de configuration
