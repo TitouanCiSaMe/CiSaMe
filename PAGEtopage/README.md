@@ -300,12 +300,15 @@ Si le DOCX a été généré par `latin_analyzer` v2.4.0 à partir d'un dossier 
 # 1. Créez un config.yaml avec les métadonnées
 cat > config.yaml << 'EOF'
 corpus:
-  edition_id: "Edi-7"
-  title: "Summa Induent sancti"
-  language: "Latin"
-  author: "Anonyme"
-  date: "1194"
-  type: "Droit canonique"
+  edition_id: ""
+  title: ""
+  language: ""
+  author: ""
+  date: ""
+  source: ""
+  type: ""
+  lieu: ""
+  ville: ""
 
 enrichment:
   lemmatizer: treetagger
