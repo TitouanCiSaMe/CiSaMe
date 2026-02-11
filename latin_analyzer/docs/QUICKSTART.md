@@ -1,110 +1,84 @@
-# 🚀 Démarrage rapide
+# Demarrage rapide
 
-## Installation en 1 commande
+## Installation
 
 ```bash
+cd latin_analyzer
 bash setup.sh
 ```
 
-**Ou manuellement :**
+C'est tout. Le script installe les dependances, PyCollatinus et le dictionnaire Du Cange.
 
-```bash
-# 1. Installer les bibliothèques
-pip install python-docx lxml unidecode
-
-# 2. Cloner PyCollatinus
-cd /tmp && git clone https://github.com/PonteIneptique/collatinus-python.git
-
-# 3. Patch Python 3.11
-sed -i 's/from collections import OrderedDict, Callable/from collections import OrderedDict\nfrom collections.abc import Callable/' \
-    /tmp/collatinus-python/pycollatinus/util.py
-
-# 4. Télécharger Du Cange
-cd /home/user/Data_Base && python3 download_ducange.py
-```
+Si ca ne marche pas, voir [INSTALL.md](INSTALL.md) pour l'installation manuelle.
 
 ---
 
-## Utilisation
+## Analyser un texte
 
-### 📝 Analyser un fichier texte brut
+### Fichier texte (.txt)
 
 ```bash
 cd latin_analyzer/src
 python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx
 ```
 
+Ouvrez `resultat.docx` : les mots sont colores en noir (OK), orange (douteux) ou rouge (erreur).
+
 ---
 
-### 📄 Analyser des fichiers XML Pages (1 colonne)
+### Fichiers XML Pages (1 colonne)
 
 ```bash
-cd latin_analyzer/src
-python3 latin_analyzer_v2.py -i /path/to/xml_folder/ -o resultat.docx -m xml-single
+python3 latin_analyzer_v2.py -i /chemin/vers/dossier_xml/ -o resultat.docx -m xml-single
 ```
 
 ---
 
-### 📄 Analyser des fichiers XML Pages (2 colonnes)
+### Fichiers XML Pages (2 colonnes)
 
 ```bash
-cd latin_analyzer/src
-python3 latin_analyzer_v2.py -i /path/to/xml_folder/ -o resultat.docx -m xml-dual
+python3 latin_analyzer_v2.py -i /chemin/vers/dossier_xml/ -o resultat.docx -m xml-dual
 ```
 
 ---
 
-### 📊 Générer un rapport d'analyse des mots non reconnus
+### Avec rapport des mots non reconnus
 
 ```bash
-cd latin_analyzer/src
-python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx --report analyse_orange.txt
+python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx --report rapport.txt
 ```
+
+Le rapport liste les mots non reconnus les plus frequents et propose des pistes d'amelioration.
 
 ---
 
-## Tests
+## Verifier que tout fonctionne
 
 ```bash
-# Test PyCollatinus
+# Tester les dependances Python
+python3 -c "import docx; import lxml; print('OK')"
+
+# Tester PyCollatinus (optionnel)
+cd latin_analyzer/tests
 python3 test_pycollatinus.py
 
-# Test XML Pages
+# Tester XML Pages
 python3 test_xml_integration.py
 ```
 
 ---
 
-## Structure des fichiers
+## Aide rapide
 
-```
-requirements.txt         → Liste des dépendances
-setup.sh                 → Installation automatique
-INSTALL.md               → Guide complet
-QUICKSTART.md            → Ce guide
-README_AMELIORATIONS.md  → Documentation Phase 1
-GUIDE_XML_PAGES.md       → Documentation XML Pages
-```
+| Probleme | Solution |
+|----------|----------|
+| `No module named 'docx'` | `pip install python-docx` |
+| `No module named 'lxml'` | `pip install lxml` |
+| PyCollatinus plante | Ce n'est pas grave, il est optionnel depuis v2.4.0 |
+| Dictionnaire Du Cange manquant | `cd latin_analyzer/scripts && python3 download_ducange.py` |
 
----
-
-## Aide
-
-**Problème d'import ?**
-```bash
-pip install -r requirements.txt
-```
-
-**PyCollatinus manquant ?**
-```bash
-cd /tmp && git clone https://github.com/PonteIneptique/collatinus-python.git
-```
-
-**Dictionnaire Du Cange manquant ?**
-```bash
-python3 download_ducange.py
-```
+Pour plus de details : [INSTALL.md](INSTALL.md) ou le [README principal](../README.md).
 
 ---
 
-Pour plus de détails : **INSTALL.md**
+**Version** : 2.4.0

@@ -1,262 +1,222 @@
-# Guide d'installation - Analyseur de textes latins médiévaux
+# Guide d'installation detaille
 
-## 📋 Prérequis
-
-- **Python 3.8+** (testé sur Python 3.11)
-- **pip** (gestionnaire de packages Python)
-- **git** (pour cloner PyCollatinus)
+Ce guide explique comment installer l'analyseur pas a pas.
+Si vous etes presse, lancez simplement `bash setup.sh` (voir [QUICKSTART.md](QUICKSTART.md)).
 
 ---
 
-## 🚀 Installation rapide
+## Ce qu'il vous faut avant de commencer
 
-### 1. Installer les bibliothèques Python
+- **Python 3.8 ou plus recent** (teste sur Python 3.11)
+- **pip** (le gestionnaire de paquets Python, normalement inclus avec Python)
+- **git** (pour telecharger PyCollatinus - optionnel)
+
+Pour verifier :
+```bash
+python3 --version    # Doit afficher 3.8 ou plus
+pip --version        # Doit afficher quelque chose
+git --version        # Necessaire seulement pour PyCollatinus
+```
+
+---
+
+## Etape 1 : Installer les bibliotheques Python
+
+Depuis le dossier du projet :
 
 ```bash
-cd /home/user/Data_Base
-
-# Installer toutes les dépendances
+cd latin_analyzer
 pip install -r requirements.txt
 ```
 
-**Ou manuellement :**
-```bash
-pip install python-docx==1.2.0
-pip install lxml==6.0.2
-pip install unidecode==1.4.0
-```
+Cela installe 3 bibliotheques :
+- **python-docx** : pour generer les fichiers Word
+- **lxml** : pour lire les fichiers XML
+- **unidecode** : pour normaliser les caracteres speciaux
 
----
-
-### 2. Installer PyCollatinus (depuis GitHub)
-
-⚠️ **PyCollatinus via pip est cassé**, il faut le cloner :
-
-```bash
-cd /tmp
-git clone https://github.com/PonteIneptique/collatinus-python.git
-
-# Fix pour Python 3.11+
-sed -i 's/from collections import OrderedDict, Callable/from collections import OrderedDict\nfrom collections.abc import Callable/' \
-    /tmp/collatinus-python/pycollatinus/util.py
-```
-
-**Le code l'utilisera via** :
-```python
-sys.path.insert(0, '/tmp/collatinus-python')
-from pycollatinus import Lemmatiseur
-```
-
----
-
-### 3. Télécharger le dictionnaire Du Cange (optionnel)
-
-Si tu n'as pas encore le dictionnaire :
-
-```bash
-cd /home/user/Data_Base
-python3 download_ducange.py
-```
-
-Cela va :
-- Télécharger 24 fichiers XML (78 MB)
-- Extraire 99 917 mots de latin médiéval
-- Créer `ducange_data/dictionnaire_ducange.txt`
-
----
-
-## ✅ Vérifier l'installation
-
-### Test 1 : Bibliothèques Python
-
-```bash
-python3 -c "import docx; import lxml; import unidecode; print('✅ Toutes les libs sont OK')"
-```
-
-**Sortie attendue :**
-```
-✅ Toutes les libs sont OK
-```
-
----
-
-### Test 2 : PyCollatinus
-
-```bash
-python3 test_pycollatinus.py
-```
-
-**Sortie attendue :**
-```
-============================================================
-  TEST DE PYCOLLATINUS
-============================================================
-
-1️⃣  Import de PyCollatinus...
-✅ Import réussi
-
-2️⃣  Initialisation du lemmatiseur...
-✅ Lemmatiseur initialisé
-
-3️⃣  Test sur une phrase simple...
-✅ abbas         → reconnu (3 analyse(s))
-✅ monachus      → reconnu (2 analyse(s))
-✅ scriptorium   → reconnu (7 analyse(s))
-
-============================================================
-✅ PyCollatinus fonctionne correctement !
-============================================================
-```
-
----
-
-### Test 3 : Intégration XML Pages
-
-```bash
-python3 test_xml_integration.py
-```
-
-**Sortie attendue :**
-```
-============================================================
-  TEST D'INTÉGRATION XML PAGES
-============================================================
-
-✅ page_xml_parser importé
-✅ latin_analyzer_v2 importé
-✅ Parsing réussi
-✅ Mode dual fonctionne
-
-============================================================
-✅ TOUS LES TESTS PASSÉS !
-============================================================
-```
-
----
-
-## 🐛 Résolution de problèmes
-
-### Erreur : `No module named 'docx'`
-
+Si `pip install -r requirements.txt` ne fonctionne pas, installez-les une par une :
 ```bash
 pip install python-docx
-```
-
----
-
-### Erreur : `No module named 'unidecode'`
-
-```bash
+pip install lxml
 pip install unidecode
 ```
 
 ---
 
-### Erreur : `cannot import name 'Callable' from 'collections'`
+## Etape 2 : Installer PyCollatinus (optionnel)
 
-C'est un problème de compatibilité Python 3.11+. Appliquer le patch :
+PyCollatinus est un dictionnaire de latin classique. **Depuis la version 2.4.0, il est optionnel** :
+le programme fonctionne sans lui (avec le dictionnaire Du Cange uniquement).
 
-```bash
-sed -i 's/from collections import OrderedDict, Callable/from collections import OrderedDict\nfrom collections.abc import Callable/' \
-    /tmp/collatinus-python/pycollatinus/util.py
-```
-
----
-
-### Erreur : `prefix 'xml' not found in prefix map` (Du Cange)
-
-Le namespace XML n'est pas déclaré. Le script `download_ducange.py` gère déjà ce problème (ligne 93-96).
-
-Si tu as encore l'erreur, vérifie que tu as bien la dernière version.
-
----
-
-### PyCollatinus très lent au premier chargement
-
-**Normal !** Le premier chargement prend 10-15 secondes.
-
-Pour l'optimiser :
-```python
-lemmatizer = Lemmatiseur()
-lemmatizer.compile()  # Crée un cache pré-compilé
-```
-
----
-
-## 📦 Structure finale après installation
-
-```
-Data_Base/
-├── requirements.txt                    # Dépendances Python
-├── INSTALL.md                          # Ce guide
-│
-├── download_ducange.py                 # Téléchargeur Du Cange
-├── ducange_data/
-│   ├── xml/                           # 24 fichiers XML (78 MB)
-│   └── dictionnaire_ducange.txt       # 99 917 mots (937 KB)
-│
-├── page_xml_parser.py                  # Parser XML Pages
-├── latin_analyzer_v2.py                # Analyseur principal
-│
-├── test_pycollatinus.py                # Tests PyCollatinus
-├── test_xml_integration.py             # Tests intégration
-│
-└── /tmp/collatinus-python/             # PyCollatinus (cloné)
-    └── pycollatinus/
-```
-
----
-
-## 🌐 Environnement virtuel (recommandé)
-
-Pour isoler les dépendances :
+Si vous voulez l'installer pour une meilleure precision :
 
 ```bash
-# Créer un venv
-python3 -m venv venv_latin
-
-# Activer
-source venv_latin/bin/activate
-
-# Installer les dépendances
-pip install -r requirements.txt
-
-# Cloner PyCollatinus
+# Telecharger depuis GitHub
 cd /tmp
 git clone https://github.com/PonteIneptique/collatinus-python.git
+
+# Corriger un bug de compatibilite Python 3.10+
 sed -i 's/from collections import OrderedDict, Callable/from collections import OrderedDict\nfrom collections.abc import Callable/' \
     /tmp/collatinus-python/pycollatinus/util.py
 ```
 
-**Utilisation ensuite :**
+**Pourquoi `/tmp` ?** Le programme cherche PyCollatinus dans `/tmp/collatinus-python` par defaut.
+Ce n'est pas installe via `pip` car le paquet pip est casse.
+
+**Premier lancement lent ?** C'est normal, PyCollatinus met 10-15 secondes a charger la premiere fois.
+
+---
+
+## Etape 3 : Telecharger le dictionnaire Du Cange
+
+Le dictionnaire Du Cange contient ~100 000 mots de latin medieval. C'est le dictionnaire principal.
+
 ```bash
-source venv_latin/bin/activate
-python3 latin_analyzer_v2.py
+cd latin_analyzer/scripts
+python3 download_ducange.py
+```
+
+Cela va :
+1. Telecharger 24 fichiers XML depuis SourceForge (~78 Mo)
+2. Extraire les mots latins
+3. Creer le fichier `latin_analyzer/data/ducange_data/dictionnaire_ducange.txt`
+
+---
+
+## Verifier que tout fonctionne
+
+### Test 1 : Les bibliotheques Python
+
+```bash
+python3 -c "import docx; import lxml; import unidecode; print('Toutes les libs sont OK')"
+```
+
+Vous devez voir : `Toutes les libs sont OK`
+
+### Test 2 : PyCollatinus (si installe)
+
+```bash
+cd latin_analyzer/tests
+python3 test_pycollatinus.py
+```
+
+Si PyCollatinus n'est pas installe, ce test echouera. Ce n'est pas grave.
+
+### Test 3 : Integration XML Pages
+
+```bash
+cd latin_analyzer/tests
+python3 test_xml_integration.py
 ```
 
 ---
 
-## 📚 Versions testées
+## Resolution de problemes
 
-| Package | Version | Python |
-|---------|---------|--------|
-| python-docx | 1.2.0 | 3.11 |
-| lxml | 6.0.2 | 3.11 |
-| unidecode | 1.4.0 | 3.11 |
-| PyCollatinus | 0.1.6 (GitHub) | 3.11 |
+### "No module named 'docx'"
+
+Le paquet s'appelle `python-docx` (pas `docx`) :
+```bash
+pip install python-docx
+```
+
+### "No module named 'unidecode'"
+
+```bash
+pip install unidecode
+```
+
+### "cannot import name 'Callable' from 'collections'"
+
+Ce probleme arrive avec Python 3.10 et plus recent. Deux solutions :
+
+**Solution 1** (recommandee) : Ne rien faire. Depuis la version 2.4.0, le programme fonctionne sans PyCollatinus.
+
+**Solution 2** : Corriger le fichier source de PyCollatinus :
+```bash
+sed -i 's/from collections import OrderedDict, Callable/from collections import OrderedDict\nfrom collections.abc import Callable/' \
+    /tmp/collatinus-python/pycollatinus/util.py
+```
+
+### Le dictionnaire Du Cange n'est pas trouve
+
+Verifiez que le fichier existe :
+```bash
+ls latin_analyzer/data/ducange_data/dictionnaire_ducange.txt
+```
+
+Si non, retelecharger :
+```bash
+cd latin_analyzer/scripts
+python3 download_ducange.py
+```
+
+### "prefix 'xml' not found in prefix map"
+
+Erreur lors du telechargement Du Cange. Le script `download_ducange.py` gere ce cas.
+Verifiez que vous avez la derniere version du script.
+
+### PyCollatinus est tres lent
+
+Le premier chargement prend 10-15 secondes. C'est normal.
+Les analyses suivantes dans la meme session sont rapides.
 
 ---
 
-## 🆘 Support
+## Environnement virtuel (optionnel, pour utilisateurs avances)
 
-Si tu rencontres d'autres problèmes :
+Si vous voulez isoler les dependances :
 
-1. Vérifie la version de Python : `python3 --version` (≥ 3.8)
-2. Vérifie les installations : `pip list | grep -E "docx|lxml|unidecode"`
-3. Lance tous les tests : `python3 test_pycollatinus.py && python3 test_xml_integration.py`
+```bash
+# Creer l'environnement
+python3 -m venv venv_latin
+
+# L'activer
+source venv_latin/bin/activate
+
+# Installer les dependances
+pip install -r requirements.txt
+```
+
+A chaque session, pensez a activer l'environnement :
+```bash
+source venv_latin/bin/activate
+```
 
 ---
 
-**Auteur** : Claude
-**Date** : 24 novembre 2025
-**Version** : 2.0.0
+## Arborescence apres installation
+
+```
+latin_analyzer/
+├── src/
+│   ├── latin_analyzer_v2.py          # Le programme principal
+│   ├── page_xml_parser.py            # Lecture XML Pages
+│   └── __init__.py
+│
+├── data/
+│   └── ducange_data/
+│       └── dictionnaire_ducange.txt  # 99 917 mots (cree a l'etape 3)
+│
+├── tests/
+│   ├── test_pycollatinus.py
+│   └── test_xml_integration.py
+│
+├── scripts/
+│   └── download_ducange.py
+│
+├── docs/
+│   ├── INSTALL.md                    # Ce guide
+│   ├── QUICKSTART.md
+│   └── GUIDE_XML_PAGES.md
+│
+├── requirements.txt
+└── setup.sh
+
+/tmp/collatinus-python/               # PyCollatinus (optionnel, etape 2)
+```
+
+---
+
+**Auteur** : CiSaMe
+**Version** : 2.4.0
