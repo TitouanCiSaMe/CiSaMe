@@ -3,11 +3,14 @@ Parseur de fichiers DOCX produits par latin_analyzer
 
 Extrait le texte brut depuis les fichiers DOCX colores generes par
 latin_analyzer, en ignorant l'en-tete (titre, legende, separateur).
+
+Supporte les DOCX multi-pages avec en-tetes de page/folio
+(format: ──── Folio: X | Page: Y | Titre ────).
 """
 
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Dict
 import logging
 
 from docx import Document
@@ -29,6 +32,52 @@ HEADER_MARKERS = [
 # Separateur (ligne de underscores)
 SEPARATOR_PATTERN = re.compile(r'^[_\-=]{10,}$')
 
+# En-tete de page/folio insere par latin_analyzer v2.4+
+# Format: ──── Folio: filename | Page: N | running_title ────
+PAGE_HEADER_PATTERN = re.compile(r'^─{2,}\s+(.+?)\s+─{2,}$')
+
+# Sous-patterns pour extraire folio, page, titre depuis le contenu de l'en-tete
+_FOLIO_PATTERN = re.compile(r'Folio:\s*([^|]+)')
+_PAGE_PATTERN = re.compile(r'Page:\s*(\d+)')
+
+
+def _parse_page_header(text: str) -> Optional[dict]:
+    """
+    Parse un en-tete de page/folio et retourne les metadonnees.
+
+    Args:
+        text: Texte du paragraphe
+
+    Returns:
+        Dict {folio, page_number, running_title} ou None si pas un en-tete
+    """
+    m = PAGE_HEADER_PATTERN.match(text)
+    if not m:
+        return None
+
+    inner = m.group(1)
+    parts = [p.strip() for p in inner.split("|")]
+
+    folio = None
+    page_number = None
+    title_parts = []
+
+    for part in parts:
+        folio_m = _FOLIO_PATTERN.match(part)
+        page_m = _PAGE_PATTERN.match(part)
+        if folio_m:
+            folio = folio_m.group(1).strip()
+        elif page_m:
+            page_number = int(page_m.group(1))
+        elif part:
+            title_parts.append(part)
+
+    return {
+        "folio": folio,
+        "page_number": page_number,
+        "running_title": " ".join(title_parts) if title_parts else None,
+    }
+
 
 class DocxParser:
     """
@@ -36,6 +85,9 @@ class DocxParser:
 
     Extrait le texte en ignorant l'en-tete de validation (titre, legende,
     separateur) et cree des ExtractedPage avec les metadonnees du config.yaml.
+
+    Supporte les DOCX contenant plusieurs pages/folios (latin_analyzer v2.4+)
+    grace aux en-tetes de page inseres dans le document.
 
     Usage:
         config = Config.from_yaml("config.yaml")
@@ -54,14 +106,15 @@ class DocxParser:
         """
         Parse un fichier DOCX et retourne des ExtractedPage
 
-        Chaque fichier DOCX produit une seule ExtractedPage. Le folio
-        est derive du nom de fichier.
+        Si le DOCX contient des en-tetes de page (latin_analyzer v2.4+),
+        chaque section devient une ExtractedPage separee.
+        Sinon, le fichier entier produit une seule ExtractedPage.
 
         Args:
             file_path: Chemin vers le fichier DOCX
 
         Returns:
-            Liste contenant une ExtractedPage
+            Liste de ExtractedPage
         """
         file_path = Path(file_path)
 
@@ -71,28 +124,36 @@ class DocxParser:
         logger.info(f"Parsing du fichier DOCX: {file_path.name}")
 
         doc = Document(str(file_path))
-        lines = self._extract_text_lines(doc)
+        sections = self._extract_page_sections(doc)
 
-        if not lines:
+        if not sections:
             logger.warning(f"Aucun texte extrait de {file_path.name}")
             return []
 
-        logger.info(f"  {len(lines)} lignes de texte extraites")
+        pages = []
+        for i, section in enumerate(sections, start=1):
+            folio = section.get("folio") or file_path.stem
+            page_num = section.get("page_number") or i
+            running_title = (
+                section.get("running_title")
+                or self.config.corpus.title
+                or "No running title"
+            )
 
-        # Cree les metadonnees
-        metadata = PageMetadata(
-            folio=file_path.stem,
-            page_number=1,
-            running_title=self.config.corpus.title or "No running title",
-            corpus_metadata=self.config.corpus.to_dict(),
-        )
+            metadata = PageMetadata(
+                folio=folio,
+                page_number=page_num,
+                running_title=running_title,
+                corpus_metadata=self.config.corpus.to_dict(),
+            )
 
-        page = ExtractedPage(
-            metadata=metadata,
-            lines=lines,
-        )
+            pages.append(ExtractedPage(
+                metadata=metadata,
+                lines=section["lines"],
+            ))
 
-        return [page]
+        logger.info(f"  {len(pages)} page(s), {sum(len(s['lines']) for s in sections)} lignes")
+        return pages
 
     def parse_folder(
         self,
@@ -101,9 +162,6 @@ class DocxParser:
     ) -> List[ExtractedPage]:
         """
         Parse tous les fichiers DOCX d'un dossier
-
-        Chaque fichier DOCX produit une ExtractedPage avec un page_number
-        incremental.
 
         Args:
             folder_path: Dossier contenant les fichiers DOCX
@@ -132,12 +190,13 @@ class DocxParser:
         logger.info(f"Parsing de {len(files)} fichiers DOCX depuis {folder_path}")
 
         all_pages = []
-        for i, file_path in enumerate(files, start=1):
+        page_counter = 1
+        for file_path in files:
             try:
                 pages = self.parse_file(file_path)
-                # Met a jour le page_number
                 for page in pages:
-                    page.metadata.page_number = i
+                    page.metadata.page_number = page_counter
+                    page_counter += 1
                 all_pages.extend(pages)
             except Exception as e:
                 logger.error(f"Erreur lors du parsing de {file_path}: {e}")
@@ -145,23 +204,31 @@ class DocxParser:
         logger.info(f"Total: {len(all_pages)} pages extraites depuis {len(files)} fichiers")
         return all_pages
 
-    def _extract_text_lines(self, doc: Document) -> List[str]:
+    def _extract_page_sections(self, doc: Document) -> List[Dict]:
         """
-        Extrait les lignes de texte du document en ignorant l'en-tete
+        Extrait les sections de texte du document, en gerant les en-tetes
+        de page/folio et en ignorant l'en-tete latin_analyzer.
 
-        L'en-tete du DOCX latin_analyzer contient :
-        - Un titre ("Analyse de texte latin medieval")
-        - Une legende (Noir = ..., Orange = ..., Rouge = ...)
-        - Un separateur (ligne de underscores)
+        Chaque section est un dict avec:
+            - lines: Liste des lignes de texte
+            - folio: Nom du folio (ou None)
+            - page_number: Numero de page (ou None)
+            - running_title: Titre courant (ou None)
 
         Args:
             doc: Document python-docx
 
         Returns:
-            Liste des lignes de texte (sans l'en-tete)
+            Liste de sections (au moins une si du texte existe)
         """
-        lines = []
         header_passed = False
+        sections = []
+        current_section = {
+            "lines": [],
+            "folio": None,
+            "page_number": None,
+            "running_title": None,
+        }
 
         for paragraph in doc.paragraphs:
             text = paragraph.text.strip()
@@ -169,23 +236,40 @@ class DocxParser:
             if not text:
                 continue
 
-            # Tant que l'en-tete n'est pas passe, on cherche le separateur
+            # Phase 1: ignorer l'en-tete latin_analyzer
             if not header_passed:
                 if self._is_header_content(text):
                     continue
                 if SEPARATOR_PATTERN.match(text):
                     header_passed = True
                     continue
-                # Si on ne reconnait pas de marqueur d'en-tete et pas de
-                # separateur, c'est peut-etre un docx sans en-tete standard.
-                # On considere que le texte commence directement.
+                # Pas d'en-tete reconnu => le texte commence directement
                 header_passed = True
 
-            # Texte normal apres l'en-tete
-            if header_passed and text:
-                lines.append(text)
+            # Phase 2: detecter les en-tetes de page/folio
+            page_info = _parse_page_header(text)
+            if page_info is not None:
+                # Sauvegarder la section precedente si elle a du texte
+                if current_section["lines"]:
+                    sections.append(current_section)
 
-        return lines
+                current_section = {
+                    "lines": [],
+                    "folio": page_info["folio"],
+                    "page_number": page_info["page_number"],
+                    "running_title": page_info["running_title"],
+                }
+                continue
+
+            # Phase 3: texte normal
+            if header_passed and text:
+                current_section["lines"].append(text)
+
+        # Derniere section
+        if current_section["lines"]:
+            sections.append(current_section)
+
+        return sections
 
     @staticmethod
     def _is_header_content(text: str) -> bool:
