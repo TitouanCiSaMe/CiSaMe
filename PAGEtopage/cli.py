@@ -2,17 +2,19 @@
 Interface en ligne de commande pour PAGEtopage
 
 Fournit les commandes:
-    - extract   : XML PAGE → JSON
-    - enrich    : JSON → Format Vertical
-    - export    : Format Vertical → Texte
-    - re-enrich : Texte corrigé → Format Vertical
-    - run       : Pipeline complet
+    - extract          : XML PAGE → JSON
+    - enrich           : JSON → Format Vertical
+    - export           : Format Vertical → Texte
+    - re-enrich        : Texte corrigé → Format Vertical
+    - docx-to-vertical : DOCX (latin_analyzer) → Format Vertical
+    - run              : Pipeline complet
 
 Usage:
     python -m PAGEtopage extract --input ./xml/ --output ./extracted/
     python -m PAGEtopage enrich --input ./extracted/ --output ./vertical/
     python -m PAGEtopage export --input ./vertical/ --output ./pages/
     python -m PAGEtopage re-enrich --input ./pages_corrigees/ --output ./corpus_corrige.vertical.txt
+    python -m PAGEtopage docx-to-vertical --input resultat.docx --output corpus.vertical.txt --config config.yaml
     python -m PAGEtopage run --input ./xml/ --output ./output/ --config config.yaml
 """
 
@@ -27,6 +29,7 @@ from .step1_extract import XMLPageExtractor
 from .step2_enrich import EnrichmentProcessor
 from .step3_export import TextExporter
 from .step4_reenrich import ReEnricher
+from .step5_docx import DocxConverter
 
 # Configuration du logging
 logging.basicConfig(
@@ -211,6 +214,38 @@ Exemples:
         choices=["treetagger", "cltk", "simple"],
         default="treetagger",
         help="Lemmatiseur à utiliser"
+    )
+
+    # === Commande DOCX-TO-VERTICAL ===
+    docx_parser = subparsers.add_parser(
+        "docx-to-vertical",
+        help="Convertit un DOCX (latin_analyzer) en format vertical"
+    )
+    docx_parser.add_argument(
+        "--input", "-i",
+        required=True,
+        help="Fichier DOCX ou dossier de fichiers DOCX (sortie de latin_analyzer)"
+    )
+    docx_parser.add_argument(
+        "--output", "-o",
+        required=True,
+        help="Fichier vertical de sortie"
+    )
+    docx_parser.add_argument(
+        "--config", "-c",
+        required=True,
+        help="Fichier de configuration YAML (fournit les metadonnees du corpus)"
+    )
+    docx_parser.add_argument(
+        "--lemmatizer",
+        choices=["treetagger", "cltk", "simple"],
+        default="treetagger",
+        help="Lemmatiseur a utiliser"
+    )
+    docx_parser.add_argument(
+        "--pattern",
+        default="*.docx",
+        help="Pattern de fichiers a traiter (si dossier)"
     )
 
     # === Commande RUN (pipeline complet) ===
@@ -473,6 +508,39 @@ def cmd_reenrich(args) -> int:
     return 0
 
 
+def cmd_docx_to_vertical(args) -> int:
+    """Execute la commande docx-to-vertical"""
+    logger.info("=== CONVERSION DOCX -> VERTICAL ===")
+
+    # Charge la config (obligatoire pour les metadonnees)
+    config = Config.from_yaml(args.config)
+
+    # Applique les options CLI
+    if hasattr(args, 'lemmatizer') and args.lemmatizer:
+        config.enrichment.lemmatizer = args.lemmatizer
+
+    # Cree le convertisseur
+    converter = DocxConverter(config)
+
+    # Convertit
+    output_path = Path(args.output)
+    if output_path.suffix == "":
+        output_path = output_path / "corpus.vertical.txt"
+
+    pages = converter.convert_and_save(
+        args.input,
+        output_path,
+        pattern=args.pattern
+    )
+
+    if not pages:
+        logger.error("Aucune page convertie")
+        return 1
+
+    logger.info(f"✓ {len(pages)} pages converties → {output_path}")
+    return 0
+
+
 def cmd_init(args) -> int:
     """Génère un fichier de configuration exemple"""
     output_path = Path(args.output)
@@ -520,6 +588,8 @@ def main() -> int:
         return cmd_export(args)
     elif args.command == "re-enrich":
         return cmd_reenrich(args)
+    elif args.command == "docx-to-vertical":
+        return cmd_docx_to_vertical(args)
     elif args.command == "run":
         return cmd_run(args)
     elif args.command == "init":

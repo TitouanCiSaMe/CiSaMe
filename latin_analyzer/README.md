@@ -1,389 +1,335 @@
-# Analyseur de Textes Latins Médiévaux - Version 2.1
+# Analyseur de Textes Latins Medievaux - Version 2.4.0
 
-Système automatisé d'analyse et de validation de textes latins médiévaux avec détection intelligente des erreurs.
-
----
-
-## ✨ Fonctionnalités
-
-- **Interface en ligne de commande** : Arguments CLI avec argparse (pas de chemins en dur)
-- **PyCollatinus** : Lemmatisation et analyse morphologique du latin classique (~500k formes)
-- **Dictionnaire Du Cange** : 99 917 mots de latin médiéval (ecclésiastique, féodal, administratif)
-- **Scoring multi-critères** : Attribution d'un score de confiance 0-100 pour chaque mot
-- **Colorisation à 3 niveaux** : Noir (OK), Orange (à vérifier), Rouge (erreur probable)
-- **Support XML Pages intégré** : Extraction automatique depuis fichiers HTR/OCR (MainZone)
-- **Fusion des mots coupés** : Gestion des césures de ligne (sancti- + tatis → sanctitatis)
-- **Normalisation orthographique** : u/v et i/j traités comme équivalents (uel=vel, uidetur=videtur)
-- **Filtrage chiffres romains** : xuiii., uii., ui. non comptés comme erreurs
+Outil pour verifier automatiquement la qualite de textes latins medievaux (issus d'OCR/HTR).
+Il colore chaque mot selon sa fiabilite : **noir** (bon), **orange** (douteux), **rouge** (erreur probable).
 
 ---
 
-## 🚀 Installation rapide
+## A quoi ca sert ?
+
+Quand on transcrit un manuscrit medieval avec un logiciel d'OCR ou HTR (ex: eScriptorium, Transkribus),
+le resultat contient des erreurs. Cet outil analyse chaque mot du texte et le compare a deux dictionnaires :
+
+1. **PyCollatinus** : dictionnaire de latin classique (~500 000 formes)
+2. **Du Cange** : dictionnaire de latin medieval (~100 000 mots)
+
+Chaque mot recoit un **score de 0 a 100** et une couleur :
+
+| Couleur | Score | Signification |
+|---------|-------|---------------|
+| **Noir** | 75-100 | Mot reconnu, probablement correct |
+| **Orange** | 40-74 | Mot douteux, a verifier manuellement |
+| **Rouge** | 0-39 | Mot probablement faux (erreur OCR) |
+
+Le resultat est un fichier Word (.docx) avec le texte colore.
+
+---
+
+## Installation
+
+### Methode rapide (recommandee)
 
 ```bash
-git clone <votre-repo>
 cd latin_analyzer
 bash setup.sh
 ```
 
-**Temps d'installation : ~3 minutes** (téléchargement inclus)
+Cela installe tout automatiquement en ~3 minutes.
+
+### Methode manuelle
+
+Si `setup.sh` ne fonctionne pas, voir le guide detaille : [docs/INSTALL.md](docs/INSTALL.md)
 
 ---
 
-## 📋 Structure du projet
+## Utilisation
 
-```
-latin_analyzer/
-├── src/                          # Code source
-│   ├── latin_analyzer_v2.py      # Analyseur principal
-│   ├── page_xml_parser.py        # Parser XML Pages
-│   ├── export_xml_to_txt.py      # Export XML → TXT simple
-│   └── __init__.py               # Package init
-│
-├── tests/                        # Tests
-│   ├── test_pycollatinus.py
-│   └── test_xml_integration.py
-│
-├── scripts/                      # Utilitaires
-│   └── download_ducange.py       # Téléchargeur Du Cange
-│
-├── data/                         # Données
-│   └── ducange_data/             # Dictionnaire (99 917 mots)
-│       ├── xml/                  # Fichiers XML source
-│       └── dictionnaire_ducange.txt
-│
-├── docs/                         # Documentation
-│   ├── README_AMELIORATIONS.md   # Phase 1 détaillée
-│   ├── GUIDE_XML_PAGES.md        # Guide XML Pages
-│   ├── INSTALL.md                # Installation détaillée
-│   └── QUICKSTART.md             # Démarrage rapide
-│
-├── requirements.txt              # Dépendances Python
-└── setup.sh                      # Installation automatique
-```
-
----
-
-## 💡 Utilisation
-
-### Syntaxe générale
+### 1. Analyser un fichier texte (.txt)
 
 ```bash
 cd latin_analyzer/src
-python3 latin_analyzer_v2.py -i <input> -o <output> [-d <ducange>] [-m <mode>]
-```
-
-**Arguments :**
-- `-i, --input` : Fichier texte TXT ou dossier XML Pages (obligatoire)
-- `-o, --output` : Fichier DOCX de sortie (obligatoire)
-- `-d, --ducange` : Chemin vers dictionnaire Du Cange (optionnel, chemin relatif par défaut)
-- `-m, --mode` : Mode d'extraction (optionnel, par défaut : `txt`)
-  - `txt` : Fichier texte brut
-  - `xml-single` : XML Pages 1 colonne
-  - `xml-dual` : XML Pages 2 colonnes
-- `--report` : Générer un rapport détaillé des mots orange dans le fichier spécifié (optionnel)
-
-### Exemples
-
-**Analyser un fichier texte brut :**
-```bash
 python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx
 ```
 
-**Analyser des fichiers XML Pages (1 colonne) :**
+- `-i` : le fichier d'entree (votre texte latin)
+- `-o` : le fichier de sortie (le Word colore)
+
+### 2. Analyser des fichiers XML Pages
+
+Si votre texte vient d'eScriptorium ou d'un autre outil HTR, vous avez des fichiers XML PAGE.
+Mettez-les tous dans un dossier et lancez :
+
 ```bash
-python3 latin_analyzer_v2.py -i /path/to/xml_folder/ -o resultat.docx -m xml-single
+# Si le manuscrit a 1 colonne de texte par page :
+python3 latin_analyzer_v2.py -i mon_dossier_xml/ -o resultat.docx -m xml-single
+
+# Si le manuscrit a 2 colonnes de texte par page :
+python3 latin_analyzer_v2.py -i mon_dossier_xml/ -o resultat.docx -m xml-dual
 ```
 
-**Analyser des fichiers XML Pages (2 colonnes) :**
-```bash
-python3 latin_analyzer_v2.py -i /path/to/dual_xml/ -o resultat.docx -m xml-dual
-```
+Le `-m` (mode) indique le format :
+- `txt` : fichier texte brut (par defaut)
+- `xml-single` : XML PAGE, 1 colonne
+- `xml-dual` : XML PAGE, 2 colonnes
 
-**Spécifier un dictionnaire Du Cange personnalisé :**
-```bash
-python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx -d /chemin/custom/ducange.txt
-```
+### 3. Generer un rapport detaille
 
-**Générer un rapport d'analyse des mots orange (non reconnus) :**
+Pour avoir un rapport sur les mots non reconnus (utile pour ameliorer la transcription) :
+
 ```bash
-python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx --report analyse_orange.txt
+python3 latin_analyzer_v2.py -i mon_texte.txt -o resultat.docx --report rapport.txt
 ```
 
 Le rapport contient :
-- Statistiques détaillées (total, uniques, longueur moyenne)
-- Distribution par longueur avec histogrammes
-- Patterns détectés (géminées, ae/oe, ph, terminaisons latines)
-- TOP 50 mots les plus fréquents
-- Catégorisation (abréviations, erreurs OCR, variantes médiévales)
-- Recommandations personnalisées
-- Estimation d'amélioration potentielle (ex: +13% → 99%)
+- Les 50 mots non reconnus les plus frequents
+- Des categories (abreviations, erreurs OCR, variantes medievales)
+- Des recommandations pour ameliorer le taux de reconnaissance
 
----
+### 4. Specifier un dictionnaire Du Cange personnalise
 
-## 📊 Exemple de résultat
-
-```
-📊 Distribution des scores :
-  ✅ Noir (bons mots)      : 5717 (86%)
-  ⚠️  Orange (douteux)      : 912 (13%)
-  ❌ Rouge (erreurs prob.) : 0 (0%)
-
-📚 Statistiques de reconnaissance par source :
-  🏛️  PyCollatinus (latin classique) : 5272 mots
-  📖 Du Cange (latin médiéval) : 3766 mots
-  🔗 Reconnus par les deux : 3709 mots
-
-  📊 Répartition :
-      Uniquement PyCollatinus : 1563
-      Uniquement Du Cange : 57
-      Les deux : 3709
-```
-
-**Document DOCX généré** avec colorisation :
-- **Noir** : Mots validés (score ≥75) - **86%** des mots
-- **Orange** : Mots à vérifier manuellement (score 40-74) - **13%** des mots
-- **Rouge** : Erreurs probables (score <40) - **0%** des mots
-
----
-
-## 🎯 Système de scoring
-
-| Critère | Points | Description |
-|---------|--------|-------------|
-| Latin classique (Collatinus) | +30 | Reconnu par l'analyseur classique (avec normalisation u/v, i/j) |
-| Latin médiéval (Du Cange) | +40 | Présent dans le dictionnaire médiéval (avec normalisation) |
-| Suffixe productif | +10 | -arius, -atio, -torium, etc. |
-| Contexte ecclésiastique | +5 | Mots religieux environnants |
-| Variante orthographique | +10 | ae↔e, ti↔ci détectées |
-
-**Total = min(score, 100)**
-
-### Normalisation appliquée
-
-- **u/v** : Traités comme identiques (uel = vel, uidetur = videtur)
-- **i/j** : Traités comme identiques (iam = jam, iudicium = judicium)
-- **Chiffres romains** : xuiii., uii., ui. filtrés (normalisés avec u→v avant test)
-- **Césures** : Mots coupés fusionnés automatiquement (sancti- + tatis → sanctitatis)
-
----
-
-## 🔧 Utilitaires
-
-### Export XML vers TXT (sans analyse)
-
-Si vous voulez simplement extraire le texte de fichiers XML Pages sans lancer l'analyse complète :
+Par defaut, le dictionnaire est cherche dans `latin_analyzer/data/ducange_data/`.
+Si vous l'avez place ailleurs :
 
 ```bash
-cd latin_analyzer/src
-python3 export_xml_to_txt.py <input_xml_ou_dossier> <output.txt> [single|dual]
+python3 latin_analyzer_v2.py -i texte.txt -o resultat.docx -d /chemin/vers/dictionnaire_ducange.txt
 ```
-
-**Exemples :**
-
-```bash
-# Extraire un seul fichier XML
-python3 export_xml_to_txt.py page_001.xml resultat.txt single
-
-# Extraire un dossier complet
-python3 export_xml_to_txt.py /path/to/xml_folder/ corpus_complet.txt single
-
-# Mode 2 colonnes
-python3 export_xml_to_txt.py /path/to/dual_xml/ corpus_dual.txt dual
-```
-
-**Cas d'usage :**
-- Prévisualisation rapide du contenu XML
-- Export simple sans analyse linguistique
-- Préparation de corpus pour d'autres outils
-- Pipelines personnalisés
 
 ---
 
-## 📖 Documentation complète
+## Comprendre le resultat
 
-- **[README_AMELIORATIONS.md](docs/README_AMELIORATIONS.md)** : Vue d'ensemble Phase 1
-- **[GUIDE_XML_PAGES.md](docs/GUIDE_XML_PAGES.md)** : Utilisation XML Pages
-- **[INSTALL.md](docs/INSTALL.md)** : Installation détaillée avec troubleshooting
-- **[QUICKSTART.md](docs/QUICKSTART.md)** : Démarrage en 1 ligne
+### Le fichier Word
 
----
+Ouvrez le fichier `.docx` genere. Vous verrez votre texte avec 3 couleurs :
 
-## 🧪 Tests
+- Les mots en **noir** sont reconnus par au moins un dictionnaire
+- Les mots en **orange** sont partiellement reconnus (suffixe latin, contexte ecclesiastique...)
+- Les mots en **rouge** ne sont reconnus nulle part (probablement des erreurs OCR)
 
-```bash
-cd tests
+### Les statistiques dans le terminal
 
-# Test PyCollatinus
-python3 test_pycollatinus.py
+A la fin de l'analyse, le programme affiche un resume :
 
-# Test intégration XML
-python3 test_xml_integration.py
+```
+Distribution des scores :
+  Noir (bons mots)      : 5717 (86%)
+  Orange (douteux)       : 524 (8%)
+  Rouge (erreurs prob.)  : 388 (6%)
 ```
 
-**Tous les tests doivent passer ✅**
+### Les pages dans le Word
+
+Si vous analysez un dossier XML, chaque fichier XML correspond a une page/folio.
+Le Word genere contient des separateurs visuels entre les pages :
+
+```
+──────────────────── Folio: 0042_r | Page: 1 ────────────────────
+Dominus enim dicit in evangelio quod est ueritas...
+
+──────────────────── Folio: 0042_v | Page: 2 ────────────────────
+Et ideo beatus augustinus ait in libro...
+```
 
 ---
 
-## 📦 Dépendances
+## Fonctionnalites avancees
 
-| Package | Version | Usage |
-|---------|---------|-------|
-| python-docx | 1.2.0 | Génération DOCX |
-| lxml | 6.0.2 | Parsing XML |
-| unidecode | 1.4.0 | Translittération (PyCollatinus) |
-| PyCollatinus | 0.1.6 | Lemmatisation latin (GitHub) |
-| Du Cange | - | Dictionnaire médiéval (SourceForge) |
+### PyCollatinus est optionnel
 
-**Installation :**
+Si PyCollatinus n'est pas installe (ou plante a l'import), le programme fonctionne
+quand meme en utilisant uniquement le dictionnaire Du Cange. Vous verrez un message :
+
+```
+PyCollatinus non disponible - analyse avec Du Cange uniquement
+```
+
+L'analyse sera moins precise mais reste utilisable.
+
+### Comment le scoring fonctionne
+
+Chaque mot demarre avec un score de base de **25 points**. Ensuite :
+
+| Critere | Points ajoutes | Explication |
+|---------|----------------|-------------|
+| Reconnu par PyCollatinus | +50 | Le mot existe en latin classique |
+| Reconnu par Du Cange | +50 | Le mot existe en latin medieval |
+| Suffixe latin productif | +10 | Terminaison comme -arius, -atio, -torium... |
+| Contexte ecclesiastique | +5 | Mots religieux autour (ecclesia, deus...) |
+| Variante orthographique | +10 | Forme alternative detectee (ae/e, ti/ci...) |
+
+Le score est plafonne a 100. Exemples :
+- `dominus` : reconnu par les deux → 25 + 50 + 50 = 100 → **noir**
+- `sanctitatis` : reconnu par Du Cange seul, suffixe latin → 25 + 50 + 10 = 85 → **noir**
+- `abbrevatio` : suffixe latin + contexte → 25 + 10 + 5 = 40 → **orange**
+- `xqzfgh` : rien reconnu → 25 → **rouge**
+
+### Normalisations automatiques
+
+Le programme normalise automatiquement certaines variations :
+
+- **u/v** : `uel` est traite comme `vel`, `uidetur` comme `videtur`
+- **i/j** : `iam` est traite comme `jam`
+- **Cesures** : si un mot est coupe en fin de ligne (`sancti-` + `tatis`), il est recolle en `sanctitatis`
+- **Chiffres romains** : `xuiii.`, `uii.`, `ui.` ne sont pas comptes comme des erreurs
+
+---
+
+## Utiliser dans un script Python
+
+Si vous voulez integrer l'analyseur dans votre propre code Python :
+
+```python
+# Importer la classe
+from latin_analyzer.src.latin_analyzer_v2 import LatinAnalyzer
+
+# Creer l'analyseur
+# (le dictionnaire Du Cange est trouve automatiquement)
+analyzer = LatinAnalyzer()
+
+# Analyser un fichier texte
+resultats = analyzer.analyze_text_file("mon_texte.txt")
+
+# Analyser des XML Pages
+resultats = analyzer.analyze_page_xml("dossier_xml/", column_mode="single")
+
+# Generer le Word colore
+analyzer.generate_docx("resultat.docx", resultats)
+```
+
+Pour specifier un dictionnaire Du Cange personnalise :
+
+```python
+analyzer = LatinAnalyzer(ducange_dict_file="/chemin/vers/dictionnaire_ducange.txt")
+```
+
+---
+
+## Structure du projet
+
+```
+latin_analyzer/
+├── src/                              # Code source
+│   ├── latin_analyzer_v2.py          # Programme principal
+│   ├── page_xml_parser.py            # Lecture des fichiers XML PAGE
+│   ├── export_xml_to_txt.py          # Export XML vers texte brut
+│   └── __init__.py
+│
+├── data/                             # Donnees
+│   └── ducange_data/                 # Dictionnaire Du Cange
+│       └── dictionnaire_ducange.txt  # 99 917 mots de latin medieval
+│
+├── tests/                            # Tests
+│   ├── test_pycollatinus.py
+│   └── test_xml_integration.py
+│
+├── docs/                             # Documentation
+│   ├── INSTALL.md                    # Guide d'installation detaille
+│   ├── QUICKSTART.md                 # Demarrage rapide
+│   ├── GUIDE_XML_PAGES.md            # Guide XML Pages
+│   └── README_AMELIORATIONS.md       # Details techniques
+│
+├── scripts/                          # Utilitaires
+│   └── download_ducange.py           # Telecharger le dictionnaire
+│
+├── requirements.txt                  # Dependances Python
+└── setup.sh                          # Installation automatique
+```
+
+---
+
+## Dependances
+
+| Package | Role | Obligatoire ? |
+|---------|------|---------------|
+| python-docx | Generer les fichiers Word | Oui |
+| lxml | Lire les fichiers XML | Oui |
+| unidecode | Normaliser les caracteres | Oui |
+| PyCollatinus | Dictionnaire latin classique | Non (optionnel depuis v2.4.0) |
+| Du Cange | Dictionnaire latin medieval | Recommande |
+
+Installation des dependances obligatoires :
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🔧 Configuration
+## Resolution de problemes
 
-### Chemins par défaut
+### "No module named 'docx'"
 
-Le dictionnaire Du Cange utilise un chemin relatif automatique depuis le répertoire du projet :
-
-```python
-project_dir = Path(__file__).parent.parent  # Remonter à latin_analyzer/
-ducange_dict = str(project_dir / "data" / "ducange_data" / "dictionnaire_ducange.txt")
-```
-
-**Aucune modification de code nécessaire** : Utilisez les arguments CLI pour spécifier vos fichiers d'entrée et sortie.
-
-### Options avancées
-
-Pour utiliser comme module Python dans votre propre code :
-
-```python
-from latin_analyzer_v2 import LatinAnalyzer
-
-# Initialiser avec dictionnaire personnalisé
-analyzer = LatinAnalyzer(ducange_dict_file='/chemin/custom/ducange.txt')
-
-# Analyser un fichier
-results = analyzer.analyze_text_file('mon_texte.txt')
-
-# Générer le DOCX
-analyzer.generate_docx('mon_texte.txt', 'resultat.docx', results)
-```
-
----
-
-## 🆘 Support
-
-**Problème d'installation ?**
 ```bash
-bash setup.sh
+pip install python-docx
 ```
 
-**Tests échouent ?**
-Voir les logs :
-- `/tmp/test_pycollatinus.log`
-- `/tmp/test_xml.log`
+### "cannot import name 'Callable' from 'collections'"
 
-**Documentation complète :** `docs/INSTALL.md`
+Ce probleme arrive avec Python 3.10+. Depuis la version 2.4.0, PyCollatinus est optionnel :
+le programme fonctionne sans lui. Si vous voulez quand meme l'utiliser, appliquez le patch :
 
----
-
-## 📝 Workflow complet
-
-```
-Texte latin (XML Pages ou TXT)
-         ↓
-  Extraction MainZone (si XML) + Fusion césures
-         ↓
-  Normalisation u/v, i/j
-         ↓
-  Filtrage chiffres romains (xuiii., uii., etc.)
-         ↓
-  Analyse PyCollatinus (classique)
-         ↓
-  Filtrage Du Cange (médiéval)
-         ↓
-  Scoring multi-critères (0-100)
-         ↓
-  Document DOCX colorisé (3 niveaux)
+```bash
+sed -i 's/from collections import OrderedDict, Callable/from collections import OrderedDict\nfrom collections.abc import Callable/' \
+    /tmp/collatinus-python/pycollatinus/util.py
 ```
 
----
+### Le programme ne trouve pas le dictionnaire Du Cange
 
-## ✅ Avantages vs. ancien système
+Verifiez que le fichier existe :
+```bash
+ls latin_analyzer/data/ducange_data/dictionnaire_ducange.txt
+```
 
-| Aspect | Avant (v1.x) | Version 2.2 (actuelle) |
-|--------|--------------|------------------------|
-| **Workflow** | Manuel (interface Collatinus) | Automatique via CLI |
-| **Configuration** | Chemins en dur dans le code | Arguments CLI flexibles |
-| **Dictionnaire** | Latin classique uniquement | Classique + 100k médiévaux |
-| **Détection** | Binaire (erreur/OK) | Score 0-100 + 3 couleurs |
-| **Taux de reconnaissance** | ~60% (nombreux faux positifs) | **86%** (PyCollatinus + Du Cange) |
-| **XML Pages** | Non supporté | Extraction MainZone intégrée |
-| **Césures** | Ignorées (erreurs) | Fusionnées automatiquement |
-| **Variantes u/v, i/j** | Comptées comme différentes | Normalisées (uel=vel) |
-| **Chiffres romains** | Comptés comme erreurs | Filtrés (xuiii., uii., ui.) |
-| **PyCollatinus** | Interface GUI uniquement | API Python intégrée ✅ |
+Si le fichier n'existe pas, lancez :
+```bash
+cd latin_analyzer/scripts
+python3 download_ducange.py
+```
 
----
+### PyCollatinus est tres lent au premier lancement
 
-## 👤 Auteur
-
-Claude
-**Version : 2.3.0**
-Date : 25 novembre 2025
-
-### Changelog
-
-**Version 2.3.0 (25 nov 2025) :**
-- 📊 **Rapport d'analyse des mots orange** : Argument `--report` optionnel
-  - Analyse automatique des patterns (géminées 14.8%, ae/oe 0.2%, etc.)
-  - Catégorisation (abréviations, erreurs OCR, variantes médiévales)
-  - TOP 50 mots les plus fréquents non reconnus
-  - Recommandations personnalisées basées sur les données
-  - Estimation d'amélioration potentielle (ex: +13% → 99%)
-  - Intégré directement dans le script principal
-
-**Version 2.2.0 (25 nov 2025) - CORRECTION CRITIQUE :**
-- 🐛 **Bug critique corrigé** : PyCollatinus `lemmatise()` retourne un generator
-  - `len(generator)` plantait silencieusement dans try/except
-  - Résultat : PyCollatinus ne détectait **AUCUN mot** (0%)
-  - Correction : `list(lemmatiser.lemmatise())` avant `len()`
-- 📊 **Impact** : Passage de 62% → **86% mots validés** (+24%)
-- ✅ **5272 mots** maintenant reconnus par PyCollatinus
-- 📈 Statistiques détaillées par source (PyCollatinus / Du Cange / Les deux)
-- 🔗 Répartition : 1563 uniquement PyCollatinus, 57 uniquement Du Cange, 3709 les deux
-
-**Version 2.1.0 (25 nov 2025) :**
-- Interface CLI avec argparse (pas de chemins en dur)
-- Extraction XML intégrée directement dans l'analyseur
-- Fusion automatique des mots coupés (césures de ligne)
-- Normalisation u/v et i/j (uel=vel, uidetur=videtur)
-- Filtrage des chiffres romains avec point (xuiii., uii., ui.)
-- Simplification du workflow (1 commande au lieu de 2)
-
-**Version 2.0.0 (24 nov 2025) :**
-- Intégration PyCollatinus + Du Cange
-- Scoring multi-critères 0-100
-- Support XML Pages
-- Structure projet organisée
+C'est normal. Le premier chargement prend 10-15 secondes. Les suivants sont plus rapides.
 
 ---
 
-## 📄 Licence
+## Changelog
 
-À définir selon votre projet
+**Version 2.4.0 :**
+- PyCollatinus rendu optionnel (fonctionne sans, avec Du Cange seul)
+- Correction du scoring : rouge et orange desormais atteignables
+- Preservation des pages/folios dans le DOCX (en-tetes visuels)
+- Correction bug generator PyCollatinus
+- Reset des compteurs entre analyses successives
+- Version harmonisee dans tout le projet
+
+**Version 2.3.0 :**
+- Rapport d'analyse des mots orange (`--report`)
+- Categorisation automatique et recommandations
+
+**Version 2.2.0 :**
+- Correction critique : PyCollatinus ne detectait aucun mot (bug generator)
+- Passage de 62% a 86% de mots valides
+
+**Version 2.1.0 :**
+- Interface CLI avec argparse
+- Support XML Pages integre
+- Fusion des cesures, normalisation u/v et i/j
+
+**Version 2.0.0 :**
+- Integration PyCollatinus + Du Cange
+- Scoring multi-criteres 0-100
+- Structure projet organisee
 
 ---
 
-## 🔗 Liens utiles
+## Liens utiles
 
 - [Du Cange en ligne](http://ducange.enc.sorbonne.fr/)
-- [Collatinus GitHub](https://github.com/biblissima/collatinus)
-- [PyCollatinus](https://github.com/PonteIneptique/collatinus-python)
+- [PyCollatinus (GitHub)](https://github.com/PonteIneptique/collatinus-python)
+- [Collatinus](https://github.com/biblissima/collatinus)
 
 ---
 
-**Pour démarrer rapidement : `docs/QUICKSTART.md`** 🚀
+**Pour demarrer rapidement : [docs/QUICKSTART.md](docs/QUICKSTART.md)**
+
+**Auteur** : CiSaMe
+**Version** : 2.4.0

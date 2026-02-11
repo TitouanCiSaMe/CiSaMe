@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 """
-Analyseur de textes latins médiévaux - Version 2.1
-================================================
+Analyseur de textes latins médiévaux - Version 2.4.0
+====================================================
 
 Système intégré utilisant :
-- PyCollatinus pour l'analyse morphologique
+- PyCollatinus pour l'analyse morphologique (optionnel)
 - Dictionnaire Du Cange (99k+ entrées de latin médiéval)
 - Système de scoring multi-critères
 - Colorisation à 3 niveaux (rouge/orange/noir)
 - Support XML Pages avec extraction MainZone automatique
+- Préservation des pages/folios dans le DOCX
 - Normalisation u/v et i/j
 - Fusion des mots avec tirets
 - Filtrage des chiffres romains
 
-Auteur: Claude
+Auteur: CiSaMe
 Date: 2025-11-25
 """
 
@@ -26,12 +27,22 @@ from docx.shared import RGBColor, Cm, Pt
 from docx.enum.text import WD_LINE_SPACING
 from pathlib import Path
 from collections import Counter
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Dict
 
-# Ajouter PyCollatinus au path
-sys.path.insert(0, '/tmp/collatinus-python')
-
-from pycollatinus import Lemmatiseur
+# Tentative d'import de PyCollatinus (optionnel)
+HAS_PYCOLLATINUS = False
+Lemmatiseur = None
+try:
+    from pycollatinus import Lemmatiseur
+    HAS_PYCOLLATINUS = True
+except ImportError:
+    # Essai avec le chemin /tmp en fallback
+    try:
+        sys.path.insert(0, '/tmp/collatinus-python')
+        from pycollatinus import Lemmatiseur
+        HAS_PYCOLLATINUS = True
+    except ImportError:
+        pass
 
 # Import local si exécuté comme script, sinon import relatif
 try:
@@ -58,9 +69,9 @@ class LatinAnalyzer:
     - PyCollatinus : ~500 000 formes de latin classique (analyse morphologique)
     - Dictionnaire Du Cange : ~99 000 entrées de latin médiéval
 
-    Algorithme de scoring (0-100 points, base = 50) :
-        - Critère 1 : Reconnu par PyCollatinus (latin classique) → +30 pts
-        - Critère 2 : Présent dans le dictionnaire Du Cange (médiéval) → +40 pts
+    Algorithme de scoring (0-100 points, base = 25) :
+        - Critère 1 : Reconnu par PyCollatinus (latin classique) → +50 pts
+        - Critère 2 : Présent dans le dictionnaire Du Cange (médiéval) → +50 pts
         - Critère 3 : Suffixe médiéval productif (-arius, -atio, -torium...) → +10 pts
         - Critère 4 : Contexte ecclésiastique (mots voisins reconnus) → +5 pts
         - Critère 5 : Variante orthographique médiévale (ae↔e, ti↔ci) → +10 pts
@@ -90,20 +101,22 @@ class LatinAnalyzer:
         """
         print("🔄 Initialisation de l'analyseur latin...")
 
-        # Charger PyCollatinus
-        print("  📚 Chargement de Collatinus (latin classique)...")
-        self.lemmatizer = Lemmatiseur()
-        print("  ✅ Collatinus chargé")
+        # Charger PyCollatinus (optionnel)
+        if HAS_PYCOLLATINUS:
+            print("  📚 Chargement de Collatinus (latin classique)...")
+            self.lemmatizer = Lemmatiseur()
+            print("  ✅ Collatinus chargé")
+        else:
+            print("  ⚠️  PyCollatinus non disponible - analyse latin classique désactivée")
+            print("  ⚠️  Seul le dictionnaire Du Cange sera utilisé")
+            print("  ⚠️  Pour installer : pip install pycollatinus ou git clone dans /tmp/collatinus-python")
+            self.lemmatizer = None
 
         # Charger le dictionnaire médiéval
         self.medieval_dict = set()
 
         # Compteurs de debug
-        self.ducange_matches_count = 0
-        self.ducange_examples = []
-        self.collatinus_matches_count = 0
-        self.collatinus_examples = []
-        self.both_matches_count = 0
+        self._reset_counters()
 
         if ducange_dict_file and os.path.exists(ducange_dict_file):
             print(f"  📚 Chargement du dictionnaire Du Cange...")
@@ -141,6 +154,14 @@ class LatinAnalyzer:
         }
 
         print("✅ Analyseur prêt\n")
+
+    def _reset_counters(self):
+        """Réinitialise les compteurs de statistiques entre analyses."""
+        self.ducange_matches_count = 0
+        self.ducange_examples = []
+        self.collatinus_matches_count = 0
+        self.collatinus_examples = []
+        self.both_matches_count = 0
 
     @staticmethod
     def normalize_word(word: str) -> str:
@@ -253,6 +274,9 @@ class LatinAnalyzer:
         """
         Analyse un mot avec scoring multi-critères.
 
+        Le score de base est 25 (non reconnu = rouge par défaut).
+        Les critères positifs ajoutent des points pour monter vers orange puis noir.
+
         Args:
             word (str): Le mot à analyser
             context_words (list): Liste des mots environnants
@@ -274,9 +298,9 @@ class LatinAnalyzer:
             'word': word,
             'recognized_classical': False,
             'recognized_medieval': False,
-            'confidence_score': 50,  # Score de base neutre
+            'confidence_score': 25,  # Score de base bas : non reconnu = rouge
             'reasons': [],
-            'color_code': 'orange'
+            'color_code': 'red'
         }
 
         # Ignorer les mots très courts
@@ -297,29 +321,30 @@ class LatinAnalyzer:
         normalized_word = self.normalize_word(clean_word)
 
         # Critère 1 : Reconnu par Collatinus (latin classique)
-        try:
-            # Tester le mot original ET la version normalisée
-            for test_word in [clean_word, normalized_word]:
-                # CORRECTION : Convertir generator en liste
-                analyses = list(self.lemmatizer.lemmatise(test_word))
-                if analyses and len(analyses) > 0:
-                    result['recognized_classical'] = True
-                    result['confidence_score'] += 30
-                    result['reasons'].append(f"latin classique valide ({len(analyses)} analyse(s))")
+        if self.lemmatizer is not None:
+            try:
+                # Tester le mot original ET la version normalisée
+                for test_word in [clean_word, normalized_word]:
+                    # CORRECTION : Convertir generator en liste
+                    analyses = list(self.lemmatizer.lemmatise(test_word))
+                    if analyses and len(analyses) > 0:
+                        result['recognized_classical'] = True
+                        result['confidence_score'] += 50
+                        result['reasons'].append(f"latin classique valide ({len(analyses)} analyse(s))")
 
-                    # Debug : compter
-                    self.collatinus_matches_count += 1
-                    if len(self.collatinus_examples) < 20:
-                        self.collatinus_examples.append(clean_word)
-                    break
-        except Exception as e:
-            # Debug : afficher les erreurs PyCollatinus pour diagnostic
-            pass
+                        # Debug : compter
+                        self.collatinus_matches_count += 1
+                        if len(self.collatinus_examples) < 20:
+                            self.collatinus_examples.append(clean_word)
+                        break
+            except Exception:
+                # PyCollatinus peut échouer sur certains mots
+                pass
 
         # Critère 2 : Présent dans le dictionnaire Du Cange (avec normalisation)
         if clean_word in self.medieval_dict or normalized_word in self.medieval_dict:
             result['recognized_medieval'] = True
-            result['confidence_score'] += 40
+            result['confidence_score'] += 50
             result['reasons'].append("présent dans le dictionnaire Du Cange")
 
             # Debug : compter et enregistrer des exemples
@@ -389,64 +414,95 @@ class LatinAnalyzer:
         for variant in variants:
             if variant in self.medieval_dict:
                 return True
-            try:
-                analyses = self.lemmatizer.lemmatise(variant)
-                if analyses and len(analyses) > 0:
-                    return True
-            except Exception:
-                pass
+            if self.lemmatizer is not None:
+                try:
+                    # CORRECTION : Convertir generator en liste
+                    analyses = list(self.lemmatizer.lemmatise(variant))
+                    if analyses and len(analyses) > 0:
+                        return True
+                except Exception:
+                    pass
 
         return False
 
     def extract_and_process_xml(self, xml_path, column_mode='single'):
         """
         Extrait le texte depuis XML Pages et traite les tirets.
+        Préserve les frontières de pages pour le DOCX.
 
         Args:
             xml_path (str): Chemin vers fichier XML ou dossier
             column_mode (str): 'single' ou 'dual'
 
         Returns:
-            List[str]: Lignes de texte traitées
+            Tuple[List[str], List[dict]]:
+                - lines: Lignes de texte traitées
+                - page_breaks: Liste de {line_index, filename, page_number, running_title}
         """
         print(f"📄 Extraction du texte depuis XML Pages...")
 
         parser = PageXMLParser(column_mode=column_mode)
+        page_breaks = []
 
-        # Extraire le texte
         if os.path.isfile(xml_path):
             lines, metadata = parser.parse_file(xml_path)
+            lines = self.merge_hyphenated_words(lines)
+            if metadata:
+                page_breaks.append({
+                    'line_index': 0,
+                    'filename': metadata.get('filename', os.path.basename(xml_path)),
+                    'page_number': metadata.get('page_number'),
+                    'running_title': metadata.get('running_title', ''),
+                })
             print(f"  ✅ 1 fichier traité, {len(lines)} lignes extraites")
+            return lines, page_breaks
+
         elif os.path.isdir(xml_path):
-            text, metadata_list = parser.parse_folder(xml_path)
-            lines = text.split('\n')
-            print(f"  ✅ {len(metadata_list)} fichiers traités, {len(lines)} lignes extraites")
+            # Itérer fichier par fichier pour préserver les pages
+            xml_files = sorted(Path(xml_path).glob('*.xml'))
+            if not xml_files:
+                print(f"  ⚠️  Aucun fichier XML trouvé dans {xml_path}")
+                return [], []
+
+            all_lines = []
+            for xml_file in xml_files:
+                lines, metadata = parser.parse_file(str(xml_file))
+                if lines:
+                    # Fusionner les tirets par page (pas inter-pages)
+                    lines = self.merge_hyphenated_words(lines)
+                    page_breaks.append({
+                        'line_index': len(all_lines),
+                        'filename': metadata.get('filename', xml_file.name) if metadata else xml_file.name,
+                        'page_number': metadata.get('page_number') if metadata else None,
+                        'running_title': metadata.get('running_title', '') if metadata else '',
+                    })
+                    all_lines.extend(lines)
+
+            print(f"  ✅ {len(xml_files)} fichiers traités, {len(all_lines)} lignes extraites")
+            return all_lines, page_breaks
+
         else:
             raise ValueError(f"Chemin invalide : {xml_path}")
-
-        # Fusionner les mots avec tirets
-        print(f"🔗 Fusion des mots avec tirets...")
-        lines = self.merge_hyphenated_words(lines)
-        print(f"  ✅ Fusion terminée")
-
-        return lines
 
     def analyze_page_xml(self, input_path, column_mode='single'):
         """
         Analyse un fichier ou dossier XML Pages.
+        Préserve les informations de pages/folios.
 
         Args:
             input_path (str): Chemin vers fichier XML ou dossier
             column_mode (str): 'single' ou 'dual'
 
         Returns:
-            dict: Statistiques et résultats de l'analyse
+            dict: Statistiques et résultats de l'analyse (avec page_breaks)
         """
-        # Extraire et traiter le texte XML
-        lines = self.extract_and_process_xml(input_path, column_mode)
+        # Extraire et traiter le texte XML (avec pages)
+        lines, page_breaks = self.extract_and_process_xml(input_path, column_mode)
 
         # Analyser les lignes
-        return self._analyze_lines(lines, source=input_path)
+        results = self._analyze_lines(lines, source=input_path)
+        results['page_breaks'] = page_breaks
+        return results
 
     def analyze_text_file(self, input_file):
         """
@@ -480,6 +536,9 @@ class LatinAnalyzer:
         Returns:
             dict: Statistiques et résultats de l'analyse
         """
+        # Réinitialiser les compteurs pour cette analyse
+        self._reset_counters()
+
         print(f"🔍 Analyse en cours...")
         print(f"   Source : {source}")
 
@@ -545,7 +604,10 @@ class LatinAnalyzer:
             print(f"  🏛️  PyCollatinus (latin classique) : {self.collatinus_matches_count} mots")
             print(f"      Exemples : {', '.join(self.collatinus_examples[:10])}")
         else:
-            print(f"  ⚠️  PyCollatinus : 0 mots reconnus (vérifier l'installation)")
+            if self.lemmatizer is not None:
+                print(f"  ⚠️  PyCollatinus : 0 mots reconnus (vérifier l'installation)")
+            else:
+                print(f"  ⚠️  PyCollatinus : non disponible")
 
         if self.ducange_matches_count > 0:
             print(f"  📖 Du Cange (latin médiéval) : {self.ducange_matches_count} mots")
@@ -575,9 +637,36 @@ class LatinAnalyzer:
             'source_lines': lines  # Garder les lignes sources pour le DOCX
         }
 
+    def _add_page_header(self, doc, page_info):
+        """
+        Ajoute un en-tête de page/folio dans le document DOCX.
+
+        Args:
+            doc: Document python-docx
+            page_info (dict): {filename, page_number, running_title}
+        """
+        separator = doc.add_paragraph()
+        separator.paragraph_format.space_before = Pt(12)
+        separator.paragraph_format.space_after = Pt(4)
+
+        parts = []
+        if page_info.get('filename'):
+            parts.append(f"Folio: {page_info['filename']}")
+        if page_info.get('page_number') is not None:
+            parts.append(f"Page: {page_info['page_number']}")
+        if page_info.get('running_title'):
+            parts.append(page_info['running_title'])
+
+        header_text = " | ".join(parts) if parts else "Page"
+        run = separator.add_run(f"{'─' * 20} {header_text} {'─' * 20}")
+        run.font.size = Pt(9)
+        run.font.color.rgb = RGBColor(100, 100, 100)
+        run.bold = True
+
     def generate_docx(self, output_docx, analysis_results):
         """
         Génère un document Word avec colorisation à 3 niveaux.
+        Inclut les en-têtes de pages/folios si disponibles.
 
         Args:
             output_docx (str): Fichier DOCX de sortie
@@ -591,6 +680,10 @@ class LatinAnalyzer:
         if not original_lines:
             print("❌ Erreur : Pas de lignes sources disponibles")
             return
+
+        # Récupérer les frontières de pages (si mode XML)
+        page_breaks = analysis_results.get('page_breaks', [])
+        page_break_lines = {pb['line_index']: pb for pb in page_breaks}
 
         # Créer un index des analyses par ligne et mot
         analysis_index = {}
@@ -634,6 +727,11 @@ class LatinAnalyzer:
 
         # Traiter chaque ligne
         for line_num, line in enumerate(original_lines, 1):
+            # Vérifier si on commence une nouvelle page/folio
+            line_index = line_num - 1  # line_num est 1-based, line_index 0-based
+            if line_index in page_break_lines:
+                self._add_page_header(doc, page_break_lines[line_index])
+
             paragraph = doc.add_paragraph()
             paragraph.paragraph_format.space_before = Pt(0)
             paragraph.paragraph_format.space_after = Pt(0)
@@ -665,6 +763,8 @@ class LatinAnalyzer:
         # Sauvegarder
         doc.save(output_docx)
         print(f"✅ Document créé : {output_docx}")
+        if page_breaks:
+            print(f"   📄 {len(page_breaks)} pages/folios inclus")
 
 
 def analyze_orange_patterns(words_list):
@@ -927,7 +1027,7 @@ Exemples d'utilisation :
             print("⚠️  Pas de dictionnaire Du Cange spécifié (analyse latin classique uniquement)\n")
 
     print("=" * 70)
-    print("  ANALYSEUR DE TEXTES LATINS MÉDIÉVAUX - VERSION 2.1")
+    print("  ANALYSEUR DE TEXTES LATINS MÉDIÉVAUX - VERSION 2.4.0")
     print("  PyCollatinus + Du Cange + Scoring Multi-critères")
     print("=" * 70)
     print()
